@@ -19,7 +19,7 @@ public class LoginController {
 		return "unristricted endpoint";
 	}
 	
-	@GetMapping("/login")
+	@GetMapping("/user")
 	public Object restrictedAdminEndpoint(Principal principal) {
 		
 		
