@@ -1,34 +1,31 @@
 package com.au.web.controller;
 
-import java.security.Principal;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.au.web.authorization.AuthorizationInterface;
+import com.au.web.authorization.LoginAuthorizationInterface;
 
 @RestController
-public class LoginController {
+public class LoginController {   //
 	
 	@Autowired
-	AuthorizationInterface user;
+	LoginAuthorizationInterface user;
 
 	@GetMapping("/")
-	public String helloWorld() {
-		return "unristricted endpoint";
+	public String unristrictedEndpoint() {
+		return "Server is Up";
 	}
 	
 	@GetMapping("/user")
-	public Object restrictedAdminEndpoint(Principal principal) {
+	public Object login() {
 		
 		
-		return user.getAuthorization("test class", "test Function");
+		return user.getAuthorization(); // get authorization for accessing these services
 	}
 	
-//	@GetMapping("/user")
-//	public String restrictedUserEndpoint() {
-//		return "you are loggedin as user";
-//	}
+	
 	
 }

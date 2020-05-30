@@ -2,12 +2,13 @@ package com.au.web.authorization;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.au.service.AuthorizationServiceInterface;
 import com.au.web.security.OAuthAuthenticatedUserDataInterface;
 
 @Component
-public class AuthorizationLogin implements AuthorizationInterface{
+public class LoginAuthorization implements LoginAuthorizationInterface{
 
 	@Autowired
 	private OAuthAuthenticatedUserDataInterface user; 
@@ -15,18 +16,17 @@ public class AuthorizationLogin implements AuthorizationInterface{
 	@Autowired
 	private AuthorizationServiceInterface authorizationService;
 	
+	
 	@Override
-	public Object getAuthorization(String className, String functionName) {
+	public Object getAuthorization() {
 		
-		String userEmail = user.getAuthenticatedUserEmail();
 		
-//		System.out.println(userEmail);
-//		System.out.println(authorizationService);
-		AuthorizationLevel authorizationLevel = authorizationService.getUserAuthorizationLevel(userEmail);
+		
+		AuthorizationLevel authorizationLevel = getAuthorizationLevel();
 		
 		if(authorizationLevel == AuthorizationLevel.unauthorizedUser)
 		{
-			return "Failed Authorization";
+			return new ModelAndView("redirect:/");
 			
 		}
 		
@@ -35,6 +35,17 @@ public class AuthorizationLogin implements AuthorizationInterface{
 		//TODO: implement services access
 		return authorizationLevel; 
 	}
+
+	@Override 
+	public AuthorizationLevel getAuthorizationLevel()
+	{
+		String userEmail = user.getAuthenticatedUserEmail();
+		AuthorizationLevel authorizationLevel = authorizationService.getUserAuthorizationLevel(userEmail);
+		return authorizationLevel;
+		
+	}
+	
+	
 
 	
 }

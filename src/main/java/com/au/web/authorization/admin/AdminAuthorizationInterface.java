@@ -1,12 +1,14 @@
-package com.au.web.authorization;
+package com.au.web.authorization.admin;
 
-import org.springframework.stereotype.Component;
-
-@Component
-public interface AuthorizationInterface {
+public interface AdminAuthorizationInterface {
 	
+	
+	public Object getAuthorization() ;
 	
 	public Object getAuthorization(String className , String functionName) ;  // the implementing class should use principal object to get authorization
+	
+
+
 	
 
 }

@@ -3,6 +3,7 @@ package com.au.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.au.web.authorization.AuthorizationLevel;
@@ -22,7 +23,7 @@ public class AuthorizationService implements AuthorizationServiceInterface {
 		authorizationTable.put("abhishek.sen999@gmail.com", AuthorizationLevel.manager );
 		
 		
-		System.out.println(authorizationTable);
+//		System.out.println(authorizationTable);
 	
 	}
 	
@@ -40,10 +41,10 @@ public class AuthorizationService implements AuthorizationServiceInterface {
 	public AuthorizationLevel getUserAuthorizationLevel(String email) { 
 		
 		
-		System.out.println("----------------------authorizationService Line 43-------------");
-		
-		System.out.println(authorizationTable.get(email));
-		
+//		System.out.println("----------------------authorizationService Line 43-------------");
+//		
+//		System.out.println(authorizationTable.get(email));
+//		
 		// TODO Auto-generated method stub
 		
 		if(authorizationTable.containsKey(email))
