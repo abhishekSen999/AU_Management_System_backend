@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
-public class AuthenticatedUserData implements OAuthAuthenticatedUserDataFacade{ // class to get user data like email name from Principal object of the context
+public class AuthenticatedUserData implements OAuthAuthenticatedUserDataInterface{ // class to get user data like email name from Principal object of the context
 
 	public String emailPattern = "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}";
 	
