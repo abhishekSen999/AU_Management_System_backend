@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.au.web.authorization.AuthorizationLevel;
 import com.au.web.authorization.AutoLogout;
@@ -16,7 +17,7 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 	LoginAuthorizationInterface user;
 	
 	@Override
-	public Object getAuthorization() {
+	public Object getAuthorization() {  // returns authorization level for authorized user and logs out unauthorized user.
 		
 		
 		
@@ -26,7 +27,7 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 		{
 			System.out.println(authorizationLevel);
 			AutoLogout.autoLogout();
-			return "Failed Authorization";
+			return AutoLogout.autoLogout();
 			
 		}
 		return authorizationLevel; 
@@ -44,7 +45,7 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 			
 			AutoLogout.autoLogout();
 			//todo: logout user   
-			return "Failed Authorization";
+			return AutoLogout.autoLogout();
 			
 		}
 		

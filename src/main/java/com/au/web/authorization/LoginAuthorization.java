@@ -26,7 +26,7 @@ public class LoginAuthorization implements LoginAuthorizationInterface{
 		
 		if(authorizationLevel == AuthorizationLevel.unauthorizedUser)
 		{
-			return new ModelAndView("redirect:/");
+			return AutoLogout.autoLogout();
 			
 		}
 		

@@ -3,6 +3,7 @@ package com.au.web.controller.admin;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,12 +16,14 @@ public class AdminHome {
 	@Autowired
 	AdminAuthorizationInterface user;
 
+	@CrossOrigin
 	@GetMapping("/admin")
 	public Object admin() {
 
 		return user.getAuthorization(); // men
 	}
 	
+	@CrossOrigin
 	@GetMapping("/admin/home")
 	public Object adminHome() {
 		
@@ -30,7 +33,7 @@ public class AdminHome {
 	
 	
 	//TODO : add furthur apis and functionalities
-	
+	@CrossOrigin
 	@GetMapping("/admin/functionality")
 	public Object login(Principal principal) {
 		

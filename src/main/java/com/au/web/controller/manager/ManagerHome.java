@@ -2,6 +2,7 @@ package com.au.web.controller.manager;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,13 +14,13 @@ public class ManagerHome {
 	@Autowired
 	ManagerAuthorizationInterface user;
 
-
+	@CrossOrigin
 	@GetMapping("/manager")
 	public Object admin() {
 		
 		return user.getAuthorization(); // 
 	}
-	
+	@CrossOrigin
 	@GetMapping("/manager/home")
 	public Object adminHome() {
 		
@@ -28,7 +29,7 @@ public class ManagerHome {
 	
 	
 	//TODO : add furthur apis and functionalities
-	
+	@CrossOrigin
 	@GetMapping("/manager/functionality")
 	public Object login() {
 		
