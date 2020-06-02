@@ -1,6 +1,6 @@
 package com.au.repository;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,12 +19,12 @@ public class SkillDAO {
 	@Autowired
 	SkillMapper skillMapper;
 	
-	public Collection<Skill> getAll(){
+	public List<Skill> getAll(){
 		
 		String sql = "select * from skill";
 		
-		Collection<Skill> skillCollection = jdbcTemplate.query(sql,skillMapper);
-		return skillCollection;
+		List<Skill> skillList = jdbcTemplate.query(sql,skillMapper);
+		return skillList;
 	}
 	
 	public Skill getById(long skill_id)
@@ -37,8 +37,8 @@ public class SkillDAO {
 	
 	public Skill getByName(String skill_name)
 	{
-		String sql = "select * from skill where skill_name = ?";
-		Skill skill = jdbcTemplate.queryForObject(sql, new Object[] {skill_name}, skillMapper);
+		String sql = "select * from skill where lower(skill_name) = ?";
+		Skill skill = jdbcTemplate.queryForObject(sql, new Object[] {skill_name.toLowerCase()}, skillMapper);
 		
 		return skill;
 	}

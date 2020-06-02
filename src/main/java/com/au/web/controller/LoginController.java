@@ -2,6 +2,8 @@ package com.au.web.controller;
 
 
 
+import java.sql.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,11 +38,11 @@ public class LoginController {   //
 	LoginAuthorizationInterface user;
 
 	@CrossOrigin
-	@GetMapping("/test/{id}")
-	public Object unristrictedEndpoint1(@PathVariable long id) {
+	@GetMapping("/test/{date}")
+	public Object unristrictedEndpoint1(@PathVariable Date date) {
 		
 		
-		return demandDao.getById(1);
+		return demandDao.getAllDemandBeforeDate(date);
 //		return null;
 				
 	}

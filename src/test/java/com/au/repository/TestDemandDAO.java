@@ -2,6 +2,8 @@ package com.au.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.sql.Date;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,5 +31,47 @@ public class TestDemandDAO {
 	{
 		assertEquals(2, demandDao.getAllDemandFromHiringManagerWithId(1).size());
 	}
+	
+	@Test
+	public void testGetAllDemandBeforeDate() 
+	{
+		Date date = Date.valueOf("2020-04-05");
+		assertEquals(1, demandDao.getAllDemandBeforeDate(date).size());
+		
+	}
+	@Test
+	public void testGetAllDemandAfterDate() 
+	{
+		Date date = Date.valueOf("2020-04-05");
+		assertEquals(3, demandDao.getAllDemandAfterDate(date).size());
+		
+	}
+	
+	@Test
+	public void testGetAllDemandForLocation() 
+	{
+		
+		assertEquals(4, demandDao.getAllDemandForLocation("Mumbai").size());
+		
+	}
+	
+	@Test
+	public void testGetAllDemandWithRequiredPeopleMoreThan() 
+	{
+		
+		assertEquals(1, demandDao.getAllDemandWithRequiredPeopleMoreThan(5).size());
+		
+	}
+	
+	@Test
+	public void testGetAllDemandWithRequiredPeopleLessThan() 
+	{
+		
+		assertEquals(3, demandDao.getAllDemandWithRequiredPeopleLessThan(6).size());
+		
+	}
+	
+	
+	
 	
 }

@@ -2,7 +2,7 @@ package com.au.repository;
 import com.au.domain.*;
 
 
-import java.util.Collection;
+import java.util.List;
 
 
 
@@ -19,13 +19,13 @@ public class EmployeeDAO {
 	@Autowired
 	EmployeeMapper employeeMapper;
 	
-	public Collection<Employee> getAll(){
+	public List<Employee> getAll(){
 //		List<Employee> employeeList = new ArrayList<Employee>();
 		
 		String sql = "select * from employee";
 		
-		Collection<Employee> employeeCollection = jdbcTemplate.query(sql,employeeMapper);
-		return employeeCollection;
+		List<Employee> employeeList = jdbcTemplate.query(sql,employeeMapper);
+		return employeeList;
 		
 
 	}
@@ -43,30 +43,40 @@ public class EmployeeDAO {
 	
 	public Employee getByCompanyEmail(String company_email)
 	{
-		String sql = "select* from employee where company_email = ?";
+		String sql = "select* from employee where lower(company_email) = ?";
 
-		Employee employee = jdbcTemplate.queryForObject(sql, new Object[] {company_email}, employeeMapper);
+		Employee employee = jdbcTemplate.queryForObject(sql, new Object[] {company_email.toLowerCase()}, employeeMapper);
 		
 		return employee;
 	}
 	
 	public Employee getByPersonalEmail(String personal_email)
 	{
-		String sql = "select* from employee where personal_email = ?";
+		String sql = "select* from employee where lower(personal_email) = ?";
 
-		Employee employee = jdbcTemplate.queryForObject(sql, new Object[] {personal_email}, employeeMapper);
+		Employee employee = jdbcTemplate.queryForObject(sql, new Object[] {personal_email.toLowerCase()}, employeeMapper);
 		
 		return employee;
 	}
 	
-	public Collection<Employee> getByLocation(String location)
+	public List<Employee> getByLocation(String location)
 	{
-		String sql = "select* from employee where location = ?";
+		String sql = "select* from employee where lower(location) = ?";
 
-		Collection<Employee> employeeCollection = jdbcTemplate.query(sql,new Object[]{location},employeeMapper);
+		List<Employee> employeeList = jdbcTemplate.query(sql,new Object[]{location.toLowerCase()},employeeMapper);
 		
-		return employeeCollection;
+		return employeeList;
 	}
+	
+	public List<Employee> getByName(String name)
+	{
+		String sql = "select* from employee where lower(name) = ?";
+
+		List<Employee> employeeList = jdbcTemplate.query(sql,new Object[]{name.toLowerCase()},employeeMapper);
+		
+		return employeeList;
+	}
+	
 	
 	
 }

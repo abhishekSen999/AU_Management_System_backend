@@ -1,6 +1,6 @@
 package com.au.repository;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,20 +24,20 @@ public class EmployeeSkillsetDAO {
 	@Autowired
 	EmployeeMapper employeeMapper;
 	
-	public Collection<Skill> getAllSkillOfEmployeeWithId(long id)
+	public List<Skill> getAllSkillOfEmployeeWithId(long id)
 	{
 		String sql = "select skill.skill_id, skill.skill_name from skill join employee_skillset  on  employee_skillset.skill_id =  skill.skill_id where employee_skillset.emp_id = ?" ;
 		
-		Collection<Skill>  skillSet = jdbcTemplate.query(sql,new Object[] {id}, skillMapper) ;
+		List<Skill>  skillList = jdbcTemplate.query(sql,new Object[] {id}, skillMapper) ;
 		
-		return skillSet;
+		return skillList;
 	}
 	
-	public Collection<Employee> getAllEmployeeWithSkillId(long id)
+	public List<Employee> getAllEmployeeWithSkillId(long id)
 	{
 		String sql = "select employee.emp_id , employee.name , employee.company_email , employee.personal_email , employee.location from employee join employee_skillset on employee_skillset.emp_id = employee.emp_id where employee_skillset.skill_id =?";
 		
-		Collection<Employee> employeeList = jdbcTemplate.query(sql,new Object[]{id}, employeeMapper);
+		List<Employee> employeeList = jdbcTemplate.query(sql,new Object[]{id}, employeeMapper);
 		
 		
 		return employeeList;
