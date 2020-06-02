@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.au.service.EmployeeService;
 import com.au.web.authorization.AuthorizationLevel;
 import com.au.web.authorization.AutoLogout;
 import com.au.web.authorization.LoginAuthorizationInterface;
@@ -15,6 +16,9 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 
 	@Autowired
 	LoginAuthorizationInterface user;
+	
+	@Autowired
+	EmployeeService employeeService;
 	
 	@Override
 	public Object getAuthorization() {  // returns authorization level for authorized user and logs out unauthorized user.
@@ -51,6 +55,35 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 		
 		// todo: call services
 		
+	
+		switch (className) {
+		
+		case "EmployeeService":
+			
+						switch(functionName) {
+						
+						case "getAll": return employeeService.getAll();
+						
+						case "getById": return employeeService.getById((long)parameterList.get(0));
+						
+						case "getByCompanyEmail": return employeeService.getByCompanyEmail((String)parameterList.get(0));
+						
+						case "getByPersonalEmail": return employeeService.getByPersonalEmail((String)parameterList.get(0));
+						
+						case "getByLocation": return employeeService.getByLocation((String)parameterList.get(0));
+						
+						default: break;
+						
+						}
+		
+		
+		
+		
+		
+		
+		
+		
+		}
 		
 		
 		

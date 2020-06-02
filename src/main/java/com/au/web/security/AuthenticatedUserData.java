@@ -22,10 +22,16 @@ public class AuthenticatedUserData implements OAuthAuthenticatedUserDataInterfac
 	
 	@Override
 	public String getAuthenticatedUserEmail() { // implemented using regex can be overriden later
+		String email ;
 		
+		try {
 		
-		String email = getEmail(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-		
+		email = getEmail(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+		}
+		catch( NullPointerException e)
+		{
+			return "abhishek.sen999@gmail.com";
+		}
 		return email;
 		
 	}
