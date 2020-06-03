@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.au.domain.Demand;
+import com.au.domain.ProjectAllocation;
 import com.au.repository.DemandDAO;
 import com.au.repository.EmployeeDAO;
 import com.au.repository.EmployeeSkillsetDAO;
+import com.au.repository.ProjectAllocationDAO;
 import com.au.repository.SkillDAO;
 import com.au.web.authorization.LoginAuthorizationInterface;
 
@@ -31,6 +33,10 @@ public class LoginController {   //
 	@Autowired
 	EmployeeSkillsetDAO employeeSkillsetDAO;
 	
+	
+	@Autowired
+	ProjectAllocationDAO projectAllocationDao;
+	
 	@Autowired
 	DemandDAO demandDao;
 	
@@ -38,11 +44,11 @@ public class LoginController {   //
 	LoginAuthorizationInterface user;
 
 	@CrossOrigin
-	@GetMapping("/test/{date}")
-	public Object unristrictedEndpoint1(@PathVariable Date date) {
+	@GetMapping("/test/{emp_id}")
+	public Object unristrictedEndpoint1(@PathVariable long emp_id) {
 		
 		
-		return demandDao.getAllDemandBeforeDate(date);
+		return projectAllocationDao.getLastProjectAllocationOfEmployeeWithId(emp_id);
 //		return null;
 				
 	}
@@ -56,6 +62,8 @@ public class LoginController {   //
 //		return null;
 				
 	}
+	
+	
 	
 	
 	

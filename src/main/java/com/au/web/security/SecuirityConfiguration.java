@@ -17,8 +17,8 @@ public class SecuirityConfiguration extends WebSecurityConfigurerAdapter {
 		httpSecurity
 		.csrf().disable()
 		.cors().and()
-		.antMatcher("/**").authorizeRequests()
-		.antMatchers("/test/").permitAll()
+		.antMatcher("/").authorizeRequests()
+		.antMatchers("/**").permitAll()
 		.anyRequest().authenticated()
 		.and()
 		.oauth2Login();

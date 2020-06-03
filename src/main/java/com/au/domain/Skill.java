@@ -26,4 +26,30 @@ public class Skill {
 		return this;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (skill_id ^ (skill_id >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Skill other = (Skill) obj;
+		if (skill_id != other.skill_id)
+			return false;
+		
+		return true;
+	}
+	
+	
+	
+
 }
