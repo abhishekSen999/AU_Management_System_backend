@@ -43,16 +43,30 @@ public class OnboardService {
 		return true;
 
 	}
-	
-	public List<Onboard> getAll()
-	{
+
+	public List<Onboard> getAll() {
 		return onboardDao.getAll();
 	}
-	
-	
+
+	public List<Onboard> getByStartDate(Date start_date) {
+		return onboardDao.getByStartDate(start_date);
+	}
+
+	public List<Onboard> getByEtaOfCompletion(Date eta_of_completion) {
+		return onboardDao.getByEtaOfCompletion(eta_of_completion);
+	}
+
+	public List<Onboard> getByOnboardingStatus(String onboarding_status) {
+		return onboardDao.getByOnboardingStatus(onboarding_status);
+	}
+
+	public List<Onboard> getByBgcStatus(String bgc_status) {
+		return onboardDao.getByBgcStatus(bgc_status);
+
+	}
 
 	public int add(Onboard onboard) {
-		// todo:check if adding the same employee id to same demand id
+		
 
 		if (onboard.getBgc_status() == null)
 			return 0;
@@ -73,46 +87,46 @@ public class OnboardService {
 		return 0;
 	}
 
-	public int update(Onboard onboard)
-	{
-		
-		//todo: handle multiple onboard of same employee to demand id
-		
-		//handling incomplete post request
-		if(onboard.getOnb_id()==0)
+	public int update(Onboard onboard) {
+
+		// todo: handle multiple onboard of same employee to demand id
+
+		// handling incomplete post request
+		if (onboard.getOnb_id() == 0)
 			return 0;
-		
+
 		Onboard currentOnboard = onboardDao.getById(onboard.getOnb_id());
-		if(onboard.getEmp_id() != 0)
+		if (onboard.getEmp_id() != 0)
 			currentOnboard.setEmp_id(onboard.getEmp_id());
-		
-		if(onboard.getDem_id() != 0)
+
+		if (onboard.getDem_id() != 0)
 			currentOnboard.setDem_id(onboard.getDem_id());
-		
-		if(onboard.getStart_date() != null)
+
+		if (onboard.getStart_date() != null)
 			currentOnboard.setStart_date(onboard.getStart_date());
-		
-		if(onboard.getEta_of_completion() != null)
+
+		if (onboard.getEta_of_completion() != null)
 			currentOnboard.setEta_of_completion(onboard.getEta_of_completion());
-		
-		if(onboard.getOnboarding_status() != null)
+
+		if (onboard.getOnboarding_status() != null)
 			currentOnboard.setOnboarding_status(onboard.getOnboarding_status());
-		
-		if(onboard.getBgc_status() != null)
+
+		if (onboard.getBgc_status() != null)
 			currentOnboard.setBgc_status(onboard.getBgc_status());
-		
-		if(areSkillsCompatible(currentOnboard.getEmp_id(), currentOnboard.getDem_id()))
+
+		if (areSkillsCompatible(currentOnboard.getEmp_id(), currentOnboard.getDem_id()))
 			return onboardDao.update(currentOnboard);
-		
+
 		return 0;
-		
 
 	}
-	
-	public int delete(long onb_id)
-	{
+
+	public int delete(long onb_id) {
 		return onboardDao.delete(onb_id);
 	}
-	
-		
+
+	public Onboard getByEmployeeIdAndDemandId(long emp_id, long dem_id) {
+		return onboardDao.getByEmployeeIdAndDemandId(emp_id, dem_id);
+	}
+
 }

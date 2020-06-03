@@ -91,6 +91,8 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 						
 						case "getById": return onboardService.getById((long)parameterList.get(0));
 						
+						case "getByEmployeeIdAndDemandId" : return onboardService.getByEmployeeIdAndDemandId((long)parameterList.get(0),(long)parameterList.get(1));
+						
 						case "add": return onboardService.add((Onboard)parameterList.get(0));
 						
 						case "update": return onboardService.update((Onboard)parameterList.get(0));

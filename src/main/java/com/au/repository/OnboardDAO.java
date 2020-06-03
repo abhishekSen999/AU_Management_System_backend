@@ -1,5 +1,6 @@
 package com.au.repository;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,44 @@ public class OnboardDAO {
 		List<Onboard> onboardList = jdbcTemplate.query(sql,onboardMapper);
 	    return onboardList;
 	}
+	
+	
+	//todo add rest of the layers
+	public List<Onboard> getByStartDate(Date start_date)
+	{
+		String sql = "select * from onboard where start_date=?";
+		List<Onboard> onboardList = jdbcTemplate.query(sql,new Object[] {start_date},onboardMapper);
+	    return onboardList;
+	}
+	
+	public List<Onboard> getByEtaOfCompletion(Date eta_of_completion)
+	{
+		String sql = "select * from onboard where eta_of_completion=?";
+		List<Onboard> onboardList = jdbcTemplate.query(sql,new Object[] {eta_of_completion},onboardMapper);
+	    return onboardList;
+	}
+	
+	public List<Onboard> getByOnboardingStatus(String onboarding_status)
+	{
+		String sql = "select * from onboard where lower(onboarding_status)=?";
+		List<Onboard> onboardList = jdbcTemplate.query(sql,new Object[] {onboarding_status.toLowerCase()},onboardMapper);
+	    return onboardList;
+		
+	}	
+	public List<Onboard> getByBgcStatus(String bgc_status)
+	{
+		String sql = "select * from onboard where lower(bgcs_status)=?";
+		List<Onboard> onboardList = jdbcTemplate.query(sql,new Object[] {bgc_status.toLowerCase()},onboardMapper);
+	    return onboardList;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 
 	public Onboard getById(long onb_id) {
 
@@ -37,13 +76,22 @@ public class OnboardDAO {
 
 		return onboard;
 	}
+	
+	public Onboard getByEmployeeIdAndDemandId(long emp_id, long dem_id) {
+
+		String sql = "select * from onboard where emp_id=? and dem_id =?";
+		Onboard onboard = jdbcTemplate.queryForObject(sql, new Object[] { emp_id , dem_id }, onboardMapper);
+
+		return onboard;
+	}
+	
 
 	public int add(Onboard onboard) {
 
 		String sql = "insert into onboard (emp_id, dem_id, start_date, eta_of_completion, bgc_status ,onboarding_status)  values ( ? , ? , ? , ?,?,?)";
 
 		Object[] parameters = new Object[] { onboard.getEmp_id(), onboard.getDem_id(), onboard.getStart_date(),
-				onboard.getEta_of_completion(), onboard.getBgc_status(), onboard.getOnboarding_status() };
+				onboard.getEta_of_completion(), onboard.getBgc_status().toLowerCase(), onboard.getOnboarding_status().toLowerCase() };
 
 		return jdbcTemplate.update(sql, parameters);
 

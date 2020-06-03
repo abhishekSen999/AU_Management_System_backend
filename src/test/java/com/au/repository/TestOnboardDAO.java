@@ -1,6 +1,7 @@
 package com.au.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.sql.Date;
 
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DuplicateKeyException;
 
 import com.au.domain.Onboard;
 
@@ -35,7 +37,8 @@ public class TestOnboardDAO {
 		onboard.setStart_date(Date.valueOf("2020-09-08"));
 		onboard.setEta_of_completion(Date.valueOf("2020-09-07"));
 		
-		assertEquals(1,onboardDao.add(onboard));
+//		DuplicateKeyException e;
+		assertThrows(DuplicateKeyException.class,()->{onboardDao.add(onboard);});
 		
 		
 	}
@@ -69,11 +72,39 @@ public class TestOnboardDAO {
 //		onboard.setStart_date(Date.valueOf("2020-09-08"));
 //		onboard.setEta_of_completion(Date.valueOf("2020-09-07"));
 		
-		long onb_id = 2;
-		assertEquals(1,onboardDao.delete(onb_id));
+		long onb_id = 100;
+		
+		assertEquals(0,onboardDao.delete(onb_id)) ;
+		
 		
 		
 	}
+	
+	@Test
+	public void testGetByEmployeeIdAndDemandId()
+	{
+		long emp_id = 1;
+		long dem_id = 1;
+		assertEquals(emp_id,onboardDao.getByEmployeeIdAndDemandId(emp_id, dem_id).getEmp_id());
+		assertEquals(dem_id, onboardDao.getByEmployeeIdAndDemandId(emp_id, dem_id).getDem_id());
+	}
+	
+	
+	@Test
+	public void testGetByStartDate()
+	{
+		Date start_date = Date.valueOf("2020-01-02");
+		assertEquals(start_date, onboardDao.getByStartDate(start_date).get(0).getStart_date());
+	}
+	
+	@Test
+	public void testGetByEtaOfCompletion()
+	{
+		Date eta_of_completion = Date.valueOf("2020-02-02");
+		assertEquals(1, onboardDao.getByStartDate(eta_of_completion).size());
+	
+	}
+	
 	
 	
 	

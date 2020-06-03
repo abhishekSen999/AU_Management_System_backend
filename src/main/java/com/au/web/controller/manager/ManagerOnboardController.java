@@ -62,6 +62,29 @@ public class ManagerOnboardController {
 		return result;
 	}
 	
+	@CrossOrigin
+	@GetMapping("/manager/onboard/emp_id={emp_id}&dem_id={dem_id}")
+	public Object getOnboardByEmployeeIdAndDemandId(@PathVariable long emp_id, @PathVariable long dem_id)
+	{
+		Object result;
+		List<Object> parameterList = new ArrayList<Object>();
+		parameterList.add(emp_id);
+		parameterList.add(dem_id);
+		
+		try 
+		{
+			 result = user.getAuthorization("OnboardService", "getByEmployeeIdAndDemandId", parameterList) ; // onboardService.getById(onb_id);
+		}
+		catch (EmptyResultDataAccessException e)
+		{
+			return new ResponseEntity<String>("requested resource not present check  both id", HttpStatus.BAD_REQUEST);
+			
+		}
+		return result;
+		
+		
+	}
+	
 	
 	@CrossOrigin
 	@PostMapping("/manager/onboard")
@@ -69,7 +92,7 @@ public class ManagerOnboardController {
 	{
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(onboard);
-		//add service layer 
+		
 		return  user.getAuthorization("OnboardService", "add", parameterList);    //onboardService.add(onboard);
 		
 	}
@@ -98,6 +121,8 @@ public class ManagerOnboardController {
 		return   user.getAuthorization("OnboardService", "delete", parameterList)  ;     //
 		
 	}
+	
+	
 	
 	
 	
