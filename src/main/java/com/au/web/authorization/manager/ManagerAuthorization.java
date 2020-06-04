@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.au.domain.Onboard;
 import com.au.service.EmployeeService;
+import com.au.service.OnboardLogService;
 import com.au.service.OnboardService;
 import com.au.web.authorization.AuthorizationLevel;
 import com.au.web.authorization.AutoLogout;
@@ -26,6 +27,9 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 	
 	@Autowired
 	OnboardService onboardService;
+	
+	@Autowired
+	OnboardLogService onboardLogService;
 	
 	
 	@Override
@@ -56,12 +60,12 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 			
 			
 			AutoLogout.autoLogout();
-			//todo: logout user   
+			  
 			return AutoLogout.autoLogout();
 			
 		}
 		
-		// todo: call services
+		
 		
 	
 		switch (className) {
@@ -115,12 +119,21 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 						
 						
 						}
+		case "OnboardLogService" :
+						switch(functionName) {
+						
+						case "getAllLog": return onboardLogService.getAllLog();
+						
+						
+						
+						
+						}
 		
 		
 		
 		
 		
-		
+		default: break;
 		
 		
 		}

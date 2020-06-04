@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.au.domain.Onboard;
+import com.au.domain.Operation;
 import com.au.domain.Skill;
 import com.au.repository.DemandSkillsetDAO;
 import com.au.repository.EmployeeSkillsetDAO;
@@ -14,6 +15,9 @@ import com.au.repository.OnboardDAO;
 
 @Component
 public class OnboardService {
+
+	@Autowired
+	OnboardLogService onboardLogService;
 
 	@Autowired
 	OnboardDAO onboardDao;
@@ -30,7 +34,7 @@ public class OnboardService {
 
 	}
 
-	public boolean areSkillsCompatible(long emp_id, long dem_id) {
+	boolean areSkillsCompatible(long emp_id, long dem_id) {
 
 		List<Skill> employeeSkillList = employeeSkillSetDao.getAllSkillOfEmployeeWithId(emp_id);
 		List<Skill> demandSkillList = demandSkillsetDao.getAllSkillForDemandWithId(dem_id);
@@ -69,8 +73,7 @@ public class OnboardService {
 	public List<Onboard> getByBgcStatus(String bgc_status) {
 
 		if (bgc_status.contains("*")) {
-			
-			
+
 			// handling wild cards in request
 			bgc_status = bgc_status.replace('*', '%');
 
@@ -83,6 +86,8 @@ public class OnboardService {
 	}
 
 	public int add(Onboard onboard) {
+
+		int result = 0;
 
 		if (onboard.getBgc_status() == null)
 			return 0;
@@ -98,9 +103,20 @@ public class OnboardService {
 			return 0;
 
 		if (areSkillsCompatible(onboard.getEmp_id(), onboard.getDem_id()))
-			return onboardDao.add(onboard);
+			result = onboardDao.add(onboard);
 
-		return 0;
+		if (result == 1) // upon successful add operation create log
+		{
+			long onb_id = this.getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id()).getOnb_id();
+
+			return onboardLogService.setLog(Operation.add, onb_id);
+		}
+
+		return result;
+	}
+
+	public Onboard getByEmployeeIdAndDemandId(long emp_id, long dem_id) {
+		return onboardDao.getByEmployeeIdAndDemandId(emp_id, dem_id);
 	}
 
 	public int update(Onboard onboard) {
@@ -108,6 +124,8 @@ public class OnboardService {
 		// todo: handle multiple onboard of same employee to demand id
 
 		// handling incomplete post request
+
+		int result = 0;
 		if (onboard.getOnb_id() == 0)
 			return 0;
 
@@ -131,18 +149,25 @@ public class OnboardService {
 			currentOnboard.setBgc_status(onboard.getBgc_status());
 
 		if (areSkillsCompatible(currentOnboard.getEmp_id(), currentOnboard.getDem_id()))
-			return onboardDao.update(currentOnboard);
+			result = onboardDao.update(currentOnboard);
 
-		return 0;
+		if (result == 1)// upon successful operation create log
+		{
+			onboardLogService.setLog(Operation.update, currentOnboard.getOnb_id());
+		}
+
+		return result;
 
 	}
 
 	public int delete(long onb_id) {
-		return onboardDao.delete(onb_id);
-	}
+		int result = onboardDao.delete(onb_id);
 
-	public Onboard getByEmployeeIdAndDemandId(long emp_id, long dem_id) {
-		return onboardDao.getByEmployeeIdAndDemandId(emp_id, dem_id);
+		if (result == 1)
+			onboardLogService.setLog(Operation.delete, onb_id);
+
+		return result;
+
 	}
 
 }
