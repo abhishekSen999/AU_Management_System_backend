@@ -24,7 +24,7 @@ import com.au.web.authorization.manager.ManagerAuthorization;
 import com.au.web.authorization.manager.ManagerAuthorizationInterface;
 
 @RestController
-public class ManagerOnboardController {
+public class ManagerOnboardController { 
 
 //	@Autowired
 //	OnboardService onboardService;
@@ -76,7 +76,7 @@ public class ManagerOnboardController {
 		parameterList.add(eta_of_completion);
 		Object result;
 		
-		try 
+		try  
 		{
 			result = user.getAuthorization("OnboardService", "getByEtaOfCompletion",parameterList);
 			if(((List)result).isEmpty()) 
@@ -170,7 +170,7 @@ public class ManagerOnboardController {
 	{
 		Object result;
 		List<Object> parameterList = new ArrayList<Object>();
-		parameterList.add(onb_id);
+		parameterList.add(onb_id); 
 		
 		try 
 		{

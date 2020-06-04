@@ -46,7 +46,7 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 			return AutoLogout.autoLogout();
 			
 		}
-		return authorizationLevel; 
+		return authorizationLevel;  
 		
 	}
 
@@ -124,8 +124,19 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 						
 						case "getAllLog": return onboardLogService.getAllLog();
 						
+						case "getAllLogByEmployeeId" : return onboardLogService.getAllLogByEmployeeId((long)parameterList.get(0));
+						
+						case "getAllLogByDemandId" : return onboardLogService.getAllLogByDemandId((long)parameterList.get(0));
+						
+						case "getAllLogByEmployeeIdAndDemandId" : return onboardLogService.getAllLogByEmployeeIdAndDemandId((long)parameterList.get(0), (long)parameterList.get(1));
+						
+						case "getAllLogByOperator" : return onboardLogService.getAllLogByOperator((String)parameterList.get(0));
 						
 						
+						case "getAllLogByOperation" : return onboardLogService.getAllLogByOperation((String)parameterList.get(0));
+						
+						
+						case "getAllLogBetweenTimestamp" : return onboardLogService.getAllLogBetweenTimestamp((Date)parameterList.get(0),(Date)parameterList.get(1));
 						
 						}
 		

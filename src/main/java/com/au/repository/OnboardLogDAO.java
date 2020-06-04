@@ -1,5 +1,6 @@
 package com.au.repository;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +48,53 @@ public class OnboardLogDAO {
 		return logList;
 		
 	}
+	
+	public List<OnboardLog> getAllLogByEmployeeId(long emp_id)
+	{
+		String sql = "select * from Onboard_Log where emp_id = ?";
+		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {emp_id}, onboardLogMapper);
+		return logList;
+	}
+	
+	public List<OnboardLog> getAllLogByDemandId(long dem_id)
+	{
+		String sql = "select * from Onboard_Log where dem_id = ?";
+		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {dem_id}, onboardLogMapper);
+		return logList;
+	}
+	
+	public List<OnboardLog> getAllLogByEmployeeIdAndDemandId(long emp_id , long dem_id)
+	{
+		String sql = "select * from Onboard_Log where emp_id = ? and dem_id = ?";
+		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {emp_id , dem_id}, onboardLogMapper);
+		return logList;
+	}
+	
+	
+	public List<OnboardLog> getAllLogByOperator(String operator)
+	{
+		String sql = "select * from Onboard_Log where operator = ?";
+		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {operator}, onboardLogMapper);
+		return logList;
+	}
+	
+	public List<OnboardLog> getAllLogByOperation(String operation)
+	{
+		String sql = "select * from Onboard_Log where operation = ?";
+		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {operation}, onboardLogMapper);
+		return logList;
+	}
+	
+	public List<OnboardLog> getAllLogBetweenTimestamp(Date timestamp1 ,Date timestamp2)
+	{
+		String sql = "select * from Onboard_Log where timestamp between ? and ?";
+		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {timestamp1 , timestamp2}, onboardLogMapper);
+		return logList;
+	}
+	
+	
+	
+	
 	
 	
 	

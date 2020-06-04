@@ -1,5 +1,6 @@
 package com.au.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import com.au.repository.OnboardLogDAO;
 import com.au.web.security.OAuthAuthenticatedUserDataInterface;
 
 @Component
-public class OnboardLogService {
+public class OnboardLogService {  
 	
 	@Autowired
 	OnboardLogDAO onboardLogDao;
@@ -65,5 +66,55 @@ public class OnboardLogService {
 		return logList;
 	}
 	
-
+	public List<OnboardLog>getAllLogByEmployeeId(long emp_id)
+	{
+		
+		List<OnboardLog> logList = onboardLogDao.getAllLogByEmployeeId(emp_id);
+		
+		
+		return logList;
+	}
+	
+	public List<OnboardLog>getAllLogByDemandId(long dem_id)
+	{
+		
+		List<OnboardLog> logList = onboardLogDao.getAllLogByDemandId(dem_id);
+		
+		
+		return logList;
+	}
+	
+	public List<OnboardLog>getAllLogByEmployeeIdAndDemandId(long emp_id , long dem_id)
+	{
+		
+		List<OnboardLog> logList = onboardLogDao.getAllLogByEmployeeIdAndDemandId( emp_id , dem_id);
+		
+		
+		return logList;
+	}
+	
+	public List<OnboardLog> getAllLogByOperator(String operator)
+	{
+		
+		List<OnboardLog> logList = onboardLogDao. getAllLogByOperator(operator);
+		
+		
+		return logList;
+	}
+	
+	public List<OnboardLog> getAllLogByOperation(String operation)
+	{
+		
+		List<OnboardLog> logList = onboardLogDao. getAllLogByOperation(operation);
+		
+		
+		return logList;
+	}
+	
+	public List<OnboardLog> getAllLogBetweenTimestamp(Date timestamp1 ,Date timestamp2)
+	{
+		List<OnboardLog> logList = onboardLogDao. getAllLogBetweenTimestamp(timestamp1, timestamp2);
+		
+		return logList;
+	}
 }
