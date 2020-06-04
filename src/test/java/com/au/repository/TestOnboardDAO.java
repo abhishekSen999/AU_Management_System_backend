@@ -48,7 +48,7 @@ public class TestOnboardDAO {
 	{
 		Onboard onboard = new Onboard();
 		onboard.setOnb_id(2);
-		onboard.setBgc_status("starting");
+		onboard.setBgc_status("started");
 		onboard.setDem_id(1);
 		onboard.setOnboarding_status("started");
 		onboard.setEmp_id(5);
@@ -101,9 +101,26 @@ public class TestOnboardDAO {
 	public void testGetByEtaOfCompletion()
 	{
 		Date eta_of_completion = Date.valueOf("2020-02-02");
-		assertEquals(1, onboardDao.getByStartDate(eta_of_completion).size());
+		assertEquals(eta_of_completion, onboardDao.getByEtaOfCompletion(eta_of_completion).get(0).getEta_of_completion());
 	
 	}
+	@Test
+	public void testGetByOnboardingStatus()
+	{
+		String onboarding_status = "s%";
+		assertEquals('s', onboardDao.getByOnboardingStatus(onboarding_status).get(0).getOnboarding_status().charAt(0));
+	
+	}
+	@Test
+	public void testGetByBgcStatus()
+	{
+		String bgc_status = "s%";
+		assertEquals('s', onboardDao.getByBgcStatus(bgc_status).get(0).getBgc_status().charAt(0));
+	
+	}
+	
+	
+	
 	
 	
 	

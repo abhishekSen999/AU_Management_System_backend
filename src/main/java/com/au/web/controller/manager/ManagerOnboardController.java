@@ -1,5 +1,6 @@
 package com.au.web.controller.manager;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,127 @@ public class ManagerOnboardController {
 		Object result = user.getAuthorization("OnboardService", "getAll", null) ;
 		return result;
 	}
+	
+	
+	@CrossOrigin
+	@GetMapping("/manager/onboard/start_date={start_date}")
+	public Object getAllOnboardByStartDate(@PathVariable Date start_date)
+	{
+		List<Object> parameterList = new ArrayList<Object>();
+		parameterList.add(start_date);
+		Object result;
+		
+		try 
+		{
+			result = user.getAuthorization("OnboardService", "getByStartDate",parameterList);
+			if(((List)result).isEmpty()) 
+			{
+				throw new EmptyResultDataAccessException(1);
+			}
+		} 
+		catch (EmptyResultDataAccessException e) {
+			
+			return new ResponseEntity<String>("requested resource not present check start date", HttpStatus.BAD_REQUEST);
+				
+		}
+		
+		
+		return result;
+	}
+	
+	@CrossOrigin
+	@GetMapping("/manager/onboard/eta_of_completion={eta_of_completion}")
+	public Object getAllOnboardByEtaOfCompletion(@PathVariable Date eta_of_completion)
+	{
+		List<Object> parameterList = new ArrayList<Object>();
+		parameterList.add(eta_of_completion);
+		Object result;
+		
+		try 
+		{
+			result = user.getAuthorization("OnboardService", "getByEtaOfCompletion",parameterList);
+			if(((List)result).isEmpty()) 
+			{
+				throw new EmptyResultDataAccessException(1);
+			}
+		} 
+		catch (EmptyResultDataAccessException e) {
+			
+			return new ResponseEntity<String>("requested resource not present check eta of completion", HttpStatus.BAD_REQUEST);
+				
+		}
+		
+		return result;
+	}
+	
+	@CrossOrigin
+	@GetMapping("/manager/onboard/onboarding_status={onboarding_status}")
+	public Object getAllOnboardByOnboardingStatus(@PathVariable String onboarding_status)
+	{
+		List<Object> parameterList = new ArrayList<Object>();
+		parameterList.add(onboarding_status);
+		Object result;
+		
+		try 
+		{
+			result = user.getAuthorization("OnboardService", "getByOnboardingStatus",parameterList);
+			if(((List)result).isEmpty()) 
+			{
+				throw new EmptyResultDataAccessException(1);
+			}
+		} 
+		catch (EmptyResultDataAccessException e) {
+			
+			return new ResponseEntity<String>("requested resource not present check  onboarding status", HttpStatus.BAD_REQUEST);
+				// TODO Auto-generated catch block	
+		}
+		
+		return result;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@CrossOrigin
+	@GetMapping("/manager/onboard/bgc_status={bgc_status}")
+	public Object getAllOnboardByBgcStatus(@PathVariable String bgc_status)
+	{
+		List<Object> parameterList = new ArrayList<Object>();
+		parameterList.add(bgc_status);
+		Object result;
+		
+		try 
+		{
+			result = user.getAuthorization("OnboardService", "getByBgcStatus" , parameterList);
+			if(((List)result).isEmpty()) 
+			{
+				throw new EmptyResultDataAccessException(1);
+			}
+		} 
+		catch (EmptyResultDataAccessException e) {
+			
+			return new ResponseEntity<String>("requested resource not present check bgc status", HttpStatus.BAD_REQUEST);
+				// TODO Auto-generated catch block	
+		}
+		
+		return result;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

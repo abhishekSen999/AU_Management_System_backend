@@ -111,7 +111,7 @@ public class ManagerEmployeeController {
 		try 
 		{
 			result = user.getAuthorization("EmployeeService", "getByLocation", parameterList);
-			if(((Collection)result).isEmpty()) 
+			if(((List)result).isEmpty()) 
 			{
 				throw new EmptyResultDataAccessException(1);
 			}

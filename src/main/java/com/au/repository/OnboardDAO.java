@@ -49,21 +49,37 @@ public class OnboardDAO {
 	
 	public List<Onboard> getByOnboardingStatus(String onboarding_status)
 	{
-		String sql = "select * from onboard where lower(onboarding_status)=?";
+		String sql = "select * from onboard where lower(onboarding_status) = ? ";
 		List<Onboard> onboardList = jdbcTemplate.query(sql,new Object[] {onboarding_status.toLowerCase()},onboardMapper);
 	    return onboardList;
 		
-	}	
-	public List<Onboard> getByBgcStatus(String bgc_status)
+	}
+	
+	public List<Onboard> getByOnboardingStatusWithWildcard(String onboarding_status)
 	{
-		String sql = "select * from onboard where lower(bgcs_status)=?";
-		List<Onboard> onboardList = jdbcTemplate.query(sql,new Object[] {bgc_status.toLowerCase()},onboardMapper);
+		String sql = "select * from onboard where lower(onboarding_status) like ? ";
+		List<Onboard> onboardList = jdbcTemplate.query(sql,new Object[] {onboarding_status.toLowerCase()},onboardMapper);
 	    return onboardList;
 		
 	}
 	
 	
 	
+	public List<Onboard> getByBgcStatus(String bgc_status)
+	{
+		String sql = "select * from onboard where lower(bgc_status) = ?";
+		List<Onboard> onboardList = jdbcTemplate.query(sql,new Object[] {bgc_status.toLowerCase()},onboardMapper);
+	    return onboardList;
+		
+	}
+	
+	public List<Onboard> getByBgcStatusWithWildcard(String bgc_status)
+	{
+		String sql = "select * from onboard where lower(bgc_status) like ?";
+		List<Onboard> onboardList = jdbcTemplate.query(sql,new Object[] {bgc_status.toLowerCase()},onboardMapper);
+	    return onboardList;
+		
+	}
 	
 	
 	

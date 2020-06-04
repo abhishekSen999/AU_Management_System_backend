@@ -57,16 +57,32 @@ public class OnboardService {
 	}
 
 	public List<Onboard> getByOnboardingStatus(String onboarding_status) {
-		return onboardDao.getByOnboardingStatus(onboarding_status);
+
+		// handling wild cards in request
+		if (onboarding_status.contains("*")) {
+			onboarding_status = onboarding_status.replace('*', '%');
+			return onboardDao.getByOnboardingStatusWithWildcard(onboarding_status);
+		} else
+			return onboardDao.getByOnboardingStatus(onboarding_status);
 	}
 
 	public List<Onboard> getByBgcStatus(String bgc_status) {
-		return onboardDao.getByBgcStatus(bgc_status);
+
+		if (bgc_status.contains("*")) {
+			
+			
+			// handling wild cards in request
+			bgc_status = bgc_status.replace('*', '%');
+
+			return onboardDao.getByBgcStatusWithWildcard(bgc_status);
+		}
+
+		else
+			return onboardDao.getByBgcStatus(bgc_status);
 
 	}
 
 	public int add(Onboard onboard) {
-		
 
 		if (onboard.getBgc_status() == null)
 			return 0;

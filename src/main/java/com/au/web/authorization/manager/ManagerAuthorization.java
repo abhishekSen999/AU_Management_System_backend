@@ -1,5 +1,6 @@
 package com.au.web.authorization.manager;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,9 +90,20 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 						
 						case "getAll": return onboardService.getAll();
 						
+						case "getByStartDate": return onboardService.getByStartDate((Date)parameterList.get(0));
+						
+						case "getByEtaOfCompletion": return onboardService.getByEtaOfCompletion((Date)parameterList.get(0));
+						
+						case "getByOnboardingStatus": return onboardService.getByOnboardingStatus((String)parameterList.get(0));
+						
+						case "getByBgcStatus": return onboardService.getByBgcStatus((String)parameterList.get(0));
+						
 						case "getById": return onboardService.getById((long)parameterList.get(0));
 						
 						case "getByEmployeeIdAndDemandId" : return onboardService.getByEmployeeIdAndDemandId((long)parameterList.get(0),(long)parameterList.get(1));
+						
+						
+						
 						
 						case "add": return onboardService.add((Onboard)parameterList.get(0));
 						
