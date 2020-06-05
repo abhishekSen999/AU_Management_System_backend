@@ -11,19 +11,30 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.au.web.authorization.manager.ManagerAuthorizationInterface;
+import com.au.web.security.AuthenticatedUserData;
 
 @RestController
 public class ManagerOnboardLogController {
 
 	@Autowired 
 	ManagerAuthorizationInterface user;
+	
+	@Autowired
+	AuthenticatedUserData userVerifier;
+	
+	
 
 	@CrossOrigin
 	@GetMapping("/manager/log")
-	public Object getAllLog() {
+	public Object getAllLog(@RequestHeader("Authorization") String idToken) {
+		
+		
+		
+		userVerifier.setIdToken(idToken);
 
 		return user.getAuthorization("OnboardLogService", "getAllLog", null);
 
@@ -35,7 +46,11 @@ public class ManagerOnboardLogController {
 
 	@CrossOrigin
 	@GetMapping("/manager/log/emp_id={emp_id}")
-	public Object getAllLogByEmployeeId(@PathVariable long emp_id) {
+	public Object getAllLogByEmployeeId(@RequestHeader("Authorization") String idToken,@PathVariable long emp_id) {
+		
+		userVerifier.setIdToken(idToken);
+		
+		
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(emp_id);
 		Object result;
@@ -66,7 +81,10 @@ public class ManagerOnboardLogController {
 
 	@CrossOrigin
 	@GetMapping("/manager/log/dem_id={dem_id}")
-	public Object getAllLogByDemandId(@PathVariable long dem_id) {
+	public Object getAllLogByDemandId(@RequestHeader("Authorization") String idToken,@PathVariable long dem_id) {
+		
+		userVerifier.setIdToken(idToken);
+		
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(dem_id);
 		Object result;
@@ -91,8 +109,10 @@ public class ManagerOnboardLogController {
 	
 	@CrossOrigin
 	@GetMapping("/manager/log/both/emp_id={emp_id}&dem_id={dem_id}")
-	public Object getAllLogByEmployeeIdAndDemandId(@PathVariable long emp_id, @PathVariable long dem_id)
+	public Object getAllLogByEmployeeIdAndDemandId(@RequestHeader("Authorization") String idToken,@PathVariable long emp_id, @PathVariable long dem_id)
 	{	
+		userVerifier.setIdToken(idToken);
+		
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(emp_id);
 		parameterList.add(dem_id);
@@ -118,7 +138,11 @@ public class ManagerOnboardLogController {
 
 	@CrossOrigin
 	@GetMapping("/manager/log/operator={operator}")
-	public Object getAllLogByOperator(@PathVariable String operator) {
+	public Object getAllLogByOperator(@RequestHeader("Authorization") String idToken,@PathVariable String operator) {
+		
+		
+		userVerifier.setIdToken(idToken);
+		
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(operator);
 
@@ -146,7 +170,10 @@ public class ManagerOnboardLogController {
 	
 	@CrossOrigin
 	@GetMapping("/manager/log/operation={operation}")
-	public Object getAllLogByOperation(@PathVariable String operation) {
+	public Object getAllLogByOperation(@RequestHeader("Authorization") String idToken,@PathVariable String operation) {
+		
+		userVerifier.setIdToken(idToken);
+		
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(operation);
 
@@ -174,7 +201,10 @@ public class ManagerOnboardLogController {
 	
 	@CrossOrigin
 	@GetMapping("/manager/log/date1={timestamp1}&date2={timestamp2}")
-	public Object getAllLogBetweenTimestamp(@PathVariable Date timestamp1, @PathVariable Date timestamp2) {
+	public Object getAllLogBetweenTimestamp(@RequestHeader("Authorization") String idToken,@PathVariable Date timestamp1, @PathVariable Date timestamp2) {
+		
+		userVerifier.setIdToken(idToken);
+		
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(timestamp1);
 		parameterList.add(timestamp2);

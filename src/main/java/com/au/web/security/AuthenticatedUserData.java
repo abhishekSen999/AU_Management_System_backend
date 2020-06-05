@@ -3,8 +3,12 @@ package com.au.web.security;
 import java.io.IOException;
 import java.security.Principal;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import com.au.web.security.tokenVerification.GoogleClientAPIWrapper;
+import com.nimbusds.openid.connect.sdk.assurance.claims.VerifiedClaimsSet;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,25 +18,35 @@ public class AuthenticatedUserData implements OAuthAuthenticatedUserDataInterfac
 
 	public String emailPattern = "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}";
 	
+	private String idToken;
+	
+	public String getIdToken() {
+		return idToken;
+	}
+
+
+
+	public void setIdToken(String idToken) {
+		this.idToken = idToken;
+	}
+
+	@Autowired
+	GoogleClientAPIWrapper verifyer;
 	
 	
 	public AuthenticatedUserData() {
 		
 	}
 	
+	
+	
 	@Override
 	public String getAuthenticatedUserEmail() { // implemented using regex can be overriden later
-		String email ;
+		String email =  verifyer.getEmailFromIdToken(this.idToken);
 		
-		try {
-		
-		email = getEmail(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-		}
-		catch( NullPointerException e)
-		{
-			return "abhishek.sen999@gmail.com";
-		}
 		return email;
+		
+		
 		
 	}
 

@@ -19,6 +19,9 @@ import com.au.repository.EmployeeSkillsetDAO;
 import com.au.repository.ProjectAllocationDAO;
 import com.au.repository.SkillDAO;
 import com.au.web.authorization.LoginAuthorizationInterface;
+import com.au.web.security.AuthenticatedUserData;
+import com.au.web.security.OAuthAuthenticatedUserDataInterface;
+import com.au.web.security.tokenVerification.GoogleClientAPIWrapper;
 
 
 
@@ -31,21 +34,19 @@ public class LoginController {   //
 	
 	@Autowired
 	LoginAuthorizationInterface user;
-
 	
+	@Autowired
+	AuthenticatedUserData userVerifier;
+
+//	@Autowired
+//	GoogleClientAPIWrapper verifier;
 	
 	@CrossOrigin
 	@GetMapping("/user")
 	public Object login(@RequestHeader("Authorization") String idToken ) {
 		
 		
-		
-		
-		
-		
-		
-		
-//		System.out.println(">>>>>>>>>>>>>>>>>:  "+idToken);
+		userVerifier.setIdToken(idToken);
 		
 		
 		return user.getAuthorization(); // get authorization for accessing these services

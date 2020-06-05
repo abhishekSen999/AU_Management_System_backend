@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.au.domain.Onboard;
@@ -22,6 +23,7 @@ import com.au.repository.OnboardDAO;
 import com.au.service.OnboardService;
 import com.au.web.authorization.manager.ManagerAuthorization;
 import com.au.web.authorization.manager.ManagerAuthorizationInterface;
+import com.au.web.security.AuthenticatedUserData;
 
 @RestController
 public class ManagerOnboardController { 
@@ -30,13 +32,18 @@ public class ManagerOnboardController {
 //	OnboardService onboardService;
 	
 	@Autowired
+	AuthenticatedUserData userVerifier;
+	
+	@Autowired
 	ManagerAuthorizationInterface user;
 	
 	
 	@CrossOrigin
 	@GetMapping("/manager/onboard")
-	public Object getAllOnboard() 
+	public Object getAllOnboard(@RequestHeader("Authorization") String idToken) 
 	{
+		userVerifier.setIdToken(idToken);
+		
 		Object result = user.getAuthorization("OnboardService", "getAll", null) ;
 		return result;
 	}
@@ -44,11 +51,13 @@ public class ManagerOnboardController {
 	
 	@CrossOrigin
 	@GetMapping("/manager/onboard/start_date={start_date}")
-	public Object getAllOnboardByStartDate(@PathVariable Date start_date)
+	public Object getAllOnboardByStartDate(@RequestHeader("Authorization") String idToken , @PathVariable Date start_date)
 	{
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(start_date);
 		Object result;
+		
+		userVerifier.setIdToken(idToken);
 		
 		try 
 		{
@@ -70,8 +79,11 @@ public class ManagerOnboardController {
 	
 	@CrossOrigin
 	@GetMapping("/manager/onboard/eta_of_completion={eta_of_completion}")
-	public Object getAllOnboardByEtaOfCompletion(@PathVariable Date eta_of_completion)
+	public Object getAllOnboardByEtaOfCompletion(@RequestHeader("Authorization") String idToken,@PathVariable Date eta_of_completion)
 	{
+		userVerifier.setIdToken(idToken);
+		
+		
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(eta_of_completion);
 		Object result;
@@ -95,8 +107,10 @@ public class ManagerOnboardController {
 	
 	@CrossOrigin
 	@GetMapping("/manager/onboard/onboarding_status={onboarding_status}")
-	public Object getAllOnboardByOnboardingStatus(@PathVariable String onboarding_status)
+	public Object getAllOnboardByOnboardingStatus(@RequestHeader("Authorization") String idToken,@PathVariable String onboarding_status)
 	{
+		userVerifier.setIdToken(idToken);
+		
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(onboarding_status);
 		Object result;
@@ -129,8 +143,10 @@ public class ManagerOnboardController {
 	
 	@CrossOrigin
 	@GetMapping("/manager/onboard/bgc_status={bgc_status}")
-	public Object getAllOnboardByBgcStatus(@PathVariable String bgc_status)
+	public Object getAllOnboardByBgcStatus(@RequestHeader("Authorization") String idToken,@PathVariable String bgc_status)
 	{
+		userVerifier.setIdToken(idToken);
+		
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(bgc_status);
 		Object result;
@@ -166,8 +182,11 @@ public class ManagerOnboardController {
 	
 	@CrossOrigin
 	@GetMapping("/manager/onboard/id={onb_id}")
-	public Object getOnboardById(@PathVariable long onb_id )
+	public Object getOnboardById(@RequestHeader("Authorization") String idToken,@PathVariable long onb_id )
 	{
+		
+		userVerifier.setIdToken(idToken);
+		
 		Object result;
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(onb_id); 
@@ -186,8 +205,11 @@ public class ManagerOnboardController {
 	
 	@CrossOrigin
 	@GetMapping("/manager/onboard/emp_id={emp_id}&dem_id={dem_id}")
-	public Object getOnboardByEmployeeIdAndDemandId(@PathVariable long emp_id, @PathVariable long dem_id)
+	public Object getOnboardByEmployeeIdAndDemandId(@RequestHeader("Authorization") String idToken,@PathVariable long emp_id, @PathVariable long dem_id)
 	{
+		
+		userVerifier.setIdToken(idToken);
+		
 		Object result;
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(emp_id);
@@ -210,8 +232,12 @@ public class ManagerOnboardController {
 	
 	@CrossOrigin
 	@PostMapping("/manager/onboard")
-	public Object addOnboard(@RequestBody Onboard onboard)
+	public Object addOnboard(@RequestHeader("Authorization") String idToken,@RequestBody Onboard onboard)
 	{
+		userVerifier.setIdToken(idToken);
+		
+		
+		
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(onboard);
 		
@@ -221,8 +247,11 @@ public class ManagerOnboardController {
 	
 	@CrossOrigin
 	@PutMapping("/manager/onboard")
-	public Object updateOnboard(@RequestBody Onboard onboard)
+	public Object updateOnboard(@RequestHeader("Authorization") String idToken,@RequestBody Onboard onboard)
 	{
+		userVerifier.setIdToken(idToken);
+		
+		
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(onboard);
 		
@@ -233,8 +262,9 @@ public class ManagerOnboardController {
 	
 	@CrossOrigin
 	@DeleteMapping("/manager/onboard/id={onb_id}")
-	public Object deleteOnboard(@PathVariable long onb_id)
+	public Object deleteOnboard(@RequestHeader("Authorization") String idToken,@PathVariable long onb_id)
 	{
+		userVerifier.setIdToken(idToken);
 		
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(onb_id);
