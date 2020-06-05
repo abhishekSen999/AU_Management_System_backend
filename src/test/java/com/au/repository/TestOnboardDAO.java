@@ -116,7 +116,13 @@ public class TestOnboardDAO {
 	{
 		String bgc_status = "s%";
 		assertEquals('s', onboardDao.getByBgcStatus(bgc_status).get(0).getBgc_status().charAt(0));
+		
+	}
 	
+	@Test
+	public void testGetNumberofOnboardForDemandId()
+	{
+		assertEquals(2,onboardDao.getNumberofOnboardForDemandId(2l));
 	}
 	
 	

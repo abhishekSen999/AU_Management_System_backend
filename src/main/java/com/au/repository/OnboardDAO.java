@@ -80,6 +80,14 @@ public class OnboardDAO {
 		
 	}
 	
+	public int getNumberofOnboardForDemandId(long dem_id)
+	{
+		String sql = "select count(*) from onboard where dem_id = ?";
+		List<Map<String,Object>> countMap= jdbcTemplate.queryForList(sql, new Object[] { dem_id });
+		int count = (int)(long)countMap.get(0).get("count(*)");
+		return count;
+		
+	}
 	
 	
 	

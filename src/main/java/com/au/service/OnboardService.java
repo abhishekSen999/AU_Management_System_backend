@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.au.domain.Demand;
 import com.au.domain.Onboard;
 import com.au.domain.Operation;
 import com.au.domain.Skill;
@@ -27,6 +28,10 @@ public class OnboardService {
 
 	@Autowired
 	DemandSkillsetDAO demandSkillsetDao;
+	
+	@Autowired
+	DemandService demandService;
+	
 
 	public Onboard getById(long onb_id) {
 
@@ -102,7 +107,8 @@ public class OnboardService {
 		if (onboard.getStart_date() == null)
 			return 0;
 
-		if (areSkillsCompatible(onboard.getEmp_id(), onboard.getDem_id()))
+		if (areSkillsCompatible(onboard.getEmp_id(), onboard.getDem_id())
+				&& demandNotFullfilled(onboard.getDem_id()))
 			result = onboardDao.add(onboard);
 
 		if (result == 1) // upon successful add operation create log
@@ -119,6 +125,19 @@ public class OnboardService {
 		return onboardDao.getByEmployeeIdAndDemandId(emp_id, dem_id);
 	}
 
+	
+	private boolean demandNotFullfilled(long dem_id)
+	{
+		Demand demand = demandService.getDemandById(dem_id);
+		int numberOfOnboards = onboardDao.getNumberofOnboardForDemandId(dem_id);
+		if(numberOfOnboards<demand.getNumber_people())
+			return true;
+		return false;
+		
+		
+	}
+	
+	
 	public int update(Onboard onboard) {
 
 		// todo: handle multiple onboard of same employee to demand id
@@ -148,7 +167,8 @@ public class OnboardService {
 		if (onboard.getBgc_status() != null)
 			currentOnboard.setBgc_status(onboard.getBgc_status());
 
-		if (areSkillsCompatible(currentOnboard.getEmp_id(), currentOnboard.getDem_id()))
+		if (areSkillsCompatible(currentOnboard.getEmp_id(), currentOnboard.getDem_id())  
+				&& demandNotFullfilled(currentOnboard.getDem_id()))
 			result = onboardDao.update(currentOnboard);
 
 		if (result == 1)// upon successful operation create log
