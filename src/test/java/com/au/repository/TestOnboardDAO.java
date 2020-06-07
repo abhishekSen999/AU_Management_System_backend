@@ -108,14 +108,14 @@ public class TestOnboardDAO {
 	public void testGetByOnboardingStatus()
 	{
 		String onboarding_status = "s%";
-		assertEquals('s', onboardDao.getByOnboardingStatus(onboarding_status).get(0).getOnboarding_status().charAt(0));
+		assertEquals('s', onboardDao.getByOnboardingStatusWithWildcard(onboarding_status).get(0).getOnboarding_status().charAt(0));
 	
 	}
 	@Test
 	public void testGetByBgcStatus()
 	{
 		String bgc_status = "s%";
-		assertEquals('s', onboardDao.getByBgcStatus(bgc_status).get(0).getBgc_status().charAt(0));
+		assertEquals('s', onboardDao. getByBgcStatusWithWildcard(bgc_status).get(0).getBgc_status().charAt(0));
 		
 	}
 	

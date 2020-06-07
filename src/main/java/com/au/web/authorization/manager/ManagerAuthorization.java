@@ -42,10 +42,10 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 		
 		
 		AuthorizationLevel authorizationLevel =user.getAuthorizationLevel();
-		
+		System.out.println(authorizationLevel);
 		if( authorizationLevel == AuthorizationLevel.unauthorizedUser )  // only manager and admin will get access
 		{
-			System.out.println(authorizationLevel);
+			
 			AutoLogout.autoLogout();
 			return AutoLogout.autoLogout();
 			
@@ -61,7 +61,7 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 		
 		if( authorizationLevel == AuthorizationLevel.unauthorizedUser )  // only manager and admin will get access
 		{
-			
+			System.out.println(authorizationLevel);
 			
 			AutoLogout.autoLogout();
 			  
