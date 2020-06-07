@@ -1,6 +1,7 @@
 package com.au.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.sql.Date;
 
@@ -17,7 +18,7 @@ public class TestDemandDAO {
 	@Test
 	public void testGetAll()
 	{
-		assertEquals(4, demandDao.getAll().size());
+		assertEquals(9, demandDao.getAll().size());
 	}
 	
 	@Test
@@ -36,14 +37,14 @@ public class TestDemandDAO {
 	public void testGetAllDemandBeforeDate() 
 	{
 		Date date = Date.valueOf("2020-04-05");
-		assertEquals(1, demandDao.getAllDemandBeforeDate(date).size());
+		assertEquals(5, demandDao.getAllDemandBeforeDate(date).size());
 		
 	}
 	@Test
 	public void testGetAllDemandAfterDate() 
 	{
 		Date date = Date.valueOf("2020-04-05");
-		assertEquals(3, demandDao.getAllDemandAfterDate(date).size());
+		assertEquals(4, demandDao.getAllDemandAfterDate(date).size());
 		
 	}
 	
@@ -67,8 +68,15 @@ public class TestDemandDAO {
 	public void testGetAllDemandWithRequiredPeopleLessThan() 
 	{
 		
-		assertEquals(3, demandDao.getAllDemandWithRequiredPeopleLessThan(6).size());
+		assertEquals(8, demandDao.getAllDemandWithRequiredPeopleLessThan(6).size());
 		
+	}
+	
+	@Test
+	public void testGetCountForAllLocation()
+	{
+		System.out.println(demandDao.getCountForAllLocation());
+		assertNotNull(demandDao.getCountForAllLocation());
 	}
 	
 	

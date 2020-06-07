@@ -1,7 +1,7 @@
 package com.au.service;
 
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mockitoSession;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;

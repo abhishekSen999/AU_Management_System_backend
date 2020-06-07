@@ -3,6 +3,7 @@ package com.au.repository;
 import java.sql.Date;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -98,6 +99,12 @@ public class DemandDAO {
 		
 	}
 	
+	public List<Map<String,Object>> getCountForAllLocation()
+	{
+		String sql = "select location,count(*) as count from demand group by location";
+		List<Map<String,Object>> countLocationList= jdbcTemplate.queryForList(sql);
+		return countLocationList;
+	}
 	
 	
 	

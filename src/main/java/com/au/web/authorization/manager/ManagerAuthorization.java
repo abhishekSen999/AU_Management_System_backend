@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.au.domain.Onboard;
+import com.au.service.DemandService;
 import com.au.service.EmployeeService;
 import com.au.service.OnboardLogService;
 import com.au.service.OnboardService;
@@ -30,6 +31,9 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 	
 	@Autowired
 	OnboardLogService onboardLogService;
+	
+	@Autowired
+	DemandService demandService;
 	
 	
 	@Override
@@ -137,6 +141,12 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 						
 						
 						case "getAllLogBetweenTimestamp" : return onboardLogService.getAllLogBetweenTimestamp((Date)parameterList.get(0),(Date)parameterList.get(1));
+						
+						}
+		case "DemandService" : 
+						switch (functionName) {
+						
+						case "getCountForAllLocation" : return demandService.getCountForAllLocation();
 						
 						}
 		
