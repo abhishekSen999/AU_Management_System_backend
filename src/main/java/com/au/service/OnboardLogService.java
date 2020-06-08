@@ -51,7 +51,7 @@ public class OnboardLogService {
 	
 
 
-	public int setLog(Operation  operation , long onb_id )
+	public Object setLog(Operation  operation , long onb_id )
 	{
 		 
 		
@@ -62,9 +62,15 @@ public class OnboardLogService {
 				.setOperator(operator);
 		
 		
-		if(operation == Operation.delete )
-			return getOnboardLogDao().addLog(onboardLog);
-		
+		if(operation == Operation.delete ) {
+			int result = getOnboardLogDao().addLog(onboardLog);
+			if(result == 0)
+			{
+				return "Error Occured During Logging - repeat operation after some time.";
+			}
+			
+			return result;
+		}
 		Onboard onboard =  getOnboardService().getById(onb_id);
 		
 		onboardLog.setEmp_id(onboard.getEmp_id())
@@ -75,7 +81,13 @@ public class OnboardLogService {
 				.setBgc_status(onboard.getBgc_status());
 			
 		
-		return getOnboardLogDao().addLog(onboardLog);
+		int result = getOnboardLogDao().addLog(onboardLog);
+		if(result == 0)
+		{
+			return "Error Occured During Logging - repeat operation after some time.";
+		}
+		
+		return result;
 		
 		
 	}
@@ -91,7 +103,7 @@ public class OnboardLogService {
 	}
 	
 	public List<OnboardLog>getAllLogByOnboardId(long onb_id)
-	{
+	{ 
 		
 		List<OnboardLog> logList = getOnboardLogDao().getAllLogByOnboardId(onb_id);
 		

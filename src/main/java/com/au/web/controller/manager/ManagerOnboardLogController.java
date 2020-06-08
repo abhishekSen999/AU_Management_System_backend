@@ -26,6 +26,16 @@ public class ManagerOnboardLogController {
 	@Autowired
 	AuthenticatedUserData userVerifier;
 	
+	//making class testable
+	ManagerAuthorizationInterface getUser()
+	{
+		return user;
+	}
+	
+	AuthenticatedUserData getUserVerifier()
+	{
+		return userVerifier;
+	}
 	
 
 	@CrossOrigin
@@ -34,9 +44,9 @@ public class ManagerOnboardLogController {
 		
 		
 		
-		userVerifier.setIdToken(idToken);
+		getUserVerifier().setIdToken(idToken);
 
-		return user.getAuthorization("OnboardLogService", "getAllLog", null);
+		return getUser().getAuthorization("OnboardLogService", "getAllLog", null);
 
 	}
 	
@@ -48,7 +58,7 @@ public class ManagerOnboardLogController {
 	@GetMapping("/manager/log/emp_id={emp_id}")
 	public Object getAllLogByEmployeeId(@RequestHeader("Authorization") String idToken,@PathVariable long emp_id) {
 		
-		userVerifier.setIdToken(idToken);
+		getUserVerifier().setIdToken(idToken);
 		
 		
 		List<Object> parameterList = new ArrayList<Object>();
@@ -56,7 +66,34 @@ public class ManagerOnboardLogController {
 		Object result;
 
 		try {
-			result = user.getAuthorization("OnboardLogService", "getAllLogByEmployeeId", parameterList);
+			result = getUser().getAuthorization("OnboardLogService", "getAllLogByEmployeeId", parameterList);
+			if (((List) result).isEmpty()) {
+				throw new EmptyResultDataAccessException(1);
+			}
+		} catch (EmptyResultDataAccessException e) {
+
+			return new ResponseEntity<String>("requested resource not found", HttpStatus.BAD_REQUEST);
+
+		}
+
+		return result;
+
+	}
+	
+	
+	@CrossOrigin
+	@GetMapping("/manager/log/onb_id={onb_id}")
+	public Object getAllLogByOnboardId(@RequestHeader("Authorization") String idToken,@PathVariable long onb_id) {
+		
+		getUserVerifier().setIdToken(idToken);
+		
+		
+		List<Object> parameterList = new ArrayList<Object>();
+		parameterList.add(onb_id);
+		Object result;
+
+		try {
+			result = getUser().getAuthorization("OnboardLogService", "getAllLogByOnboardId", parameterList);
 			if (((List) result).isEmpty()) {
 				throw new EmptyResultDataAccessException(1);
 			}
@@ -78,19 +115,21 @@ public class ManagerOnboardLogController {
 	
 	
 	
+	
+	
 
 	@CrossOrigin
 	@GetMapping("/manager/log/dem_id={dem_id}")
 	public Object getAllLogByDemandId(@RequestHeader("Authorization") String idToken,@PathVariable long dem_id) {
 		
-		userVerifier.setIdToken(idToken);
+		getUserVerifier().setIdToken(idToken);
 		
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(dem_id);
 		Object result;
 
 		try {
-			result = user.getAuthorization("OnboardLogService", "getAllLogByDemandId", parameterList);
+			result = getUser().getAuthorization("OnboardLogService", "getAllLogByDemandId", parameterList);
 			if (((List) result).isEmpty()) {
 				throw new EmptyResultDataAccessException(1);
 			}
@@ -111,7 +150,7 @@ public class ManagerOnboardLogController {
 	@GetMapping("/manager/log/both/emp_id={emp_id}&dem_id={dem_id}")
 	public Object getAllLogByEmployeeIdAndDemandId(@RequestHeader("Authorization") String idToken,@PathVariable long emp_id, @PathVariable long dem_id)
 	{	
-		userVerifier.setIdToken(idToken);
+		getUserVerifier().setIdToken(idToken);
 		
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(emp_id);
@@ -119,7 +158,7 @@ public class ManagerOnboardLogController {
 		Object result;
 
 		try {
-			result = user.getAuthorization("OnboardLogService", "getAllLogByEmployeeIdAndDemandId", parameterList);
+			result = getUser().getAuthorization("OnboardLogService", "getAllLogByEmployeeIdAndDemandId", parameterList);
 			if (((List) result).isEmpty()) {
 				throw new EmptyResultDataAccessException(1);
 			}
@@ -141,7 +180,7 @@ public class ManagerOnboardLogController {
 	public Object getAllLogByOperator(@RequestHeader("Authorization") String idToken,@PathVariable String operator) {
 		
 		
-		userVerifier.setIdToken(idToken);
+		getUserVerifier().setIdToken(idToken);
 		
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(operator);
@@ -149,7 +188,7 @@ public class ManagerOnboardLogController {
 		Object result;
 
 		try {
-			result = user.getAuthorization("OnboardLogService", "getAllLogByOperator", parameterList);
+			result = getUser().getAuthorization("OnboardLogService", "getAllLogByOperator", parameterList);
 			if (((List) result).isEmpty()) {
 				throw new EmptyResultDataAccessException(1);
 			}
@@ -172,7 +211,7 @@ public class ManagerOnboardLogController {
 	@GetMapping("/manager/log/operation={operation}")
 	public Object getAllLogByOperation(@RequestHeader("Authorization") String idToken,@PathVariable String operation) {
 		
-		userVerifier.setIdToken(idToken);
+		getUserVerifier().setIdToken(idToken);
 		
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(operation);
@@ -180,7 +219,7 @@ public class ManagerOnboardLogController {
 		Object result; 
 
 		try {
-			result = user.getAuthorization("OnboardLogService", "getAllLogByOperation", parameterList);
+			result = getUser().getAuthorization("OnboardLogService", "getAllLogByOperation", parameterList);
 			if (((List) result).isEmpty()) {
 				throw new EmptyResultDataAccessException(1);
 			}
@@ -193,7 +232,7 @@ public class ManagerOnboardLogController {
 
 	}
 	
-	
+	 
 	
 	
 	
@@ -203,7 +242,7 @@ public class ManagerOnboardLogController {
 	@GetMapping("/manager/log/date1={timestamp1}&date2={timestamp2}")
 	public Object getAllLogBetweenTimestamp(@RequestHeader("Authorization") String idToken,@PathVariable Date timestamp1, @PathVariable Date timestamp2) {
 		
-		userVerifier.setIdToken(idToken);
+		getUserVerifier().setIdToken(idToken);
 		
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(timestamp1);
@@ -211,7 +250,7 @@ public class ManagerOnboardLogController {
 		Object result;
 
 		try {
-			result = user.getAuthorization("OnboardLogService", "getAllLogBetweenTimestamp", parameterList);
+			result = getUser().getAuthorization("OnboardLogService", "getAllLogBetweenTimestamp", parameterList);
 			if (((List) result).isEmpty()) {
 				throw new EmptyResultDataAccessException(1);
 			}
@@ -222,13 +261,7 @@ public class ManagerOnboardLogController {
 		}
 		return result;
 	}
-	
-	
-	
-	
-	
-	
-	
+		
 	
 
 }

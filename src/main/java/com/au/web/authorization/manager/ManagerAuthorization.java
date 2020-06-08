@@ -39,26 +39,26 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 	
 	
 	//making class testable
-	public LoginAuthorizationInterface getUser()
+	LoginAuthorizationInterface getUser()
 	{
 		return user;
 	}
 	
 	
 	//making class testable
-	public OnboardService getOnboardService() {
+	OnboardService getOnboardService() {
 		return onboardService;
 	}
 	//making class testable
-	public EmployeeService getEmployeeService() {
+	EmployeeService getEmployeeService() {
 		return employeeService;
 	}
 	//making class testable
-	public OnboardLogService getOnboardLogService() {
+	OnboardLogService getOnboardLogService() {
 		return onboardLogService;
 	}
 	//making class testable
-	public DemandService getDemandService() {
+	DemandService getDemandService() {
 		return demandService;
 	}
 	
@@ -169,6 +169,8 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 						
 						
 						case "getAllLogBetweenTimestamp" : return getOnboardLogService().getAllLogBetweenTimestamp((Date)parameterList.get(0),(Date)parameterList.get(1));
+						
+						case "getAllLogByOnboardId" : return getOnboardLogService().getAllLogByOnboardId((long)parameterList.get(0));
 						
 						}
 		case "DemandService" : 

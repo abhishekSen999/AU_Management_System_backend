@@ -228,7 +228,7 @@ public class ManagerOnboardController {
 		
 		
 	}
-	
+	 
 	
 	@CrossOrigin
 	@PostMapping("/manager/onboard")
@@ -241,7 +241,14 @@ public class ManagerOnboardController {
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(onboard);
 		
-		return  user.getAuthorization("OnboardService", "add", parameterList);    //onboardService.add(onboard);
+		Object result = user.getAuthorization("OnboardService", "add", parameterList); 
+		
+		if( result instanceof String)
+		{
+			return new ResponseEntity<String>( (String)result , HttpStatus.BAD_REQUEST);
+		}
+		
+		return result;    //onboardService.add(onboard);
 		
 	}
 	
@@ -255,8 +262,14 @@ public class ManagerOnboardController {
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(onboard);
 		
-		//add service layer 
-		return  user.getAuthorization("OnboardService","update" ,parameterList );     //
+		Object result = user.getAuthorization("OnboardService","update" ,parameterList ); 
+		
+		if( result instanceof String)
+		{
+			return new ResponseEntity<String>( (String)result , HttpStatus.BAD_REQUEST);
+		}
+		
+		return result;
 		
 	}
 	

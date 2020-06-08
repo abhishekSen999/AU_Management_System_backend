@@ -124,7 +124,7 @@ public class OnboardService {
 
 	}
 
-	public int add(Onboard onboard) {
+	public Object add(Onboard onboard) {
 
 		int result = 0;
 
@@ -141,9 +141,12 @@ public class OnboardService {
 		if (onboard.getStart_date() == null)
 			return 0;
 
-		if (areSkillsCompatible(onboard.getEmp_id(), onboard.getDem_id())
-				&& demandNotFullfilled(onboard.getDem_id()))
-			result = getOnboardDao().add(onboard);
+		if (! areSkillsCompatible(onboard.getEmp_id(), onboard.getDem_id()))
+				return "Skills Not Compatible";
+		if(! demandNotFullfilled(onboard.getDem_id()))
+				return "Demand Already Fulfilled";
+		
+		result = getOnboardDao().add(onboard);
 
 		if (result == 1) // upon successful add operation create log
 		{
@@ -172,13 +175,13 @@ public class OnboardService {
 	}
 	
 	
-	public int update(Onboard onboard) {
+	public Object update(Onboard onboard) {
 
 		// todo: handle multiple onboard of same employee to demand id
 
 		// handling incomplete post request
 
-		int result = 0;
+		int result = -1;
 		if (onboard.getOnb_id() == 0)
 			return 0;
 
@@ -201,9 +204,14 @@ public class OnboardService {
 		if (onboard.getBgc_status() != null)
 			currentOnboard.setBgc_status(onboard.getBgc_status());
 
-		if (areSkillsCompatible(currentOnboard.getEmp_id(), currentOnboard.getDem_id())  
-				&& demandNotFullfilled(currentOnboard.getDem_id()))
-			result = getOnboardDao().update(currentOnboard);
+		if (! areSkillsCompatible(currentOnboard.getEmp_id(), currentOnboard.getDem_id()))
+			return "Skills Are Not Compatible";
+				
+				
+		if (! demandNotFullfilled(currentOnboard.getDem_id()))
+			return "Demand Already Fulfilled";
+		
+		result = getOnboardDao().update(currentOnboard);
 
 		if (result == 1)// upon successful operation create log
 		{
@@ -214,7 +222,7 @@ public class OnboardService {
 
 	}
 
-	public int delete(long onb_id) {
+	public Object delete(long onb_id) {
 		int result = getOnboardDao().delete(onb_id);
 
 		if (result == 1)
