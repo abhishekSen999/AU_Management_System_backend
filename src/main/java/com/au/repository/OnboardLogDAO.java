@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.au.domain.OnboardLog;
 import com.au.domain.OnboardLogMapper;
+import com.au.domain.Operation;
 
 @Component
 public class OnboardLogDAO {
@@ -74,7 +75,7 @@ public class OnboardLogDAO {
 	public List<OnboardLog> getAllLogByOperator(String operator)
 	{
 		String sql = "select * from Onboard_Log where operator = ?";
-		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {operator}, onboardLogMapper);
+		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {operator.toLowerCase()}, onboardLogMapper);
 		return logList;
 	}
 	
@@ -89,6 +90,14 @@ public class OnboardLogDAO {
 	{
 		String sql = "select * from Onboard_Log where timestamp between ? and ?";
 		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {timestamp1 , timestamp2}, onboardLogMapper);
+		return logList;
+	}
+	
+	
+	public List<OnboardLog> getAllLogByOnboardId(long onb_id)
+	{
+		String sql = "select* from onboard_log where onb_id  = ?";
+		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {onb_id}, onboardLogMapper);
 		return logList;
 	}
 	

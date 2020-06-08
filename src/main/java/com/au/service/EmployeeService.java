@@ -1,6 +1,7 @@
 package com.au.service;
 
-import java.util.Collection;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,20 +14,23 @@ public class EmployeeService {
 
 	@Autowired
 	EmployeeDAO employeeDao;
-
-	public EmployeeService() {
-
-	}
-
-	public Collection<Employee> getAll() // returns all employees
+	
+	EmployeeDAO getEmployeeDao()
 	{
-		return employeeDao.getAll();
+		return employeeDao;
+	}
+	
+	
+	
+	public List<Employee> getAll() // returns all employees
+	{
+		return getEmployeeDao().getAll();
 	}
 
 	public Employee getById(long emp_id) {
 		
 
-		return employeeDao.getById(emp_id);
+		return getEmployeeDao().getById(emp_id); 
 
 		
 	}
@@ -34,21 +38,21 @@ public class EmployeeService {
 	public Employee getByCompanyEmail(String company_email) {
 		
 
-		return employeeDao.getByCompanyEmail(company_email.toLowerCase());
+		return getEmployeeDao().getByCompanyEmail(company_email.toLowerCase());
 
 	}
 
 	public Employee getByPersonalEmail(String personal_email) {
 		
 
-		return  employeeDao.getByPersonalEmail(personal_email.toLowerCase());
+		return  getEmployeeDao().getByPersonalEmail(personal_email.toLowerCase());
 
 		
 	}
 
-	public Collection<Employee> getByLocation(String location) {
+	public List<Employee> getByLocation(String location) {
 		
-		return employeeDao.getByLocation(location);
+		return getEmployeeDao().getByLocation(location);
 
 		
 	}

@@ -19,6 +19,8 @@ public class OnboardService {
 
 	@Autowired
 	OnboardLogService onboardLogService;
+	
+	
 
 	@Autowired
 	OnboardDAO onboardDao;
@@ -32,17 +34,48 @@ public class OnboardService {
 	@Autowired
 	DemandService demandService;
 	
+	
+	
+	
+	// felicitation testing
+	OnboardDAO getOnboardDao() {
+		return onboardDao;
+	}
+	
+	OnboardLogService getOnboardLogService()
+	{
+		return onboardLogService;
+	}
+	
+	DemandService getDemandService()
+	{
+		return demandService;
+	}
+	
+	EmployeeSkillsetDAO getEmployeeSkillSetDao()
+	{
+		return employeeSkillSetDao;
+	}
+	
+	DemandSkillsetDAO getDemandSkillsetDao()
+	{
+		return demandSkillsetDao;
+	}
+	
+	
+	
+	
 
 	public Onboard getById(long onb_id) {
 
-		return onboardDao.getById(onb_id);
+		return getOnboardDao().getById(onb_id); 
 
 	}
 
-	boolean areSkillsCompatible(long emp_id, long dem_id) {
+	public boolean areSkillsCompatible(long emp_id, long dem_id) {
 
-		List<Skill> employeeSkillList = employeeSkillSetDao.getAllSkillOfEmployeeWithId(emp_id);
-		List<Skill> demandSkillList = demandSkillsetDao.getAllSkillForDemandWithId(dem_id);
+		List<Skill> employeeSkillList = getEmployeeSkillSetDao().getAllSkillOfEmployeeWithId(emp_id);
+		List<Skill> demandSkillList = getDemandSkillsetDao().getAllSkillForDemandWithId(dem_id);
 
 		for (Skill skill : demandSkillList) {
 			if (!employeeSkillList.contains(skill))
@@ -54,15 +87,16 @@ public class OnboardService {
 	}
 
 	public List<Onboard> getAll() {
-		return onboardDao.getAll();
+		List<Onboard> list = getOnboardDao().getAll();
+		return list;
 	}
 
 	public List<Onboard> getByStartDate(Date start_date) {
-		return onboardDao.getByStartDate(start_date);
+		return getOnboardDao().getByStartDate(start_date);
 	}
 
 	public List<Onboard> getByEtaOfCompletion(Date eta_of_completion) {
-		return onboardDao.getByEtaOfCompletion(eta_of_completion);
+		return getOnboardDao().getByEtaOfCompletion(eta_of_completion);
 	}
 
 	public List<Onboard> getByOnboardingStatus(String onboarding_status) {
@@ -70,9 +104,9 @@ public class OnboardService {
 		// handling wild cards in request
 		if (onboarding_status.contains("*")) {
 			onboarding_status = onboarding_status.replace('*', '%');
-			return onboardDao.getByOnboardingStatusWithWildcard(onboarding_status);
+			return getOnboardDao().getByOnboardingStatusWithWildcard(onboarding_status);
 		} else
-			return onboardDao.getByOnboardingStatus(onboarding_status);
+			return getOnboardDao().getByOnboardingStatus(onboarding_status);
 	}
 
 	public List<Onboard> getByBgcStatus(String bgc_status) {
@@ -82,11 +116,11 @@ public class OnboardService {
 			// handling wild cards in request
 			bgc_status = bgc_status.replace('*', '%');
 
-			return onboardDao.getByBgcStatusWithWildcard(bgc_status);
+			return getOnboardDao().getByBgcStatusWithWildcard(bgc_status);
 		}
 
 		else
-			return onboardDao.getByBgcStatus(bgc_status);
+			return getOnboardDao().getByBgcStatus(bgc_status);
 
 	}
 
@@ -102,37 +136,37 @@ public class OnboardService {
 			return 0;
 		if (onboard.getEta_of_completion() == null)
 			return 0;
-		if (onboard.getOnboarding_status() == null)
+		if (onboard.getOnboarding_status() == null) 
 			return 0;
 		if (onboard.getStart_date() == null)
 			return 0;
 
 		if (areSkillsCompatible(onboard.getEmp_id(), onboard.getDem_id())
 				&& demandNotFullfilled(onboard.getDem_id()))
-			result = onboardDao.add(onboard);
+			result = getOnboardDao().add(onboard);
 
 		if (result == 1) // upon successful add operation create log
 		{
 			long onb_id = this.getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id()).getOnb_id();
 
-			return onboardLogService.setLog(Operation.add, onb_id);
+			return getOnboardLogService().setLog(Operation.add, onb_id);
 		}
 
 		return result;
 	}
 
 	public Onboard getByEmployeeIdAndDemandId(long emp_id, long dem_id) {
-		return onboardDao.getByEmployeeIdAndDemandId(emp_id, dem_id);
+		return getOnboardDao().getByEmployeeIdAndDemandId(emp_id, dem_id);
 	}
 
 	
-	private boolean demandNotFullfilled(long dem_id)
+	boolean demandNotFullfilled(long dem_id)
 	{
-		Demand demand = demandService.getDemandById(dem_id);
-		int numberOfOnboards = onboardDao.getNumberofOnboardForDemandId(dem_id);
+		Demand demand = getDemandService().getDemandById(dem_id);
+		int numberOfOnboards = getOnboardDao().getNumberofOnboardForDemandId(dem_id);
 		if(numberOfOnboards<demand.getNumber_people())
 			return true;
-		return false;
+		return false; 
 		
 		
 	}
@@ -148,7 +182,7 @@ public class OnboardService {
 		if (onboard.getOnb_id() == 0)
 			return 0;
 
-		Onboard currentOnboard = onboardDao.getById(onboard.getOnb_id());
+		Onboard currentOnboard = getOnboardDao().getById(onboard.getOnb_id());
 		if (onboard.getEmp_id() != 0)
 			currentOnboard.setEmp_id(onboard.getEmp_id());
 
@@ -169,11 +203,11 @@ public class OnboardService {
 
 		if (areSkillsCompatible(currentOnboard.getEmp_id(), currentOnboard.getDem_id())  
 				&& demandNotFullfilled(currentOnboard.getDem_id()))
-			result = onboardDao.update(currentOnboard);
+			result = getOnboardDao().update(currentOnboard);
 
 		if (result == 1)// upon successful operation create log
 		{
-			onboardLogService.setLog(Operation.update, currentOnboard.getOnb_id());
+			getOnboardLogService().setLog(Operation.update, currentOnboard.getOnb_id());
 		}
 
 		return result;
@@ -181,10 +215,10 @@ public class OnboardService {
 	}
 
 	public int delete(long onb_id) {
-		int result = onboardDao.delete(onb_id);
+		int result = getOnboardDao().delete(onb_id);
 
 		if (result == 1)
-			onboardLogService.setLog(Operation.delete, onb_id);
+			return getOnboardLogService().setLog(Operation.delete, onb_id);
 
 		return result;
 

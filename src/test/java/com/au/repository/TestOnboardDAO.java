@@ -1,6 +1,7 @@
 package com.au.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.sql.Date;
@@ -55,6 +56,7 @@ public class TestOnboardDAO {
 		onboard.setStart_date(Date.valueOf("2020-09-08"));
 		onboard.setEta_of_completion(Date.valueOf("2020-09-07"));
 		
+//		assertThrows(DuplicateKeyException.class,()->{onboardDao.update(onboard);});
 		assertEquals(1,onboardDao.update(onboard));
 		
 		
@@ -107,12 +109,29 @@ public class TestOnboardDAO {
 	@Test
 	public void testGetByOnboardingStatus()
 	{
+		String onboarding_status = "started";
+		assertEquals('s', onboardDao.getByOnboardingStatus(onboarding_status).get(0).getOnboarding_status().charAt(0));
+	
+	}
+	@Test
+	public void testGetByOnboardingStatusWithWildcard()
+	{
 		String onboarding_status = "s%";
 		assertEquals('s', onboardDao.getByOnboardingStatusWithWildcard(onboarding_status).get(0).getOnboarding_status().charAt(0));
 	
 	}
+	
+	
 	@Test
 	public void testGetByBgcStatus()
+	{
+		String bgc_status = "started";
+		assertEquals('s', onboardDao. getByBgcStatus(bgc_status).get(0).getBgc_status().charAt(0));
+		
+	}
+	
+	@Test
+	public void testGetByBgcStatusWithWildcard()
 	{
 		String bgc_status = "s%";
 		assertEquals('s', onboardDao. getByBgcStatusWithWildcard(bgc_status).get(0).getBgc_status().charAt(0));
@@ -122,8 +141,16 @@ public class TestOnboardDAO {
 	@Test
 	public void testGetNumberofOnboardForDemandId()
 	{
-		assertEquals(2,onboardDao.getNumberofOnboardForDemandId(2l));
+		assertEquals(0,onboardDao.getNumberofOnboardForDemandId(2l));
 	}
+	
+	@Test
+	public void testGetAll()
+	{
+		assertNotNull(onboardDao.getAll().get(0));
+	}
+	
+	
 	
 	
 	

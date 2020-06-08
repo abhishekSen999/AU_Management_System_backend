@@ -66,21 +66,7 @@ public class Employee {
 		return this;
 	}
 	
-	public static Employee mapEmployee(Map row)
-	{
-
-		Employee employee = new Employee();
-		
-		employee.setName((String) row.get("name"));
-		employee.setEmp_id((long)row.get("emp_id"));
-		employee.setCompany_email((String)row.get("company_email"));
-		employee.setPersonal_email((String)row.get("personal_email"));
-		employee.setLocation((String)row.get("location"));
-		
-		
-		return employee;
-			
-	}
+	
 	
 	
 	

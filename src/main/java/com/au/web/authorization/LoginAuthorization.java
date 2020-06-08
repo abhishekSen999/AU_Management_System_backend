@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.au.service.AuthorizationServiceInterface;
+import com.au.service.AuthorizationService;
 import com.au.web.security.OAuthAuthenticatedUserDataInterface;
 
 @Component
@@ -14,7 +14,7 @@ public class LoginAuthorization implements LoginAuthorizationInterface{
 	private OAuthAuthenticatedUserDataInterface user; 
 	
 	@Autowired
-	private AuthorizationServiceInterface authorizationService;
+	private AuthorizationService authorizationService;
 	
 	
 	@Override

@@ -22,9 +22,11 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 	@Autowired
 	LoginAuthorizationInterface user;
 	
+	
+	
+	
 	@Autowired
 	EmployeeService employeeService;
-	
 	
 	@Autowired
 	OnboardService onboardService;
@@ -36,12 +38,38 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 	DemandService demandService;
 	
 	
+	//making class testable
+	public LoginAuthorizationInterface getUser()
+	{
+		return user;
+	}
+	
+	
+	//making class testable
+	public OnboardService getOnboardService() {
+		return onboardService;
+	}
+	//making class testable
+	public EmployeeService getEmployeeService() {
+		return employeeService;
+	}
+	//making class testable
+	public OnboardLogService getOnboardLogService() {
+		return onboardLogService;
+	}
+	//making class testable
+	public DemandService getDemandService() {
+		return demandService;
+	}
+	
+	
+	
 	@Override
 	public Object getAuthorization() {  // returns authorization level for authorized user and logs out unauthorized user.
 		
 		
 		
-		AuthorizationLevel authorizationLevel =user.getAuthorizationLevel();
+		AuthorizationLevel authorizationLevel =getUser().getAuthorizationLevel();
 		System.out.println(authorizationLevel);
 		if( authorizationLevel == AuthorizationLevel.unauthorizedUser )  // only manager and admin will get access
 		{
@@ -57,7 +85,7 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 	@Override
 	public Object getAuthorization(String className, String functionName ,  List<Object> parameterList) {
 
-		AuthorizationLevel authorizationLevel =user.getAuthorizationLevel();
+		AuthorizationLevel authorizationLevel =getUser().getAuthorizationLevel();
 		
 		if( authorizationLevel == AuthorizationLevel.unauthorizedUser )  // only manager and admin will get access
 		{
@@ -78,15 +106,15 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 			
 						switch(functionName) {
 						
-						case "getAll": return employeeService.getAll();
+						case "getAll": return getEmployeeService().getAll();
 						
-						case "getById": return employeeService.getById((long)parameterList.get(0));
+						case "getById": return getEmployeeService().getById((long)parameterList.get(0));
 						
-						case "getByCompanyEmail": return employeeService.getByCompanyEmail((String)parameterList.get(0));
+						case "getByCompanyEmail": return getEmployeeService().getByCompanyEmail((String)parameterList.get(0));
 						
-						case "getByPersonalEmail": return employeeService.getByPersonalEmail((String)parameterList.get(0));
+						case "getByPersonalEmail": return getEmployeeService().getByPersonalEmail((String)parameterList.get(0));
 						
-						case "getByLocation": return employeeService.getByLocation((String)parameterList.get(0));
+						case "getByLocation": return getEmployeeService().getByLocation((String)parameterList.get(0));
 						
 						default: break;
 						
@@ -96,28 +124,28 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 						switch(functionName) {
 						
 						
-						case "getAll": return onboardService.getAll();
+						case "getAll": return getOnboardService().getAll();
 						
-						case "getByStartDate": return onboardService.getByStartDate((Date)parameterList.get(0));
+						case "getByStartDate": return getOnboardService().getByStartDate((Date)parameterList.get(0));
 						
-						case "getByEtaOfCompletion": return onboardService.getByEtaOfCompletion((Date)parameterList.get(0));
+						case "getByEtaOfCompletion": return getOnboardService().getByEtaOfCompletion((Date)parameterList.get(0));
 						
-						case "getByOnboardingStatus": return onboardService.getByOnboardingStatus((String)parameterList.get(0));
+						case "getByOnboardingStatus": return getOnboardService().getByOnboardingStatus((String)parameterList.get(0));
 						
-						case "getByBgcStatus": return onboardService.getByBgcStatus((String)parameterList.get(0));
+						case "getByBgcStatus": return getOnboardService().getByBgcStatus((String)parameterList.get(0));
 						
-						case "getById": return onboardService.getById((long)parameterList.get(0));
+						case "getById": return getOnboardService().getById((long)parameterList.get(0));
 						
-						case "getByEmployeeIdAndDemandId" : return onboardService.getByEmployeeIdAndDemandId((long)parameterList.get(0),(long)parameterList.get(1));
-						
-						
+						case "getByEmployeeIdAndDemandId" : return getOnboardService().getByEmployeeIdAndDemandId((long)parameterList.get(0),(long)parameterList.get(1));
 						
 						
-						case "add": return onboardService.add((Onboard)parameterList.get(0));
 						
-						case "update": return onboardService.update((Onboard)parameterList.get(0));
 						
-						case "delete": return onboardService.delete((long)parameterList.get(0));
+						case "add": return getOnboardService().add((Onboard)parameterList.get(0));
+						
+						case "update": return getOnboardService().update((Onboard)parameterList.get(0));
+						
+						case "delete": return getOnboardService().delete((long)parameterList.get(0));
 						
 						default : break;
 						
@@ -126,27 +154,27 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 		case "OnboardLogService" :
 						switch(functionName) {
 						
-						case "getAllLog": return onboardLogService.getAllLog();
+						case "getAllLog": return getOnboardLogService().getAllLog();
 						
-						case "getAllLogByEmployeeId" : return onboardLogService.getAllLogByEmployeeId((long)parameterList.get(0));
+						case "getAllLogByEmployeeId" : return getOnboardLogService().getAllLogByEmployeeId((long)parameterList.get(0));
 						
-						case "getAllLogByDemandId" : return onboardLogService.getAllLogByDemandId((long)parameterList.get(0));
+						case "getAllLogByDemandId" : return getOnboardLogService().getAllLogByDemandId((long)parameterList.get(0));
 						
-						case "getAllLogByEmployeeIdAndDemandId" : return onboardLogService.getAllLogByEmployeeIdAndDemandId((long)parameterList.get(0), (long)parameterList.get(1));
+						case "getAllLogByEmployeeIdAndDemandId" : return getOnboardLogService().getAllLogByEmployeeIdAndDemandId((long)parameterList.get(0), (long)parameterList.get(1));
 						
-						case "getAllLogByOperator" : return onboardLogService.getAllLogByOperator((String)parameterList.get(0));
-						
-						
-						case "getAllLogByOperation" : return onboardLogService.getAllLogByOperation((String)parameterList.get(0));
+						case "getAllLogByOperator" : return getOnboardLogService().getAllLogByOperator((String)parameterList.get(0));
 						
 						
-						case "getAllLogBetweenTimestamp" : return onboardLogService.getAllLogBetweenTimestamp((Date)parameterList.get(0),(Date)parameterList.get(1));
+						case "getAllLogByOperation" : return getOnboardLogService().getAllLogByOperation((String)parameterList.get(0));
+						
+						
+						case "getAllLogBetweenTimestamp" : return getOnboardLogService().getAllLogBetweenTimestamp((Date)parameterList.get(0),(Date)parameterList.get(1));
 						
 						}
 		case "DemandService" : 
 						switch (functionName) {
 						
-						case "getCountForAllLocation" : return demandService.getCountForAllLocation();
+						case "getCountForAllLocation" : return getDemandService().getCountForAllLocation();
 						
 						}
 		

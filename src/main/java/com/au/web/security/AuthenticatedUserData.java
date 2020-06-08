@@ -20,9 +20,9 @@ public class AuthenticatedUserData implements OAuthAuthenticatedUserDataInterfac
 	
 	private String idToken;
 	
-	public String getIdToken() {
-		return idToken;
-	}
+//	public String getIdToken() {
+//		return idToken;
+//	}
 
 
 
@@ -58,31 +58,31 @@ public class AuthenticatedUserData implements OAuthAuthenticatedUserDataInterfac
 	
 	
 
-	private String getEmail(Object principal)  //implemented with regex ca later be overriden
-	{
-		String email = emailPatternMatcher( emailPattern , principal.toString() );
-		
-		return email;
-	}
-	
-	public String emailPatternMatcher(String patternString , String matcherString )
-	{
-		
-		Pattern pattern = Pattern.compile(patternString , Pattern.CASE_INSENSITIVE);
-		Matcher matcher = pattern.matcher(matcherString);
-		
-		String email ; 		
-		if(matcher.find()) {
-			email = matcher.group(0);
-			
-			
-//			email = email.replaceAll("email=" , "" );
-//			email = email.replaceAll( "}*" , "" );
+//	private String getEmail(Object principal)  //implemented with regex ca later be overriden
+//	{
+//		String email = emailPatternMatcher( emailPattern , principal.toString() );
+//		
+//		return email;
+//	}
+//	
+//	public String emailPatternMatcher(String patternString , String matcherString )
+//	{
+//		
+//		Pattern pattern = Pattern.compile(patternString , Pattern.CASE_INSENSITIVE);
+//		Matcher matcher = pattern.matcher(matcherString);
+//		
+//		String email ; 		
+//		if(matcher.find()) {
+//			email = matcher.group(0);
 //			
-			return email;
-		}
-		return null;
-	}
+//			
+////			email = email.replaceAll("email=" , "" );
+////			email = email.replaceAll( "}*" , "" );
+////			
+//			return email;
+//		}
+//		return null;
+//	}
 	
 	
 	
