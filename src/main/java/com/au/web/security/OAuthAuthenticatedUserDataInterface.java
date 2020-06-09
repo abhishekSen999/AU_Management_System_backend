@@ -6,4 +6,6 @@ public interface OAuthAuthenticatedUserDataInterface { //interface to autowire u
 	
 	public String getAuthenticatedUserName();
 	
+	public void setIdToken(String idToken);
+	
 }

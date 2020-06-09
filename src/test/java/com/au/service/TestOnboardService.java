@@ -20,8 +20,7 @@ import com.au.domain.Demand;
 import com.au.domain.Onboard;
 import com.au.domain.Operation;
 import com.au.domain.Skill;
-import com.au.repository.DemandSkillsetDAO;
-import com.au.repository.EmployeeSkillsetDAO;
+
 import com.au.repository.OnboardDAO;
 
 @SpringBootTest
@@ -32,10 +31,11 @@ public class TestOnboardService {
 	
 	
 	@Mock
-	EmployeeSkillsetDAO employeeSkillsetDao;
+	EmployeeSkillset_SkillService employeeSkillset_SkillService;
 	
 	@Mock
-	DemandSkillsetDAO demandSkillsetDao;
+	DemandSkillset_SkillService demandSkillset_SkillService;
+	
 	
 	@Mock
 	OnboardDAO onboardDao;
@@ -79,10 +79,10 @@ public class TestOnboardService {
 		long dem_id = 2;
 		
 		//defining mock behaviour
-		doReturn(employeeSkillsetDao).when(onboardServiceSpy).getEmployeeSkillSetDao();
-		doReturn(demandSkillsetDao).when(onboardServiceSpy).getDemandSkillsetDao();
-		Mockito.when(employeeSkillsetDao.getAllSkillOfEmployeeWithId(emp_id)).thenReturn(employeeSkillList);
-		Mockito.when(demandSkillsetDao.getAllSkillForDemandWithId(dem_id)).thenReturn(demandSkillList);
+		doReturn(employeeSkillset_SkillService).when(onboardServiceSpy).getEmployeeSkillset_SkillService();
+		doReturn(demandSkillset_SkillService).when(onboardServiceSpy).getDemandSkillset_SkillService();
+		Mockito.when(employeeSkillset_SkillService.getAllSkillOfEmployeeWithId(emp_id)).thenReturn(employeeSkillList);
+		Mockito.when(demandSkillset_SkillService.getAllSkillForDemandWithId(dem_id)).thenReturn(demandSkillList);
 		
 		
 		assertTrue(onboardServiceSpy.areSkillsCompatible(emp_id, dem_id));
@@ -119,11 +119,10 @@ public class TestOnboardService {
 		long dem_id = 2;
 		
 		//defining mock behaviour
-		doReturn(employeeSkillsetDao).when(onboardServiceSpy).getEmployeeSkillSetDao();
-		doReturn(demandSkillsetDao).when(onboardServiceSpy).getDemandSkillsetDao();
-		
-		Mockito.when(employeeSkillsetDao.getAllSkillOfEmployeeWithId(emp_id)).thenReturn(employeeSkillList);
-		Mockito.when(demandSkillsetDao.getAllSkillForDemandWithId(dem_id)).thenReturn(demandSkillList);
+		doReturn(employeeSkillset_SkillService).when(onboardServiceSpy).getEmployeeSkillset_SkillService();
+		doReturn(demandSkillset_SkillService).when(onboardServiceSpy).getDemandSkillset_SkillService();
+		Mockito.when(employeeSkillset_SkillService.getAllSkillOfEmployeeWithId(emp_id)).thenReturn(employeeSkillList);
+		Mockito.when(demandSkillset_SkillService.getAllSkillForDemandWithId(dem_id)).thenReturn(demandSkillList);
 		
 		
 		assertFalse(onboardServiceSpy.areSkillsCompatible(emp_id, dem_id));
@@ -253,6 +252,283 @@ public class TestOnboardService {
 	
 	
 	@Test
+	public void testAddFailedAddInDAO()
+	{
+		
+		
+		Onboard onboard = new Onboard();
+		onboard.setBgc_status("test")
+			.setDem_id(2l)
+			.setEmp_id(1l)
+			.setEta_of_completion(Date.valueOf("2020-02-01"))
+			.setOnb_id(0)
+			.setOnboarding_status("test")
+			.setStart_date(Date.valueOf("2020-02-02"));
+		
+			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
+			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
+			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
+			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
+			Mockito.when(onboardDao.add(onboard)).thenReturn(0);
+			
+			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
+			
+			assertEquals(0,onboardServiceSpy.add(onboard));
+		
+		
+	}
+	
+	
+	
+	@Test
+	public void testAddNonCompatibleSkills()
+	{
+		
+		
+		Onboard onboard = new Onboard();
+		onboard.setBgc_status("test")
+			.setDem_id(2l)
+			.setEmp_id(1l)
+			.setEta_of_completion(Date.valueOf("2020-02-01"))
+			.setOnb_id(0)
+			.setOnboarding_status("test")
+			.setStart_date(Date.valueOf("2020-02-02"));
+		
+			doReturn(false).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
+			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
+			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
+			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
+			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
+			
+			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
+			
+			assertTrue("Skills Not Compatible".contentEquals((String)onboardServiceSpy.add(onboard)));
+		
+		
+	}
+	
+	@Test
+	public void testAddDemandAlreadyFulfilled()
+	{
+		
+		
+		Onboard onboard = new Onboard();
+		onboard.setBgc_status("test")
+			.setDem_id(2l)
+			.setEmp_id(1l)
+			.setEta_of_completion(Date.valueOf("2020-02-01"))
+			.setOnb_id(0)
+			.setOnboarding_status("test")
+			.setStart_date(Date.valueOf("2020-02-02"));
+		
+			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
+			doReturn(false).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
+			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
+			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
+			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
+			
+			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
+			
+			assertTrue("Demand Already Fulfilled".contentEquals((String)onboardServiceSpy.add(onboard)));
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	@Test
+	public void testAddNoStartDate()
+	{
+		
+		
+		Onboard onboard = new Onboard();
+		onboard.setBgc_status("test")
+			.setDem_id(2l)
+			.setEmp_id(1l)
+			.setEta_of_completion(Date.valueOf("2020-02-01"))
+			.setOnb_id(0)
+			.setOnboarding_status("test");
+//			.setStart_date(Date.valueOf("2020-02-02"));
+		
+			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
+			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
+			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
+			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
+			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
+			
+			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
+			
+			assertEquals(0,onboardServiceSpy.add(onboard));
+		
+		
+	}
+	
+	
+	
+	
+	@Test
+	public void testAddNoOnboardingStatus()
+	{
+		
+		
+		Onboard onboard = new Onboard();
+		onboard.setBgc_status("test")
+			.setDem_id(2l)
+			.setEmp_id(1l)
+			.setEta_of_completion(Date.valueOf("2020-02-01"))
+			.setOnb_id(0)
+//			.setOnboarding_status("test")
+			.setStart_date(Date.valueOf("2020-02-02"));
+		
+			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
+			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
+			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
+			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
+			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
+			
+			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
+			
+			assertEquals(0,onboardServiceSpy.add(onboard));
+		
+		
+	}
+	
+	
+	@Test
+	public void testAddNoEtaOdCompletion()
+	{
+		
+		
+		Onboard onboard = new Onboard();
+		onboard.setBgc_status("test")
+			.setDem_id(2l)
+			.setEmp_id(1l)
+//			.setEta_of_completion(Date.valueOf("2020-02-01"))
+			.setOnb_id(0)
+			.setOnboarding_status("test")
+			.setStart_date(Date.valueOf("2020-02-02"));
+		
+			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
+			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
+			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
+			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
+			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
+			
+			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
+			
+			assertEquals(0,onboardServiceSpy.add(onboard));
+		
+		
+	}
+	
+	
+	
+	@Test
+	public void testAddZeroEmpId()
+	{
+		
+		
+		Onboard onboard = new Onboard();
+		onboard.setBgc_status("test")
+			.setDem_id(2l)
+//			.setEmp_id(1l)
+			.setEta_of_completion(Date.valueOf("2020-02-01"))
+			.setOnb_id(0)
+			.setOnboarding_status("test")
+			.setStart_date(Date.valueOf("2020-02-02"));
+		
+			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
+			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
+			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
+			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
+			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
+			
+			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
+			
+			assertEquals(0,onboardServiceSpy.add(onboard));
+		
+		
+	}
+	
+	
+	
+	
+	@Test
+	public void testAddZeroDemId()
+	{
+		
+		
+		Onboard onboard = new Onboard();
+		onboard.setBgc_status("test")
+//			.setDem_id(2l)
+			.setEmp_id(1l)
+			.setEta_of_completion(Date.valueOf("2020-02-01"))
+			.setOnb_id(0)
+			.setOnboarding_status("test")
+			.setStart_date(Date.valueOf("2020-02-02"));
+		
+			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
+			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
+			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
+			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
+			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
+			
+			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
+			
+			assertEquals(0,onboardServiceSpy.add(onboard));
+		
+		
+	}
+	
+	
+	
+	
+	@Test
+	public void testAddNullBgc()
+	{
+		
+		
+		Onboard onboard = new Onboard();
+		onboard//.setBgc_status("test")
+			.setDem_id(2l)
+			.setEmp_id(1l)
+			.setEta_of_completion(Date.valueOf("2020-02-01"))
+			.setOnb_id(0)
+			.setOnboarding_status("test")
+			.setStart_date(Date.valueOf("2020-02-02"));
+		
+			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
+			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
+			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
+			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
+			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
+			
+			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
+			
+			assertEquals(0,onboardServiceSpy.add(onboard));
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	@Test
 	public void testUpdate()
 	{
 		
@@ -371,6 +647,9 @@ public class TestOnboardService {
 		doReturn(1).when(onboardLogService).setLog(Operation.delete, onb_id);
 		assertEquals(0, onboardServiceSpy.delete(onb_id));
 	}
+	
+	
+	
 	
 	
 	

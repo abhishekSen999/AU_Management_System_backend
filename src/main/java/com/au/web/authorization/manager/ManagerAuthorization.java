@@ -102,23 +102,24 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 	
 		switch (className) {
 		
-		case "EmployeeService":
-			
-						switch(functionName) {
-						
-						case "getAll": return getEmployeeService().getAll();
-						
-						case "getById": return getEmployeeService().getById((long)parameterList.get(0));
-						
-						case "getByCompanyEmail": return getEmployeeService().getByCompanyEmail((String)parameterList.get(0));
-						
-						case "getByPersonalEmail": return getEmployeeService().getByPersonalEmail((String)parameterList.get(0));
-						
-						case "getByLocation": return getEmployeeService().getByLocation((String)parameterList.get(0));
-						
-						default: break;
-						
-						}
+//		case "EmployeeService":
+//			
+//						switch(functionName) {
+//						
+//						case "getAll": return getEmployeeService().getAll();
+//						
+//						case "getById": return getEmployeeService().getById((long)parameterList.get(0));
+//						
+//						case "getByCompanyEmail": return getEmployeeService().getByCompanyEmail((String)parameterList.get(0));
+//						
+//						case "getByPersonalEmail": return getEmployeeService().getByPersonalEmail((String)parameterList.get(0));
+//						
+//						case "getByLocation": return getEmployeeService().getByLocation((String)parameterList.get(0));
+//						
+//						default: break;
+//						
+//						}
+//						break;
 		case "OnboardService":
 						
 						switch(functionName) {
@@ -151,6 +152,7 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 						
 						
 						}
+						break;
 		case "OnboardLogService" :
 						switch(functionName) {
 						
@@ -173,12 +175,15 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 						case "getAllLogByOnboardId" : return getOnboardLogService().getAllLogByOnboardId((long)parameterList.get(0));
 						
 						}
+						break;
+						
 		case "DemandService" : 
 						switch (functionName) {
 						
 						case "getCountForAllLocation" : return getDemandService().getCountForAllLocation();
 						
 						}
+						break;
 		
 		
 		

@@ -7,24 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class TestDemandSkillsetDAO {
+public class TestDemandSkillset_SkillDAO {
 
 	@Autowired
-	DemandSkillsetDAO demandSkillsetDao;
+	DemandSkillset_SkillDAO demandSkillset_SkillDao;
 	
 	
-	@Test
-	public void testGetAllDemandWithSkillId()
-	{
-		
-		assertEquals(2,demandSkillsetDao.getAllDemandWithSkillId(1).size());
-		
-	}
+
 	
 	@Test
 	public void tetGetAllSkillForDemandWithId()
 	{
-		assertEquals(3, demandSkillsetDao.getAllSkillForDemandWithId(1).size());
+		assertEquals(3, demandSkillset_SkillDao.getAllSkillForDemandWithId(1).size());
 	}
 	
 	

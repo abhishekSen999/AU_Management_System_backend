@@ -10,8 +10,8 @@ import com.au.domain.Demand;
 import com.au.domain.Onboard;
 import com.au.domain.Operation;
 import com.au.domain.Skill;
-import com.au.repository.DemandSkillsetDAO;
-import com.au.repository.EmployeeSkillsetDAO;
+
+
 import com.au.repository.OnboardDAO;
 
 @Component
@@ -26,10 +26,10 @@ public class OnboardService {
 	OnboardDAO onboardDao;
 
 	@Autowired
-	EmployeeSkillsetDAO employeeSkillSetDao;
-
+	EmployeeSkillset_SkillService employeeSkillset_SkillService;
+	
 	@Autowired
-	DemandSkillsetDAO demandSkillsetDao;
+	DemandSkillset_SkillService demandSkillset_SkillService;
 	
 	@Autowired
 	DemandService demandService;
@@ -37,7 +37,11 @@ public class OnboardService {
 	
 	
 	
-	// felicitation testing
+	
+	
+	
+	
+	// for testing testing
 	OnboardDAO getOnboardDao() {
 		return onboardDao;
 	}
@@ -52,15 +56,16 @@ public class OnboardService {
 		return demandService;
 	}
 	
-	EmployeeSkillsetDAO getEmployeeSkillSetDao()
-	{
-		return employeeSkillSetDao;
+	EmployeeSkillset_SkillService getEmployeeSkillset_SkillService() {
+		return employeeSkillset_SkillService;
 	}
 	
-	DemandSkillsetDAO getDemandSkillsetDao()
-	{
-		return demandSkillsetDao;
+	DemandSkillset_SkillService getDemandSkillset_SkillService() {
+		return demandSkillset_SkillService;
 	}
+	
+	
+	
 	
 	
 	
@@ -74,8 +79,8 @@ public class OnboardService {
 
 	public boolean areSkillsCompatible(long emp_id, long dem_id) {
 
-		List<Skill> employeeSkillList = getEmployeeSkillSetDao().getAllSkillOfEmployeeWithId(emp_id);
-		List<Skill> demandSkillList = getDemandSkillsetDao().getAllSkillForDemandWithId(dem_id);
+		List<Skill> employeeSkillList = getEmployeeSkillset_SkillService().getAllSkillOfEmployeeWithId(emp_id);
+		List<Skill> demandSkillList = getDemandSkillset_SkillService().getAllSkillForDemandWithId(dem_id);
 
 		for (Skill skill : demandSkillList) {
 			if (!employeeSkillList.contains(skill))

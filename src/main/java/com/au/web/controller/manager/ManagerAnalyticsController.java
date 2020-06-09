@@ -1,6 +1,6 @@
 package com.au.web.controller.manager;
 
-import org.apache.catalina.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,12 +9,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.au.web.authorization.manager.ManagerAuthorizationInterface;
 import com.au.web.security.AuthenticatedUserData;
+import com.au.web.security.OAuthAuthenticatedUserDataInterface;
 import com.au.web.security.tokenVerification.GoogleClientAPIWrapper;
 
 @RestController
 public class ManagerAnalyticsController {
 	@Autowired
-	AuthenticatedUserData userVerifier;
+	OAuthAuthenticatedUserDataInterface userVerifier;
 	
 	@Autowired
 	ManagerAuthorizationInterface user;

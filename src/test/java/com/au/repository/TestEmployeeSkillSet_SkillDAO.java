@@ -7,24 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class TestEmployeeSkillSetDAO {
+public class TestEmployeeSkillSet_SkillDAO {
 
 	@Autowired
-	EmployeeSkillsetDAO employeeSkillsetDAO;
+	EmployeeSkillset_SkillDAO employeeSkillset_SkillDao;
 	
 	@Test
 	public void testGetAllSkillOfEmployeeWithId()
 	{
 		
-		assertEquals(4,employeeSkillsetDAO.getAllSkillOfEmployeeWithId(1).size() );
+		assertEquals(4,employeeSkillset_SkillDao.getAllSkillOfEmployeeWithId(1).size() );
 		
 	}
 	
 	
-	@Test
-	public void testGetAllEmployeeWithSkillId()
-	{
-		assertEquals(4, employeeSkillsetDAO.getAllEmployeeWithSkillId(1).size());
-	}
+//
 	
 }

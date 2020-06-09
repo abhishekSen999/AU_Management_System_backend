@@ -24,15 +24,15 @@ import com.au.service.OnboardService;
 import com.au.web.authorization.manager.ManagerAuthorization;
 import com.au.web.authorization.manager.ManagerAuthorizationInterface;
 import com.au.web.security.AuthenticatedUserData;
+import com.au.web.security.OAuthAuthenticatedUserDataInterface;
 
 @RestController
 public class ManagerOnboardController { 
 
-//	@Autowired
-//	OnboardService onboardService;
+
 	
 	@Autowired
-	AuthenticatedUserData userVerifier;
+	OAuthAuthenticatedUserDataInterface userVerifier;
 	
 	@Autowired
 	ManagerAuthorizationInterface user;
