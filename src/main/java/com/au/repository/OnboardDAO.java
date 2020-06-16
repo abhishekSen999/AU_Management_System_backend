@@ -7,11 +7,13 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.au.customExceptions.FailedDatabaseLoggingException;
+import com.au.customExceptions.InvalidDataEntryException;
 import com.au.domain.Onboard;
 import com.au.domain.OnboardMapper;
 import com.au.domain.Operation;
@@ -113,17 +115,26 @@ public class OnboardDAO {
 	
 	
 	
-	@Transactional
+    @Transactional
 	public int add(Onboard onboard) {
-
+		int result = 0;
 		String sql = "insert into onboard (emp_id, dem_id, start_date, eta_of_completion, bgc_status ,onboarding_status)  values ( ? , ? , ? , ?,?,?)";
 
 		Object[] parameters = new Object[] { onboard.getEmp_id(), onboard.getDem_id(), onboard.getStart_date(),
 				onboard.getEta_of_completion(), onboard.getBgc_status().toLowerCase(),
 				onboard.getOnboarding_status().toLowerCase() };
 
-		int result = jdbcTemplate.update(sql, parameters);
-
+		
+		
+		try {
+			result = jdbcTemplate.update(sql, parameters);
+		}
+		catch(DuplicateKeyException exception){
+			throw new InvalidDataEntryException(" - Cannot Make this entry, EmployeeId: "+onboard.getEmp_id()+" and DemandId: "+onboard.getDem_id()+" entry is already present in the table - " , exception);
+		}
+		
+		
+		
 		int databaseLoggingAttempts = 0;
 
 		if (result == 1) // upon successful add operation create log
@@ -135,11 +146,11 @@ public class OnboardDAO {
 					result = getOnboardLogService().setLog(Operation.add, onb_id);
 					// if no exception is thrown then break out of while loop
 					break;
-				} catch (FailedDatabaseLoggingException e) {
+				} catch (FailedDatabaseLoggingException exception) {
 					result = 0;
 					//if multiple logging attempts fail, then throw the original 
 					if (databaseLoggingAttempts >= maxDatabaseLogginAttempts)
-						throw e;
+						throw exception;
 					
 				}
 
@@ -157,9 +168,18 @@ public class OnboardDAO {
 				onboard.getEta_of_completion(), onboard.getOnboarding_status().toLowerCase(),
 				onboard.getBgc_status().toLowerCase(), onboard.getOnb_id() };
 
-		int result = jdbcTemplate.update(sql, parameters);
-
+		int result = 0;
+		
+		try {
+			result = jdbcTemplate.update(sql, parameters);
+		}
+		catch(DuplicateKeyException exception){
+			throw new InvalidDataEntryException(" - Cannot Make this change, EmployeeId: "+onboard.getEmp_id()+" and DemandId: "+onboard.getDem_id()+" entry is already present in the table - " , exception);
+		}
+		
+		
 		int databaseLoggingAttempts = 0;
+		
 		if (result == 1)// upon successful operation create log
 		{
 
@@ -168,11 +188,11 @@ public class OnboardDAO {
 					result = getOnboardLogService().setLog(Operation.update, onboard.getOnb_id());
 					// if no exception is thrown then break out of while loop
 					break;
-				} catch (FailedDatabaseLoggingException e) {
+				} catch (FailedDatabaseLoggingException exception) {
 					result = 0;
 					//if multiple logging attempts fail, then throw the original 
 					if (databaseLoggingAttempts >= maxDatabaseLogginAttempts)
-						throw e;
+						throw exception;
 
 				}
 
@@ -197,11 +217,11 @@ public class OnboardDAO {
 					result = getOnboardLogService().setLog(Operation.delete, onb_id);
 					// if no exception is thrown then break out of while loop
 					break;
-				} catch (FailedDatabaseLoggingException e) {
+				} catch (FailedDatabaseLoggingException exception) {
 					result = 0;
 					//if multiple logging attempts fail, then throw the original 
 					if (databaseLoggingAttempts >= maxDatabaseLogginAttempts)
-						throw e;
+						throw exception;
 
 				}
 

@@ -7,17 +7,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.sql.Date;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DuplicateKeyException;
 
+import com.au.customExceptions.InvalidDataEntryException;
 import com.au.domain.Onboard;
 
 @SpringBootTest
 public class TestOnboardDAO {
 	
-	@Autowired
+	@Spy
 	OnboardDAO onboardDao;
 	
 	@Test
@@ -28,7 +30,7 @@ public class TestOnboardDAO {
 	}
 	
 	@Test
-	public void testAddOnboard()
+	public void testAddOnboardInvalidDataEntryException()
 	{
 		Onboard onboard = new Onboard();
 		onboard.setBgc_status("starting");
@@ -39,8 +41,8 @@ public class TestOnboardDAO {
 		onboard.setEta_of_completion(Date.valueOf("2020-09-07"));
 		
 //		DuplicateKeyException e;
-		assertThrows(DuplicateKeyException.class,()->{onboardDao.add(onboard);});
-		
+		Exception exception = assertThrows(InvalidDataEntryException.class,()->{onboardDao.add(onboard);});
+		assertEquals(" - Cannot Make this entry, EmployeeId: "+onboard.getEmp_id()+" and DemandId: "+onboard.getDem_id()+" entry is already present in the table - ", exception.getMessage());
 		
 	}
 	
