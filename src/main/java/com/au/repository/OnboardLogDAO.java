@@ -1,16 +1,15 @@
 package com.au.repository;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.au.domain.OnboardLog;
 import com.au.domain.OnboardLogMapper;
-import com.au.domain.Operation;
 
 @Component
 public class OnboardLogDAO {
@@ -21,6 +20,7 @@ public class OnboardLogDAO {
 	@Autowired
 	OnboardLogMapper onboardLogMapper;
 	
+	@Transactional
 	public int addLog( OnboardLog onboardLog  ) 
 	{
 		String sql = "insert into Onboard_Log (operator , operation , onb_id , emp_id , dem_id, start_date , eta_of_completion , onboarding_status , bgc_status) values(? , ? , ? ,? ,?, ? , ? , ? , ?)";

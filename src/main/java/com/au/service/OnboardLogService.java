@@ -6,10 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.au.customExceptions.FailedDatabaseLoggingException;
 import com.au.domain.Onboard;
 import com.au.domain.OnboardLog;
 import com.au.domain.Operation;
-import com.au.repository.OnboardDAO;
 import com.au.repository.OnboardLogDAO;
 import com.au.web.security.OAuthAuthenticatedUserDataInterface;
 
@@ -33,6 +33,8 @@ public class OnboardLogService {
 	
 	
 	
+	 
+	
 	OnboardLogDAO getOnboardLogDao() {
 		return onboardLogDao;
 	}
@@ -51,7 +53,7 @@ public class OnboardLogService {
 	
 
 
-	public Object setLog(Operation  operation , long onb_id )
+	public int setLog(Operation  operation , long onb_id )
 	{
 		 
 		
@@ -66,7 +68,7 @@ public class OnboardLogService {
 			int result = getOnboardLogDao().addLog(onboardLog);
 			if(result == 0)
 			{
-				return "Error Occured During Logging - repeat operation after some time.";
+				 throw new FailedDatabaseLoggingException("Error Occured During Logging of "+operation+" operation for Onboard Id: "+onb_id+" at "+ System.currentTimeMillis()  +  " Underlying cause is not known - repeat operation after some time.");
 			}
 			
 			return result;
@@ -84,7 +86,7 @@ public class OnboardLogService {
 		int result = getOnboardLogDao().addLog(onboardLog);
 		if(result == 0)
 		{
-			return "Error Occured During Logging - repeat operation after some time.";
+			throw new FailedDatabaseLoggingException("Error Occured During Logging of "+operation+" operation for Onboard Id: "+onb_id+" at "+ System.currentTimeMillis()  +  " Underlying cause is not known - repeat operation after some time.");
 		}
 		
 		return result;
