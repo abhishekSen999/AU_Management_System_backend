@@ -10,14 +10,13 @@ import org.omg.PortableInterceptor.SUCCESSFUL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.au.customExceptions.FailedDatabaseLoggingException;
-import com.au.customExceptions.InvalidDataEntryException;
-import com.au.customExceptions.InvalidQueryDataException;
 import com.au.domain.Demand;
 import com.au.domain.Onboard;
 import com.au.domain.Operation;
 import com.au.domain.Skill;
-
+import com.au.exception.customExceptions.FailedDatabaseLoggingException;
+import com.au.exception.customExceptions.InvalidDataEntryException;
+import com.au.exception.customExceptions.InvalidQueryDataException;
 import com.au.repository.OnboardDAO;
 
 @Component
@@ -41,7 +40,7 @@ public class OnboardService {
 	 * request hence option object used for avoiding NullPointerException
 	 * 
 	 */
-	Optional<String> errorMessage = Optional.empty();
+	
 
 	// for testing
 	OnboardDAO getOnboardDao() {
@@ -101,6 +100,8 @@ public class OnboardService {
 	 */
 	boolean areSkillsCompatible(long emp_id, long dem_id) {
 
+		Optional<String> errorMessage = Optional.empty();
+		
 		if (emp_id <= 0) {
 			errorMessage = Optional.of(" - Employee Id cannot be 0 - ");
 		}
@@ -130,6 +131,7 @@ public class OnboardService {
 	 * @throws InvalidQueryDataException when given onb_id <=0
 	 */
 	public Onboard getById(long onb_id) {
+		Optional<String> errorMessage = Optional.empty();
 
 		if (onb_id <= 0) {
 			errorMessage = Optional.of(" - Onboard id cannot be 0 - ");
@@ -158,6 +160,7 @@ public class OnboardService {
 	 * @throws InvalidQueryDataException when the given start_date is null
 	 */
 	public List<Onboard> getByStartDate(Date start_date) {
+		Optional<String> errorMessage = Optional.empty();
 
 		if (start_date == null) {
 			errorMessage = Optional.of(" - Start Date Cannot be null - ");
@@ -177,6 +180,7 @@ public class OnboardService {
 	 * @throws InvalidQueryDataException when eta_of_completion is null
 	 */
 	public List<Onboard> getByEtaOfCompletion(Date eta_of_completion) {
+		Optional<String> errorMessage = Optional.empty();
 
 		if (eta_of_completion == null) {
 			errorMessage = Optional.of(" - ETA of Completion cannot be null - ");
@@ -195,6 +199,7 @@ public class OnboardService {
 	 * @throws InvalidQueryDataException if onboarding_status is null
 	 */
 	public List<Onboard> getByOnboardingStatus(String onboarding_status) {
+		Optional<String> errorMessage = Optional.empty();
 
 		if (onboarding_status == null) {
 			errorMessage = Optional.of(" - Onboarding Status cannot be null - ");
@@ -218,6 +223,7 @@ public class OnboardService {
 	 * @throws InvalidQueryDataException if bgc_status is null
 	 */
 	public List<Onboard> getByBgcStatus(String bgc_status) {
+		Optional<String> errorMessage = Optional.empty();
 
 		if (bgc_status == null) {
 			errorMessage = Optional.of(" - BGC Status cannot be null - ");
@@ -251,7 +257,8 @@ public class OnboardService {
 	 * @throws InvalidQueryDataException when either emp_id or dem_id is <=0
 	 */
 	public Onboard getByEmployeeIdAndDemandId(long emp_id, long dem_id) {
-
+		Optional<String> errorMessage = Optional.empty();
+		
 		if (emp_id <= 0) {
 			errorMessage = Optional.of(" - Employee Id cannot be 0 - ");
 		}
@@ -274,6 +281,7 @@ public class OnboardService {
 	 *                                   are not compatible 4)demand is already met
 	 */
 	public int add(Onboard onboard) {
+		Optional<String> errorMessage = Optional.empty();
 
 		if (onboard == null) {
 			errorMessage = Optional.of(" - Cannot add null object - ");
@@ -339,6 +347,7 @@ public class OnboardService {
 	 */
 
 	public int update(Onboard onboard) {
+		Optional<String> errorMessage = Optional.empty();
 
 		int result = -1;
 
@@ -401,6 +410,7 @@ public class OnboardService {
 	 * 
 	 */
 	public int delete(long onb_id) {
+		Optional<String> errorMessage = Optional.empty();
 
 		if (onb_id <= 0) {
 			errorMessage = Optional.of(" - Onboard id cannot be 0 - ");

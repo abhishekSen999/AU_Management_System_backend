@@ -11,15 +11,16 @@ import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.dao.DuplicateKeyException;
 
-import com.au.customExceptions.InvalidDataEntryException;
 import com.au.domain.Onboard;
+import com.au.exception.customExceptions.InvalidDataEntryException;
 
 @SpringBootTest
 public class TestOnboardDAO {
 	
-	@Spy
+	@Autowired
 	OnboardDAO onboardDao;
 	
 	@Test
@@ -84,7 +85,7 @@ public class TestOnboardDAO {
 		
 	}
 	
-	@Test
+	@Test  
 	public void testGetByEmployeeIdAndDemandId()
 	{
 		long emp_id = 1;
@@ -143,7 +144,7 @@ public class TestOnboardDAO {
 	@Test
 	public void testGetNumberofOnboardForDemandId()
 	{
-		assertEquals(0,onboardDao.getNumberofOnboardForDemandId(2l));
+		assertEquals(0,onboardDao.getNumberofOnboardForDemandId(4));
 	}
 	
 	@Test

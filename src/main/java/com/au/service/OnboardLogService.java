@@ -6,10 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.au.customExceptions.FailedDatabaseLoggingException;
 import com.au.domain.Onboard;
 import com.au.domain.OnboardLog;
 import com.au.domain.Operation;
+import com.au.exception.customExceptions.FailedDatabaseLoggingException;
 import com.au.repository.OnboardLogDAO;
 import com.au.web.security.OAuthAuthenticatedUserDataInterface;
 

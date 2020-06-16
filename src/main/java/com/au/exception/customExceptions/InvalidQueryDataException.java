@@ -1,4 +1,4 @@
-package com.au.customExceptions;
+package com.au.exception.customExceptions;
 
 public class InvalidQueryDataException extends RuntimeException {
 

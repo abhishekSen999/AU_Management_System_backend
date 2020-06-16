@@ -17,12 +17,12 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.au.customExceptions.InvalidQueryDataException;
 import com.au.domain.Demand;
 import com.au.domain.Onboard;
 import com.au.domain.Operation;
 import com.au.domain.Skill;
-
+import com.au.exception.customExceptions.InvalidDataEntryException;
+import com.au.exception.customExceptions.InvalidQueryDataException;
 import com.au.repository.OnboardDAO;
 
 @SpringBootTest
@@ -281,7 +281,6 @@ public class TestOnboardService {
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
 			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
 			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
 			
@@ -310,7 +309,7 @@ public class TestOnboardService {
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
 			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+			
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
 			Mockito.when(onboardDao.add(onboard)).thenReturn(0);
 			
@@ -340,15 +339,17 @@ public class TestOnboardService {
 			doReturn(false).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
 			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+			
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
 			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
 			
 			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
 			
-			assertTrue("Skills Not Compatible".contentEquals((String)onboardServiceSpy.add(onboard)));
+//			assertTrue("Skills Not Compatible".contentEquals((String)onboardServiceSpy.add(onboard)));
+			Exception exception= assertThrows(InvalidDataEntryException.class, ()->onboardServiceSpy.add(onboard));
 		
-		
+			assertEquals(" - Employee Id: " + onboard.getEmp_id()
+				+ " does not have the skills required for Demand Id: " + onboard.getDem_id() + " - " , exception.getMessage());
 	}
 	
 	@Test
@@ -368,15 +369,18 @@ public class TestOnboardService {
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(false).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
 			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+			
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
 			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
 			
 			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
 			
-			assertTrue("Demand Already Fulfilled".contentEquals((String)onboardServiceSpy.add(onboard)));
+			Exception exception= assertThrows(InvalidDataEntryException.class, ()->onboardServiceSpy.add(onboard));
+			
+			assertEquals(" - Demand Id: " + onboard.getDem_id() + " has already been met - " , exception.getMessage());
 		
-		
+			
+			
 	}
 	
 	
@@ -402,7 +406,7 @@ public class TestOnboardService {
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
 			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+			
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
 			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
 			
@@ -433,7 +437,7 @@ public class TestOnboardService {
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
 			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+			
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
 			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
 			
@@ -462,7 +466,7 @@ public class TestOnboardService {
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
 			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+			
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
 			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
 			
@@ -492,7 +496,7 @@ public class TestOnboardService {
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
 			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+			
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
 			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
 			
@@ -523,7 +527,7 @@ public class TestOnboardService {
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
 			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+			
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
 			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
 			
@@ -554,7 +558,7 @@ public class TestOnboardService {
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
 			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+			
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
 			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
 			
@@ -587,7 +591,7 @@ public class TestOnboardService {
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
 			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-			doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+			
 			doReturn(onboard).when(onboardDao).getById(onboard.getOnb_id());
 //			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
 			Mockito.when(onboardDao.update(onboard)).thenReturn(1);
@@ -633,8 +637,8 @@ public class TestOnboardService {
 	@Test
 	public void testGetByEmployeeIdAndDemandId() {
 		Onboard onboard = new Onboard();
-		long emp_id = 0l;
-		long dem_id = 0l;
+		long emp_id = 1l;
+		long dem_id = 1l;
 		
 		doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
 		Mockito.when(onboardDao.getByEmployeeIdAndDemandId(emp_id, dem_id)).thenReturn(onboard);
@@ -673,7 +677,7 @@ public class TestOnboardService {
 		long onb_id = 1l;
 		doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
 		doReturn(1).when(onboardDao).delete(onb_id);
-		doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+		
 		doReturn(1).when(onboardLogService).setLog(Operation.delete, onb_id);
 		
 		assertEquals(1, onboardServiceSpy.delete(onb_id));
@@ -685,7 +689,7 @@ public class TestOnboardService {
 		long onb_id = 1l;
 		doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
 		doReturn(0).when(onboardDao).delete(onb_id);
-		doReturn(onboardLogService).when(onboardServiceSpy).getOnboardLogService();
+		
 		doReturn(1).when(onboardLogService).setLog(Operation.delete, onb_id);
 		assertEquals(0, onboardServiceSpy.delete(onb_id));
 	}

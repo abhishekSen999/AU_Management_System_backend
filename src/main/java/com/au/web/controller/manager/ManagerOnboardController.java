@@ -59,19 +59,9 @@ public class ManagerOnboardController {
 		
 		userVerifier.setIdToken(idToken);
 		
-		try 
-		{
-			result = user.getAuthorization("OnboardService", "getByStartDate",parameterList);
-			if(((List)result).isEmpty()) 
-			{
-				throw new EmptyResultDataAccessException(1);
-			}
-		} 
-		catch (EmptyResultDataAccessException e) {
+		
+		result = user.getAuthorization("OnboardService", "getByStartDate",parameterList);
 			
-			return new ResponseEntity<String>("requested resource not present check start date", HttpStatus.BAD_REQUEST);
-				
-		}
 		
 		
 		return result;
@@ -88,19 +78,9 @@ public class ManagerOnboardController {
 		parameterList.add(eta_of_completion);
 		Object result;
 		
-		try  
-		{
-			result = user.getAuthorization("OnboardService", "getByEtaOfCompletion",parameterList);
-			if(((List)result).isEmpty()) 
-			{
-				throw new EmptyResultDataAccessException(1);
-			}
-		} 
-		catch (EmptyResultDataAccessException e) {
-			
-			return new ResponseEntity<String>("requested resource not present check eta of completion", HttpStatus.BAD_REQUEST);
-				
-		}
+		
+		result = user.getAuthorization("OnboardService", "getByEtaOfCompletion",parameterList);
+		
 		
 		return result;
 	}
@@ -115,19 +95,8 @@ public class ManagerOnboardController {
 		parameterList.add(onboarding_status);
 		Object result;
 		
-		try 
-		{
+		
 			result = user.getAuthorization("OnboardService", "getByOnboardingStatus",parameterList);
-			if(((List)result).isEmpty()) 
-			{
-				throw new EmptyResultDataAccessException(1);
-			}
-		} 
-		catch (EmptyResultDataAccessException e) {
-			
-			return new ResponseEntity<String>("requested resource not present check  onboarding status", HttpStatus.BAD_REQUEST);
-				// TODO Auto-generated catch block	
-		}
 		
 		return result;
 	}
@@ -151,19 +120,8 @@ public class ManagerOnboardController {
 		parameterList.add(bgc_status);
 		Object result;
 		
-		try 
-		{
 			result = user.getAuthorization("OnboardService", "getByBgcStatus" , parameterList);
-			if(((List)result).isEmpty()) 
-			{
-				throw new EmptyResultDataAccessException(1);
-			}
-		} 
-		catch (EmptyResultDataAccessException e) {
-			
-			return new ResponseEntity<String>("requested resource not present check bgc status", HttpStatus.BAD_REQUEST);
-				// TODO Auto-generated catch block	
-		}
+		
 		
 		return result;
 	}
@@ -191,15 +149,10 @@ public class ManagerOnboardController {
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(onb_id); 
 		
-		try 
-		{
 			 result = user.getAuthorization("OnboardService", "getById", parameterList) ; // onboardService.getById(onb_id);
-		}
-		catch (EmptyResultDataAccessException e)
-		{
-			return new ResponseEntity<String>("requested resource not present check id", HttpStatus.BAD_REQUEST);
-			
-		}
+		
+//		catch (EmptyResultDataAccessException e)
+		
 		return result;
 	}
 	
@@ -215,15 +168,9 @@ public class ManagerOnboardController {
 		parameterList.add(emp_id);
 		parameterList.add(dem_id);
 		
-		try 
-		{
+		
 			 result = user.getAuthorization("OnboardService", "getByEmployeeIdAndDemandId", parameterList) ; // onboardService.getById(onb_id);
-		}
-		catch (EmptyResultDataAccessException e)
-		{
-			return new ResponseEntity<String>("requested resource not present check  both id", HttpStatus.BAD_REQUEST);
-			
-		}
+		
 		return result;
 		
 		
@@ -243,10 +190,6 @@ public class ManagerOnboardController {
 		
 		Object result = user.getAuthorization("OnboardService", "add", parameterList); 
 		
-		if( result instanceof String)
-		{
-			return new ResponseEntity<String>( (String)result , HttpStatus.BAD_REQUEST);
-		}
 		
 		return result;    //onboardService.add(onboard);
 		
@@ -264,10 +207,7 @@ public class ManagerOnboardController {
 		
 		Object result = user.getAuthorization("OnboardService","update" ,parameterList ); 
 		
-		if( result instanceof String)
-		{
-			return new ResponseEntity<String>( (String)result , HttpStatus.BAD_REQUEST);
-		}
+		
 		
 		return result;
 		
@@ -282,7 +222,7 @@ public class ManagerOnboardController {
 		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(onb_id);
 		
-		//add service layer 
+		
 		return   user.getAuthorization("OnboardService", "delete", parameterList)  ;     //
 		
 	}

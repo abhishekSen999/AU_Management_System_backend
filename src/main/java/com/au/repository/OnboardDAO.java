@@ -12,11 +12,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.au.customExceptions.FailedDatabaseLoggingException;
-import com.au.customExceptions.InvalidDataEntryException;
 import com.au.domain.Onboard;
 import com.au.domain.OnboardMapper;
 import com.au.domain.Operation;
+import com.au.exception.customExceptions.FailedDatabaseLoggingException;
+import com.au.exception.customExceptions.InvalidDataEntryException;
 import com.au.service.OnboardLogService;
 
 @Component
