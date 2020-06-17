@@ -8,6 +8,7 @@ public class FailedDatabaseLoggingException extends RuntimeException {
 	private static final long serialVersionUID = 5062472799568212388L;
 
 	public FailedDatabaseLoggingException() {
+		super("Database Log Failed");
 	}
 
 	public FailedDatabaseLoggingException(String message) {

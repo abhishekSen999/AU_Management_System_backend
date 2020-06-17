@@ -1,9 +1,10 @@
 package com.au.web.security.tokenVerification;
 
-import java.io.IOException;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import com.au.exception.customExceptions.UnauthorizedUserException;
 @Component
 public class GoogleClientAPIWrapper {
 	
@@ -41,9 +42,9 @@ public class GoogleClientAPIWrapper {
 				System.out.println("email not verified");
 				return "unverified user";}
 		}
-		catch(Exception e)
+		catch(Exception exception)
 		{
-			return "unverified user";
+			throw new UnauthorizedUserException("IdToken id is not valid / has expired, re-login to continue " , exception);
 		}
 	}
 

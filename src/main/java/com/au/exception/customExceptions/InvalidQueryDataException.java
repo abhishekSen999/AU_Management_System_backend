@@ -10,7 +10,7 @@ public class InvalidQueryDataException extends RuntimeException {
 	private static final long serialVersionUID = 9147737525310481194L;
 
 	public InvalidQueryDataException() {
-		super();
+		super(" Invalid data for querying ");
 	}
 
 	public InvalidQueryDataException(String message, Throwable cause, boolean enableSuppression,

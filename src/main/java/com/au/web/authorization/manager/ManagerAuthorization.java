@@ -2,19 +2,20 @@ package com.au.web.authorization.manager;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.au.domain.Onboard;
+import com.au.exception.customExceptions.UnauthorizedUserException;
 import com.au.service.DemandService;
 import com.au.service.EmployeeService;
 import com.au.service.OnboardLogService;
 import com.au.service.OnboardService;
 import com.au.web.authorization.AuthorizationLevel;
-import com.au.web.authorization.AutoLogout;
 import com.au.web.authorization.LoginAuthorizationInterface;
+import com.au.web.authorization.UserDataKey;
 
 @Component
 public class ManagerAuthorization implements ManagerAuthorizationInterface{
@@ -65,17 +66,21 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 	
 	
 	@Override
-	public Object getAuthorization() {  // returns authorization level for authorized user and logs out unauthorized user.
+	public Object getAuthorization(String idToken) {  // returns authorization level for authorized user and logs out unauthorized user.
 		
 		
 		
-		AuthorizationLevel authorizationLevel =getUser().getAuthorizationLevel();
-		System.out.println(authorizationLevel);
+		Map<UserDataKey,Object> userData =getUser().getEmailAndAuthorizationLevel(idToken);
+		
+		AuthorizationLevel authorizationLevel = Enum.valueOf(AuthorizationLevel.class, (userData.get(UserDataKey.AuthorizationLevel).toString()));
+		
+		String userEmail = userData.get(UserDataKey.Email).toString();
+		
+		System.out.println();
 		if( authorizationLevel == AuthorizationLevel.unauthorizedUser )  // only manager and admin will get access
 		{
 			
-			AutoLogout.autoLogout();
-			return AutoLogout.autoLogout();
+			throw new UnauthorizedUserException(userEmail+" is not authorized to access this service.");
 			
 		}
 		return authorizationLevel;  
@@ -83,17 +88,20 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 	}
 
 	@Override
-	public Object getAuthorization(String className, String functionName ,  List<Object> parameterList) {
+	public Object getAuthorization(String idToken,String className, String functionName ,  List<Object> parameterList) {
 
-		AuthorizationLevel authorizationLevel =getUser().getAuthorizationLevel();
+		Map<UserDataKey,Object> userData =getUser().getEmailAndAuthorizationLevel(idToken);
+		
+		AuthorizationLevel authorizationLevel = Enum.valueOf(AuthorizationLevel.class, (userData.get(UserDataKey.AuthorizationLevel).toString()));
+		
+		String userEmail = userData.get(UserDataKey.Email).toString();
 		
 		if( authorizationLevel == AuthorizationLevel.unauthorizedUser )  // only manager and admin will get access
 		{
 			System.out.println(authorizationLevel);
 			
-			AutoLogout.autoLogout();
-			  
-			return AutoLogout.autoLogout();
+			throw new UnauthorizedUserException(userEmail+" is not authorized to access this service.");
+			
 			
 		}
 		
@@ -142,11 +150,11 @@ public class ManagerAuthorization implements ManagerAuthorizationInterface{
 						
 						
 						
-						case "add": return getOnboardService().add((Onboard)parameterList.get(0));
+						case "add": return getOnboardService().add((Onboard)parameterList.get(0) , userEmail);
 						
-						case "update": return getOnboardService().update((Onboard)parameterList.get(0));
+						case "update": return getOnboardService().update((Onboard)parameterList.get(0) , userEmail );
 						
-						case "delete": return getOnboardService().delete((long)parameterList.get(0));
+						case "delete": return getOnboardService().delete((long)parameterList.get(0) , userEmail);
 						
 						default : break;
 						

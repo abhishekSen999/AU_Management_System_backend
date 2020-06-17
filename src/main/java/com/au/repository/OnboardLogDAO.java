@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.au.domain.OnboardLog;
 import com.au.domain.OnboardLogMapper;
+import com.au.exception.customExceptions.RecordNotFoundException;
 
 @Component
 public class OnboardLogDAO {
@@ -46,6 +47,11 @@ public class OnboardLogDAO {
 		String sql = "select * from Onboard_Log";
 		List<OnboardLog> logList = jdbcTemplate.query(sql, onboardLogMapper );
 		
+		if(logList.size() == 0)
+		{
+			throw new RecordNotFoundException("No Onboard Logs Found");
+		}
+		
 		return logList;
 		
 	}
@@ -54,6 +60,12 @@ public class OnboardLogDAO {
 	{
 		String sql = "select * from Onboard_Log where emp_id = ?";
 		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {emp_id}, onboardLogMapper);
+		
+		if(logList.size() == 0)
+		{
+			throw new RecordNotFoundException("No Onboard Logs Found for Employee Id: "+emp_id);
+		}
+		
 		return logList;
 	}
 	
@@ -61,6 +73,13 @@ public class OnboardLogDAO {
 	{
 		String sql = "select * from Onboard_Log where dem_id = ?";
 		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {dem_id}, onboardLogMapper);
+		
+		if(logList.size() == 0)
+		{
+			throw new RecordNotFoundException("No Onboard Logs Found for Demand Id: "+dem_id);
+		}
+		
+		
 		return logList;
 	}
 	
@@ -68,6 +87,12 @@ public class OnboardLogDAO {
 	{
 		String sql = "select * from Onboard_Log where emp_id = ? and dem_id = ?";
 		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {emp_id , dem_id}, onboardLogMapper);
+		
+		if(logList.size() == 0)
+		{
+			throw new RecordNotFoundException("No Onboard Logs Found for Employee Id: "+emp_id + " and Demand Id: "+dem_id);
+		}
+		
 		return logList;
 	}
 	
@@ -76,6 +101,12 @@ public class OnboardLogDAO {
 	{
 		String sql = "select * from Onboard_Log where operator = ?";
 		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {operator.toLowerCase()}, onboardLogMapper);
+		
+		if(logList.size() == 0)
+		{
+			throw new RecordNotFoundException("No Onboard Logs Found for Operator: "+operator);
+		}
+		
 		return logList;
 	}
 	
@@ -83,6 +114,11 @@ public class OnboardLogDAO {
 	{
 		String sql = "select * from Onboard_Log where operation = ?";
 		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {operation}, onboardLogMapper);
+		if(logList.size() == 0)
+		{
+			throw new RecordNotFoundException("No Onboard Logs Found for Operation: "+operation);
+		}
+		
 		return logList;
 	}
 	
@@ -90,6 +126,12 @@ public class OnboardLogDAO {
 	{
 		String sql = "select * from Onboard_Log where timestamp between ? and ?";
 		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {timestamp1 , timestamp2}, onboardLogMapper);
+		
+		if(logList.size() == 0)
+		{
+			throw new RecordNotFoundException("No Onboard Logs Found between: "+timestamp1+" and "+timestamp2);
+		}
+		
 		return logList;
 	}
 	
@@ -98,17 +140,15 @@ public class OnboardLogDAO {
 	{
 		String sql = "select* from onboard_log where onb_id  = ?";
 		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {onb_id}, onboardLogMapper);
+		
+		if(logList.size() == 0)
+		{
+			throw new RecordNotFoundException("No Onboard Logs Found for Onboard Id: "+onb_id);
+		}
+		
+		
 		return logList;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 
 }

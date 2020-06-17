@@ -14,6 +14,7 @@ import com.au.exception.customExceptions.FailedDatabaseLoggingException;
 import com.au.exception.customExceptions.InvalidDataEntryException;
 import com.au.exception.customExceptions.InvalidQueryDataException;
 import com.au.exception.customExceptions.RecordNotFoundException;
+import com.au.exception.customExceptions.UnauthorizedUserException;
 import com.au.exception.response.CustomResponse;
 import com.au.exception.response.CustomResponseImpl;
 
@@ -61,6 +62,17 @@ public class PrimaryControllerAdvisor extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> handleRecordNotFoundException( RecordNotFoundException exception, WebRequest request )
 	{
 		HttpStatus status = HttpStatus.NOT_FOUND;
+		CustomResponse response = new CustomResponseImpl();
+		response.setStatusInResponseBody(status)
+				.setError(exception)
+				.setMessageInResponseBody(exception.getMessage());
+		return handleExceptionInternal(exception, response.getBody(), new HttpHeaders(), status, request);
+	}
+	
+	@ExceptionHandler(UnauthorizedUserException.class)
+	public ResponseEntity<Object> handleUnauthorizedUserException( UnauthorizedUserException exception, WebRequest request )
+	{
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		CustomResponse response = new CustomResponseImpl();
 		response.setStatusInResponseBody(status)
 				.setError(exception)

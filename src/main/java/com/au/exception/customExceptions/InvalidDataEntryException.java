@@ -9,6 +9,7 @@ public class InvalidDataEntryException extends RuntimeException {
 	private static final long serialVersionUID = -89112754760964091L;
 
 	public InvalidDataEntryException() {
+		super("Invalid Data For Entry");
 	}
 
 	public InvalidDataEntryException(String message) {

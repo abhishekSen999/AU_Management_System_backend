@@ -1,11 +1,10 @@
 package com.au.web.security;
 
-public interface OAuthAuthenticatedUserDataInterface { //interface to autowire user data from SecuirityContextHolder 
+public interface OAuthAuthenticatedUserDataInterface {  
 
-	public String getAuthenticatedUserEmail();
+	public String getAuthenticatedUserEmail(String idToken);
 	
-	public String getAuthenticatedUserName();
+	public String getAuthenticatedUserName(String idToken);
 	
-	public void setIdToken(String idToken);
 	
 }

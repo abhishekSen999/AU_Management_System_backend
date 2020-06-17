@@ -6,15 +6,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.omg.PortableInterceptor.SUCCESSFUL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.au.domain.Demand;
 import com.au.domain.Onboard;
-import com.au.domain.Operation;
 import com.au.domain.Skill;
-import com.au.exception.customExceptions.FailedDatabaseLoggingException;
 import com.au.exception.customExceptions.InvalidDataEntryException;
 import com.au.exception.customExceptions.InvalidQueryDataException;
 import com.au.repository.OnboardDAO;
@@ -275,12 +272,13 @@ public class OnboardService {
 
 	/**
 	 * @param onboard Onboard object which needs to be added to database
+	 * @param userEmail identification of user who is doing this operation
 	 * @return 1 if add is successful else return 0.
 	 * @throws InvalidDataEntryException if 1)onboard is null 2)any field of oboard
 	 *                                   is invalid 3)demand and employee skillset
 	 *                                   are not compatible 4)demand is already met
 	 */
-	public int add(Onboard onboard) {
+	public int add(Onboard onboard , String userEmail) {
 		Optional<String> errorMessage = Optional.empty();
 
 		if (onboard == null) {
@@ -332,7 +330,7 @@ public class OnboardService {
 			throw new InvalidDataEntryException(message);
 		});
 
-		result = getOnboardDao().add(onboard);
+		result = getOnboardDao().add(onboard , userEmail);
 
 		return result;
 	}
@@ -341,12 +339,13 @@ public class OnboardService {
 	 * @param onboard Onboard object containing fields which needs to be updated( if
 	 *                fields are invalid previous / update not possible then
 	 *                previous fields are not changed)
+	 * @param userEmail identification of user who is doing this operation
 	 * @return 1 if update operation is successful else 0
 	 * @throws InvalidDataEntryException if onboard object is null or if onb_id
 	 *                                   field of onboard is invalid
 	 */
 
-	public int update(Onboard onboard) {
+	public int update(Onboard onboard , String userEmail) {
 		Optional<String> errorMessage = Optional.empty();
 
 		int result = -1;
@@ -397,7 +396,7 @@ public class OnboardService {
 					.concat(" - Demand Id: " + currentOnboard.getDem_id() + " is already met - "));
 		}
 
-		result = getOnboardDao().update(currentOnboard);
+		result = getOnboardDao().update(currentOnboard , userEmail);
 
 		return result;
 
@@ -405,11 +404,12 @@ public class OnboardService {
 
 	/**
 	 * @param onb_id Onboard Id which has to be deleted (cannot be 0)
+	 * @param userEmail identification of user who is doing this operation
 	 * @return 1 if Delete is successful
 	 * @throws InvalidDataEntryException if onb_id is 0
 	 * 
 	 */
-	public int delete(long onb_id) {
+	public int delete(long onb_id , String userEmail) {
 		Optional<String> errorMessage = Optional.empty();
 
 		if (onb_id <= 0) {
@@ -420,7 +420,7 @@ public class OnboardService {
 			throw new InvalidDataEntryException(message);
 		});
 
-		int result = getOnboardDao().delete(onb_id);
+		int result = getOnboardDao().delete(onb_id , userEmail);
 
 		return result;
 

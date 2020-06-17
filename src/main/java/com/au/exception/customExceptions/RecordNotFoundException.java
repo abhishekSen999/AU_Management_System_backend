@@ -8,7 +8,7 @@ public class RecordNotFoundException extends RuntimeException{
 	private static final long serialVersionUID = 1860816161506259570L;
 
 	public RecordNotFoundException() {
-		super();
+		super("Records Not Found");
 	}
 
 	public RecordNotFoundException(String message, Throwable cause, boolean enableSuppression,

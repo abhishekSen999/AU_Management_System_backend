@@ -1,12 +1,13 @@
 package com.au.web.authorization;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Component;
 
 @Component
 public interface LoginAuthorizationInterface {
 	
 	
-	public Object getAuthorization() ;  // the implementing class should use principal object to get authorization
-	public AuthorizationLevel getAuthorizationLevel();
+	public Map<UserDataKey,Object> getEmailAndAuthorizationLevel(String idToken);
 
 }

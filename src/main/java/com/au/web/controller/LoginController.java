@@ -2,7 +2,7 @@ package com.au.web.controller;
 
 
 
-import java.sql.Date;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.au.web.authorization.LoginAuthorizationInterface;
-import com.au.web.security.AuthenticatedUserData;
+import com.au.web.authorization.UserDataKey;
 import com.au.web.security.OAuthAuthenticatedUserDataInterface;
 
 
@@ -38,13 +38,13 @@ public class LoginController {   //
 	
 	@CrossOrigin
 	@GetMapping("/user")
-	public Object login(@RequestHeader("Authorization") String idToken ) {
+	public Object getAuthorizationLevel(@RequestHeader("Authorization") String idToken ) {
 		
 		
-		userVerifier.setIdToken(idToken);
 		
+		Map<UserDataKey,Object> userData = user.getEmailAndAuthorizationLevel(idToken); 
 		
-		return user.getAuthorization(); // get authorization for accessing these services
+		return  userData.get(UserDataKey.AuthorizationLevel);// get authorization for accessing these services
 	}
 	
 	

@@ -1,9 +1,7 @@
 package com.au.domain;
 
 
-import java.util.Map;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.stereotype.Component;
 
 @Component

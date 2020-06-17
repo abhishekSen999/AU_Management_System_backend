@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 

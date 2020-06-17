@@ -53,12 +53,12 @@ public class OnboardLogService {
 	
 
 
-	public int setLog(Operation  operation , long onb_id )
+	public int setLog(Operation  operation , long onb_id , String userEmail)
 	{
 		 
 		
 		OnboardLog onboardLog = new OnboardLog();
-		String operator = getUser().getAuthenticatedUserEmail();
+		String operator = userEmail;
 		onboardLog.setOnb_id(onb_id)
 				.setOperation(operation)
 				.setOperator(operator);
