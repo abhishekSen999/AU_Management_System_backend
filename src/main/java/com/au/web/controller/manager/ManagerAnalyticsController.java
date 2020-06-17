@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.au.web.authorization.manager.ManagerAuthorizationInterface;
 import com.au.web.security.OAuthAuthenticatedUserDataInterface;
 
+@CrossOrigin
 @RestController
 public class ManagerAnalyticsController {
 	@Autowired

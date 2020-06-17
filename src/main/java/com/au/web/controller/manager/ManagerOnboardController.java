@@ -19,6 +19,7 @@ import com.au.domain.Onboard;
 
 import com.au.web.authorization.manager.ManagerAuthorizationInterface;
 
+@CrossOrigin
 @RestController
 public class ManagerOnboardController { 
 

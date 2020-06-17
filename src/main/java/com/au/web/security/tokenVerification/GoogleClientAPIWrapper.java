@@ -30,12 +30,12 @@ public class GoogleClientAPIWrapper {
 			
 			TokenDomain token = restTemplate.getForObject("https://oauth2.googleapis.com/tokeninfo?id_token="+idToken, TokenDomain.class);
 			
-			System.out.println(token);
+//			System.out.println(token);
 			
 			
 			
 			if(token.getEmail_verified().equalsIgnoreCase("true")) {
-				System.out.println("here");
+//				System.out.println("here");
 				return token.getEmail();
 			}
 			else {

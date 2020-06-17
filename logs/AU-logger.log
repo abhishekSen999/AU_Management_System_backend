@@ -1,0 +1,103 @@
+2020-06-17 21:08:44,191 INFO o.s.b.StartupInfoLogger [restartedMain] Starting AuManagementSystemApplication on DESKTOP-6IHGLO8 with PID 2292 (C:\Users\nsnee\abhishek\eclipse-workspace\AU_Management_System_backend\target\classes started by nsnee in C:\Users\nsnee\abhishek\eclipse-workspace\AU_Management_System_backend)
+2020-06-17 21:08:44,201 INFO o.s.b.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2020-06-17 21:08:44,254 INFO o.s.b.l.DeferredLog [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-06-17 21:08:44,254 INFO o.s.b.l.DeferredLog [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-06-17 21:08:45,957 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2020-06-17 21:08:45,997 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 35ms. Found 0 JDBC repository interfaces.
+2020-06-17 21:08:46,908 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+2020-06-17 21:08:46,917 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+2020-06-17 21:08:46,917 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2020-06-17 21:08:46,918 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.35]
+2020-06-17 21:08:47,003 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2020-06-17 21:08:47,004 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 2749 ms
+2020-06-17 21:08:48,177 WARN o.s.d.r.w.h.HalBrowser [restartedMain] ---
+2020-06-17 21:08:48,178 WARN o.s.d.r.w.h.HalBrowser [restartedMain] Spring Data REST HAL Browser is deprecated! Prefer the HAL Explorer (artifactId: spring-data-rest-hal-explorer)!
+2020-06-17 21:08:48,178 WARN o.s.d.r.w.h.HalBrowser [restartedMain] ---
+2020-06-17 21:08:49,161 INFO o.s.b.a.e.w.EndpointLinksResolver [restartedMain] Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-06-17 21:08:49,240 INFO o.s.s.w.DefaultSecurityFilterChain [restartedMain] Creating filter chain: Ant [pattern='/'], [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6655b6a4, org.springframework.security.web.context.SecurityContextPersistenceFilter@2d7cc931, org.springframework.security.web.header.HeaderWriterFilter@597b0d0a, org.springframework.web.filter.CorsFilter@b9fa9a7, org.springframework.security.web.authentication.logout.LogoutFilter@36d5bf71, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@7c13f5cf, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@66452e06, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@1e01dfd8, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@7cb0e55e, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@56905267, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@155b285c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@52298313, org.springframework.security.web.session.SessionManagementFilter@1c5eb1a7, org.springframework.security.web.access.ExceptionTranslationFilter@24fcf056, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@13d19139]
+2020-06-17 21:08:49,332 INFO o.s.s.c.ExecutorConfigurationSupport [restartedMain] Initializing ExecutorService 'applicationTaskExecutor'
+2020-06-17 21:08:49,485 WARN o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration [restartedMain] Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2020-06-17 21:08:49,718 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+2020-06-17 21:08:55,597 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+2020-06-17 21:08:57,034 INFO o.a.j.l.DirectJDKLog [RMI TCP Connection(1)-127.0.0.1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-06-17 21:08:57,034 INFO o.s.w.s.FrameworkServlet [RMI TCP Connection(1)-127.0.0.1] Initializing Servlet 'dispatcherServlet'
+2020-06-17 21:08:57,322 INFO o.s.w.s.FrameworkServlet [RMI TCP Connection(1)-127.0.0.1] Completed initialization in 288 ms
+2020-06-17 21:08:57,457 INFO o.s.b.d.a.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2020-06-17 21:08:57,515 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+2020-06-17 21:08:58,706 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+2020-06-17 21:08:58,717 INFO o.s.b.StartupInfoLogger [restartedMain] Started AuManagementSystemApplication in 15.039 seconds (JVM running for 31.559)
+2020-06-17 21:09:39,445 WARN c.a.e.c.PrimaryControllerAdvisor [http-nio-8080-exec-1] Unauthorized access attempt: IdToken id is not valid / has expired, re-login to continue 
+2020-06-17 21:09:39,786 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-1] Resolved [com.au.exception.customExceptions.UnauthorizedUserException: IdToken id is not valid / has expired, re-login to continue ]
+2020-06-17 21:09:51,443 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-2] Resolved [org.springframework.web.bind.MissingRequestHeaderException: Missing request header 'Authorization' for method parameter of type String]
+2020-06-17 21:22:25,465 WARN c.a.e.c.PrimaryControllerAdvisor [http-nio-8080-exec-6] Unauthorized access attempt: IdToken id is not valid / has expired, re-login to continue 
+2020-06-17 21:22:25,483 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-6] Resolved [com.au.exception.customExceptions.UnauthorizedUserException: IdToken id is not valid / has expired, re-login to continue ]
+2020-06-17 21:32:27,137 INFO c.a.e.c.PrimaryControllerAdvisor [http-nio-8080-exec-8] Data Query failed because of: No Record found for Employee Id: 2 and Demand Id: 2
+2020-06-17 21:32:27,140 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-8] Resolved [com.au.exception.customExceptions.RecordNotFoundException: No Record found for Employee Id: 2 and Demand Id: 2]
+2020-06-17 21:34:01,087 INFO o.s.s.c.ExecutorConfigurationSupport [Thread-360] Shutting down ExecutorService 'applicationTaskExecutor'
+2020-06-17 21:34:01,092 INFO c.z.h.HikariDataSource [Thread-360] HikariPool-1 - Shutdown initiated...
+2020-06-17 21:34:01,108 INFO c.z.h.HikariDataSource [Thread-360] HikariPool-1 - Shutdown completed.
+2020-06-17 21:34:01,925 INFO o.s.b.StartupInfoLogger [restartedMain] Starting AuManagementSystemApplication on DESKTOP-6IHGLO8 with PID 2292 (C:\Users\nsnee\abhishek\eclipse-workspace\AU_Management_System_backend\target\classes started by nsnee in C:\Users\nsnee\abhishek\eclipse-workspace\AU_Management_System_backend)
+2020-06-17 21:34:01,926 INFO o.s.b.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2020-06-17 21:34:05,973 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2020-06-17 21:34:06,058 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 84ms. Found 0 JDBC repository interfaces.
+2020-06-17 21:34:07,082 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+2020-06-17 21:34:07,082 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+2020-06-17 21:34:07,083 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2020-06-17 21:34:07,083 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.35]
+2020-06-17 21:34:07,154 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2020-06-17 21:34:07,154 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 5225 ms
+2020-06-17 21:34:07,455 WARN o.s.d.r.w.h.HalBrowser [restartedMain] ---
+2020-06-17 21:34:07,455 WARN o.s.d.r.w.h.HalBrowser [restartedMain] Spring Data REST HAL Browser is deprecated! Prefer the HAL Explorer (artifactId: spring-data-rest-hal-explorer)!
+2020-06-17 21:34:07,455 WARN o.s.d.r.w.h.HalBrowser [restartedMain] ---
+2020-06-17 21:34:07,679 INFO o.s.b.a.e.w.EndpointLinksResolver [restartedMain] Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-06-17 21:34:07,690 INFO o.s.s.w.DefaultSecurityFilterChain [restartedMain] Creating filter chain: Ant [pattern='/'], [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@54d4320f, org.springframework.security.web.context.SecurityContextPersistenceFilter@6a23a599, org.springframework.security.web.header.HeaderWriterFilter@7b6e1e85, org.springframework.web.filter.CorsFilter@38e36203, org.springframework.security.web.authentication.logout.LogoutFilter@6b0cfae1, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@c405967, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@128fcc5a, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@6cec0365, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@36668f19, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4b077de2, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4016c831, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5ae77893, org.springframework.security.web.session.SessionManagementFilter@4cbc0d43, org.springframework.security.web.access.ExceptionTranslationFilter@30c238ff, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7193a907]
+2020-06-17 21:34:07,709 INFO o.s.s.c.ExecutorConfigurationSupport [restartedMain] Initializing ExecutorService 'applicationTaskExecutor'
+2020-06-17 21:34:07,764 WARN o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration [restartedMain] Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2020-06-17 21:34:07,811 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-2 - Starting...
+2020-06-17 21:34:08,058 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-2 - Start completed.
+2020-06-17 21:34:08,100 INFO o.s.b.d.a.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2020-06-17 21:34:08,120 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+2020-06-17 21:34:08,125 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+2020-06-17 21:34:08,133 INFO o.s.b.StartupInfoLogger [restartedMain] Started AuManagementSystemApplication in 6.59 seconds (JVM running for 1540.975)
+2020-06-17 21:34:08,136 INFO o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [restartedMain] Condition evaluation unchanged
+2020-06-17 21:35:01,627 INFO o.a.j.l.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-06-17 21:35:01,627 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2020-06-17 21:35:01,632 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 5 ms
+2020-06-17 21:35:02,026 INFO c.a.e.c.PrimaryControllerAdvisor [http-nio-8080-exec-1] Data Query failed because of: No Record found for Onboard Id: 74
+2020-06-17 21:35:02,031 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-1] Resolved [com.au.exception.customExceptions.RecordNotFoundException: No Record found for Onboard Id: 74]
+2020-06-17 21:35:07,134 INFO c.a.e.c.PrimaryControllerAdvisor [http-nio-8080-exec-2] Data Query failed because of: No Record found for Employee Id: 2 and Demand Id: 1
+2020-06-17 21:35:07,137 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-2] Resolved [com.au.exception.customExceptions.RecordNotFoundException: No Record found for Employee Id: 2 and Demand Id: 1]
+2020-06-17 21:35:13,694 INFO c.a.e.c.PrimaryControllerAdvisor [http-nio-8080-exec-3] Data Query failed because of: No Record found for Employee Id: 2 and Demand Id: 2
+2020-06-17 21:35:13,695 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-3] Resolved [com.au.exception.customExceptions.RecordNotFoundException: No Record found for Employee Id: 2 and Demand Id: 2]
+2020-06-17 21:37:13,659 INFO c.a.e.c.PrimaryControllerAdvisor [http-nio-8080-exec-7] Data entry failed because of:  - Demand Id: 1 is already met - 
+2020-06-17 21:37:13,661 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-7] Resolved [com.au.exception.customExceptions.InvalidDataEntryException:  - Demand Id: 1 is already met - ]
+2020-06-17 21:39:42,546 WARN c.a.e.c.PrimaryControllerAdvisor [http-nio-8080-exec-10] Unauthorized access attempt: IdToken id is not valid / has expired, re-login to continue 
+2020-06-17 21:39:42,548 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-10] Resolved [com.au.exception.customExceptions.UnauthorizedUserException: IdToken id is not valid / has expired, re-login to continue ]
+2020-06-17 21:41:04,545 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-2] Resolved [org.springframework.web.bind.MissingRequestHeaderException: Missing request header 'Authorization' for method parameter of type String]
+2020-06-17 21:42:41,971 WARN c.a.e.c.PrimaryControllerAdvisor [http-nio-8080-exec-6] Unauthorized access attempt: abhishek.mcs18.du@gmail.com is not an authorized user, log out and try logging in from a different account.
+2020-06-17 21:42:41,973 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-6] Resolved [com.au.exception.customExceptions.UnauthorizedUserException: abhishek.mcs18.du@gmail.com is not an authorized user, log out and try logging in from a different account.]
+2020-06-17 21:44:02,366 WARN c.a.e.c.PrimaryControllerAdvisor [http-nio-8080-exec-8] Unauthorized access attempt: abhishek.mcs18.du@gmail.com is not an authorized user, log out and try logging in from a different account.
+2020-06-17 21:44:02,368 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-8] Resolved [com.au.exception.customExceptions.UnauthorizedUserException: abhishek.mcs18.du@gmail.com is not an authorized user, log out and try logging in from a different account.]
+2020-06-17 21:45:19,339 WARN c.a.e.c.PrimaryControllerAdvisor [http-nio-8080-exec-10] Unauthorized access attempt: IdToken id is not valid / has expired, re-login to continue 
+2020-06-17 21:45:19,341 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-10] Resolved [com.au.exception.customExceptions.UnauthorizedUserException: IdToken id is not valid / has expired, re-login to continue ]
+2020-06-17 21:45:57,840 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-2] Resolved [org.springframework.web.bind.MissingRequestHeaderException: Missing request header 'Authorization' for method parameter of type String]
+2020-06-17 21:47:09,182 INFO c.a.e.c.PrimaryControllerAdvisor [http-nio-8080-exec-7] Data Query failed because of:  - Onboard id cannot be 0 - 
+2020-06-17 21:47:09,185 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-7] Resolved [com.au.exception.customExceptions.InvalidQueryDataException:  - Onboard id cannot be 0 - ]
+2020-06-17 21:49:40,832 WARN o.s.w.s.m.m.a.ResponseEntityExceptionHandler [http-nio-8080-exec-9] Request method 'POST' not supported
+2020-06-17 21:49:40,833 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-9] Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' not supported]
+2020-06-17 21:49:57,094 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-10] Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Unexpected character ('}' (code 125)): was expecting double-quote to start field name; nested exception is com.fasterxml.jackson.core.JsonParseException: Unexpected character ('}' (code 125)): was expecting double-quote to start field name
+ at [Source: (PushbackInputStream); line: 6, column: 2]]
+2020-06-17 21:50:53,351 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-1] Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Unexpected character (',' (code 44)): expected a value; nested exception is com.fasterxml.jackson.core.JsonParseException: Unexpected character (',' (code 44)): expected a value
+ at [Source: (PushbackInputStream); line: 4, column: 12]]
+2020-06-17 21:51:29,850 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-2] Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Unexpected character (',' (code 44)): expected a value; nested exception is com.fasterxml.jackson.core.JsonParseException: Unexpected character (',' (code 44)): expected a value
+ at [Source: (PushbackInputStream); line: 4, column: 12]]
+2020-06-17 21:51:59,116 INFO c.a.e.c.PrimaryControllerAdvisor [http-nio-8080-exec-3] Data entry failed because of:  - Demand Id cannot be null -  - ETA of Completion cannot be null -  - Start Date cannot be null - 
+2020-06-17 21:51:59,118 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-3] Resolved [com.au.exception.customExceptions.InvalidDataEntryException:  - Demand Id cannot be null -  - ETA of Completion cannot be null -  - Start Date cannot be null - ]
+2020-06-17 21:53:31,589 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-5] Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Unexpected character (',' (code 44)): expected a value; nested exception is com.fasterxml.jackson.core.JsonParseException: Unexpected character (',' (code 44)): expected a value
+ at [Source: (PushbackInputStream); line: 7, column: 23]]
+2020-06-17 21:53:37,469 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-6] Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Unexpected character ('}' (code 125)): was expecting double-quote to start field name; nested exception is com.fasterxml.jackson.core.JsonParseException: Unexpected character ('}' (code 125)): was expecting double-quote to start field name
+ at [Source: (PushbackInputStream); line: 8, column: 2]]
+2020-06-17 21:58:23,953 INFO o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin [RMI TCP Connection(61)-127.0.0.1] Application shutdown requested.
+2020-06-17 21:58:24,317 INFO o.s.s.c.ExecutorConfigurationSupport [RMI TCP Connection(61)-127.0.0.1] Shutting down ExecutorService 'applicationTaskExecutor'
+2020-06-17 21:58:24,319 INFO c.z.h.HikariDataSource [RMI TCP Connection(61)-127.0.0.1] HikariPool-2 - Shutdown initiated...
+2020-06-17 21:58:24,334 INFO c.z.h.HikariDataSource [RMI TCP Connection(61)-127.0.0.1] HikariPool-2 - Shutdown completed.

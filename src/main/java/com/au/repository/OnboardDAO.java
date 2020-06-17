@@ -171,14 +171,15 @@ public class OnboardDAO {
 	
 	
     @Transactional
-	public int add(Onboard onboard , String userEmail) {
+	public synchronized Onboard add(Onboard onboard , String userEmail) {
 		int result = 0;
+		Onboard addedOnboard = null;
 		String sql = "insert into onboard (emp_id, dem_id, start_date, eta_of_completion, bgc_status ,onboarding_status)  values ( ? , ? , ? , ?,?,?)";
 
 		Object[] parameters = new Object[] { onboard.getEmp_id(), onboard.getDem_id(), onboard.getStart_date(),
 				onboard.getEta_of_completion(), onboard.getBgc_status().toLowerCase(),
 				onboard.getOnboarding_status().toLowerCase() };
-
+		
 		
 		
 		try {
@@ -211,13 +212,18 @@ public class OnboardDAO {
 
 				databaseLoggingAttempts++;
 			}
+			//after database access logging complete
+			addedOnboard = getByEmployeeIdAndDemandId(onboard.getEmp_id() , onboard.getDem_id());
 
 		}
-		return result;
+		return addedOnboard;
 	}
 
 	@Transactional
-	public int update(Onboard onboard , String userEmail) {
+	public synchronized Onboard update(Onboard onboard , String userEmail) {
+		
+		Onboard updatedOnboard = null;
+		
 		String sql = "update onboard set emp_id = ?,dem_id = ? , start_Date = ? , eta_of_completion = ? , onboarding_status = ? , bgc_status = ? where onb_id = ?";
 		Object[] parameters = new Object[] { onboard.getEmp_id(), onboard.getDem_id(), onboard.getStart_date(),
 				onboard.getEta_of_completion(), onboard.getOnboarding_status().toLowerCase(),
@@ -253,15 +259,20 @@ public class OnboardDAO {
 
 				databaseLoggingAttempts++;
 			}
+			//if update is successful the updated onboard will be same as the onboard received by this function
+			updatedOnboard = onboard;
 
 		}
 
-		return result;
+		return updatedOnboard;
 
 	}
 
 	@Transactional
-	public int delete(long onb_id , String userEmail) {
+	public synchronized Onboard delete(long onb_id , String userEmail) {
+		
+		Onboard deletedOnboard = getById(onb_id);
+		
 		String sql = "delete from onboard where onb_id = ?";
 		int result = jdbcTemplate.update(sql, new Object[] { onb_id });
 
@@ -284,7 +295,14 @@ public class OnboardDAO {
 			}
 
 		}
-		return result;
+		
+		if(result == 0)
+		{
+			deletedOnboard = null;
+			
+		}
+		
+		return deletedOnboard;
 
 	}
 

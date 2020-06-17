@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.au.web.authorization.manager.ManagerAuthorizationInterface;
 
-
+@CrossOrigin
 @RestController
 public class ManagerOnboardLogController {
 

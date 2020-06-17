@@ -2,6 +2,7 @@ package com.au.service;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,7 @@ import com.au.domain.Onboard;
 import com.au.domain.OnboardLog;
 import com.au.domain.Operation;
 import com.au.exception.customExceptions.FailedDatabaseLoggingException;
+import com.au.exception.customExceptions.InvalidQueryDataException;
 import com.au.repository.OnboardLogDAO;
 import com.au.web.security.OAuthAuthenticatedUserDataInterface;
 
@@ -107,6 +109,18 @@ public class OnboardLogService {
 	public List<OnboardLog>getAllLogByOnboardId(long onb_id)
 	{ 
 		
+		Optional<String> errorMessage = Optional.empty();
+
+		if (onb_id <= 0) {
+			errorMessage = Optional.of(" - Onboard id cannot be 0 - ");
+
+		}
+
+		errorMessage.ifPresent((message) -> {
+			throw new InvalidQueryDataException(message);
+		});
+
+		
 		List<OnboardLog> logList = getOnboardLogDao().getAllLogByOnboardId(onb_id);
 		
 		
@@ -117,6 +131,17 @@ public class OnboardLogService {
 	
 	public List<OnboardLog>getAllLogByEmployeeId(long emp_id)
 	{
+		Optional<String> errorMessage = Optional.empty();
+
+		if (emp_id <= 0) {
+			errorMessage = Optional.of(" - Employee id cannot be 0 - ");
+
+		}
+
+		errorMessage.ifPresent((message) -> {
+			throw new InvalidQueryDataException(message);
+		});
+
 		
 		List<OnboardLog> logList = getOnboardLogDao().getAllLogByEmployeeId(emp_id);
 		
@@ -126,6 +151,17 @@ public class OnboardLogService {
 	
 	public List<OnboardLog>getAllLogByDemandId(long dem_id)
 	{
+		Optional<String> errorMessage = Optional.empty();
+
+		if (dem_id <= 0) {
+			errorMessage = Optional.of(" - demand id cannot be 0 - ");
+
+		}
+
+		errorMessage.ifPresent((message) -> {
+			throw new InvalidQueryDataException(message);
+		});
+
 		
 		List<OnboardLog> logList = getOnboardLogDao().getAllLogByDemandId(dem_id);
 		
@@ -135,6 +171,19 @@ public class OnboardLogService {
 	
 	public List<OnboardLog>getAllLogByEmployeeIdAndDemandId(long emp_id , long dem_id)
 	{
+		Optional<String> errorMessage = Optional.empty();
+		
+		if (emp_id <= 0) {
+			errorMessage = Optional.of(" - Employee Id cannot be 0 - ");
+		}
+		if (dem_id <= 0) {
+			errorMessage = Optional.of(errorMessage.orElse("").concat(" - Demand Id cannot be 0 - "));
+		}
+
+		errorMessage.ifPresent((message) -> {
+			throw new InvalidQueryDataException(message);
+		});
+
 		
 		List<OnboardLog> logList = getOnboardLogDao().getAllLogByEmployeeIdAndDemandId( emp_id , dem_id);
 		
@@ -145,6 +194,19 @@ public class OnboardLogService {
 	public List<OnboardLog> getAllLogByOperator(String operator)
 	{
 		
+		Optional<String> errorMessage = Optional.empty();
+
+		if (operator == null) {
+			errorMessage = Optional.of(" - Operator cannot be null  - ");
+
+		}
+
+		errorMessage.ifPresent((message) -> {
+			throw new InvalidQueryDataException(message);
+		});
+
+		
+		
 		List<OnboardLog> logList = getOnboardLogDao(). getAllLogByOperator(operator);
 		
 		
@@ -153,6 +215,18 @@ public class OnboardLogService {
 	
 	public List<OnboardLog> getAllLogByOperation(String operation)
 	{
+		
+		Optional<String> errorMessage = Optional.empty();
+
+		if (operation == null) {
+			errorMessage = Optional.of(" - Operation cannot be null  - ");
+
+		}
+
+		errorMessage.ifPresent((message) -> {
+			throw new InvalidQueryDataException(message);
+		});
+
 		
 		
 		List<OnboardLog> logList = getOnboardLogDao(). getAllLogByOperation(operation);
@@ -163,6 +237,23 @@ public class OnboardLogService {
 	
 	public List<OnboardLog> getAllLogBetweenTimestamp(Date timestamp1 ,Date timestamp2)
 	{
+		
+		Optional<String> errorMessage = Optional.empty();
+		
+		if (timestamp1 == null) {
+			errorMessage = Optional.of(" - First date cannot be null - ");
+		}
+		if (timestamp2 == null) {
+			errorMessage = Optional.of(errorMessage.orElse("").concat(" - Second date cannot be null - "));
+		}
+
+		errorMessage.ifPresent((message) -> {
+			throw new InvalidQueryDataException(message);
+		});
+
+
+		
+		
 		List<OnboardLog> logList = getOnboardLogDao(). getAllLogBetweenTimestamp(timestamp1, timestamp2);
 		
 		return logList;

@@ -273,12 +273,12 @@ public class OnboardService {
 	/**
 	 * @param onboard Onboard object which needs to be added to database
 	 * @param userEmail identification of user who is doing this operation
-	 * @return 1 if add is successful else return 0.
+	 * @return addedOnboard if add is successful else return null.
 	 * @throws InvalidDataEntryException if 1)onboard is null 2)any field of oboard
 	 *                                   is invalid 3)demand and employee skillset
 	 *                                   are not compatible 4)demand is already met
 	 */
-	public int add(Onboard onboard , String userEmail) {
+	public Onboard add(Onboard onboard , String userEmail) {
 		Optional<String> errorMessage = Optional.empty();
 
 		if (onboard == null) {
@@ -289,7 +289,7 @@ public class OnboardService {
 			throw new InvalidDataEntryException(message);
 		});
 
-		int result = 0;
+		Onboard addedOnboard = null;
 
 		if (onboard.getBgc_status() == null) {
 			errorMessage = Optional.of(" - BGC Status cannot be null - ");
@@ -330,9 +330,9 @@ public class OnboardService {
 			throw new InvalidDataEntryException(message);
 		});
 
-		result = getOnboardDao().add(onboard , userEmail);
+		addedOnboard = getOnboardDao().add(onboard , userEmail);
 
-		return result;
+		return addedOnboard;
 	}
 
 	/**
@@ -345,10 +345,10 @@ public class OnboardService {
 	 *                                   field of onboard is invalid
 	 */
 
-	public int update(Onboard onboard , String userEmail) {
+	public Onboard update(Onboard onboard , String userEmail) {
 		Optional<String> errorMessage = Optional.empty();
 
-		int result = -1;
+		Onboard updatedOnboard = null;
 
 		if (onboard == null) {
 			errorMessage = Optional.of(" - Cannot update null object - ");
@@ -395,10 +395,16 @@ public class OnboardService {
 			errorMessage = Optional.of(errorMessage.orElse("")
 					.concat(" - Demand Id: " + currentOnboard.getDem_id() + " is already met - "));
 		}
+		
+		errorMessage.ifPresent((message) -> {
+			throw new InvalidDataEntryException(message);
+		});
+		
+		
 
-		result = getOnboardDao().update(currentOnboard , userEmail);
+		updatedOnboard = getOnboardDao().update(currentOnboard , userEmail);
 
-		return result;
+		return updatedOnboard;
 
 	}
 
@@ -409,7 +415,7 @@ public class OnboardService {
 	 * @throws InvalidDataEntryException if onb_id is 0
 	 * 
 	 */
-	public int delete(long onb_id , String userEmail) {
+	public Onboard delete(long onb_id , String userEmail) {
 		Optional<String> errorMessage = Optional.empty();
 
 		if (onb_id <= 0) {
@@ -420,9 +426,9 @@ public class OnboardService {
 			throw new InvalidDataEntryException(message);
 		});
 
-		int result = getOnboardDao().delete(onb_id , userEmail);
+		Onboard deletedOnboard = getOnboardDao().delete(onb_id , userEmail);
 
-		return result;
+		return deletedOnboard;
 
 	}
 
