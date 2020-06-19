@@ -21,6 +21,15 @@ public class OnboardLogDAO {
 	@Autowired
 	OnboardLogMapper onboardLogMapper;
 	
+	
+	JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
+	
+	OnboardLogMapper getOnboardLogMapper() {
+		return onboardLogMapper;
+	}
+	
 	@Transactional
 	public int addLog( OnboardLog onboardLog  ) 
 	{
@@ -34,7 +43,7 @@ public class OnboardLogDAO {
 											onboardLog.getEta_of_completion(),
 											onboardLog.getOnboarding_status(),
 											onboardLog.getBgc_status()};
-		return jdbcTemplate.update(sql,parameter);
+		return getJdbcTemplate().update(sql,parameter);
 		
 	
 		
@@ -45,7 +54,7 @@ public class OnboardLogDAO {
 	{
 		
 		String sql = "select * from Onboard_Log";
-		List<OnboardLog> logList = jdbcTemplate.query(sql, onboardLogMapper );
+		List<OnboardLog> logList = getJdbcTemplate().query(sql, getOnboardLogMapper() );
 		
 		if(logList.size() == 0)
 		{
@@ -59,7 +68,7 @@ public class OnboardLogDAO {
 	public List<OnboardLog> getAllLogByEmployeeId(long emp_id)
 	{
 		String sql = "select * from Onboard_Log where emp_id = ?";
-		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {emp_id}, onboardLogMapper);
+		List<OnboardLog> logList = getJdbcTemplate().query(sql,new Object[] {emp_id}, getOnboardLogMapper());
 		
 		if(logList.size() == 0)
 		{
@@ -72,7 +81,7 @@ public class OnboardLogDAO {
 	public List<OnboardLog> getAllLogByDemandId(long dem_id)
 	{
 		String sql = "select * from Onboard_Log where dem_id = ?";
-		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {dem_id}, onboardLogMapper);
+		List<OnboardLog> logList = getJdbcTemplate().query(sql,new Object[] {dem_id}, getOnboardLogMapper());
 		
 		if(logList.size() == 0)
 		{
@@ -86,7 +95,7 @@ public class OnboardLogDAO {
 	public List<OnboardLog> getAllLogByEmployeeIdAndDemandId(long emp_id , long dem_id)
 	{
 		String sql = "select * from Onboard_Log where emp_id = ? and dem_id = ?";
-		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {emp_id , dem_id}, onboardLogMapper);
+		List<OnboardLog> logList = getJdbcTemplate().query(sql,new Object[] {emp_id , dem_id}, getOnboardLogMapper());
 		
 		if(logList.size() == 0)
 		{
@@ -100,7 +109,7 @@ public class OnboardLogDAO {
 	public List<OnboardLog> getAllLogByOperator(String operator)
 	{
 		String sql = "select * from Onboard_Log where operator = ?";
-		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {operator.toLowerCase()}, onboardLogMapper);
+		List<OnboardLog> logList = getJdbcTemplate().query(sql,new Object[] {operator.toLowerCase()}, getOnboardLogMapper());
 		
 		if(logList.size() == 0)
 		{
@@ -113,7 +122,7 @@ public class OnboardLogDAO {
 	public List<OnboardLog> getAllLogByOperation(String operation)
 	{
 		String sql = "select * from Onboard_Log where operation = ?";
-		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {operation}, onboardLogMapper);
+		List<OnboardLog> logList = getJdbcTemplate().query(sql,new Object[] {operation}, getOnboardLogMapper());
 		if(logList.size() == 0)
 		{
 			throw new RecordNotFoundException("No Onboard Logs Found for Operation: "+operation);
@@ -125,7 +134,7 @@ public class OnboardLogDAO {
 	public List<OnboardLog> getAllLogBetweenTimestamp(Date timestamp1 ,Date timestamp2)
 	{
 		String sql = "select * from Onboard_Log where timestamp between ? and ?";
-		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {timestamp1 , timestamp2}, onboardLogMapper);
+		List<OnboardLog> logList = getJdbcTemplate().query(sql,new Object[] {timestamp1 , timestamp2}, getOnboardLogMapper());
 		
 		if(logList.size() == 0)
 		{
@@ -139,7 +148,7 @@ public class OnboardLogDAO {
 	public List<OnboardLog> getAllLogByOnboardId(long onb_id)
 	{
 		String sql = "select* from onboard_log where onb_id  = ?";
-		List<OnboardLog> logList = jdbcTemplate.query(sql,new Object[] {onb_id}, onboardLogMapper);
+		List<OnboardLog> logList = getJdbcTemplate().query(sql,new Object[] {onb_id}, getOnboardLogMapper());
 		
 		if(logList.size() == 0)
 		{

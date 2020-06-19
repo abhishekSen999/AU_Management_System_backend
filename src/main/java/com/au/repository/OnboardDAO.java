@@ -38,10 +38,21 @@ public class OnboardDAO {
 	OnboardLogService getOnboardLogService() {
 		return onboardLogService;
 	}
+	
+	JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
+	
+	OnboardMapper getOnboardMapper() {
+		return onboardMapper;
+	}
+	
+	
+	
 
 	public List<Onboard> getAll() {
 		String sql = "select * from onboard";
-		List<Onboard> onboardList = jdbcTemplate.query(sql, onboardMapper);
+		List<Onboard> onboardList = getJdbcTemplate().query(sql, getOnboardMapper());
 		
 		
 		if(onboardList.size()==0) {
@@ -54,7 +65,7 @@ public class OnboardDAO {
 	// todo add rest of the layers
 	public List<Onboard> getByStartDate(Date start_date) {
 		String sql = "select * from onboard where start_date=?";
-		List<Onboard> onboardList = jdbcTemplate.query(sql, new Object[] { start_date }, onboardMapper);
+		List<Onboard> onboardList = getJdbcTemplate().query(sql, new Object[] { start_date }, getOnboardMapper());
 		
 		if(onboardList.size()==0) {
 			throw new RecordNotFoundException("No Records Found for Start Date: "+start_date);
@@ -65,7 +76,7 @@ public class OnboardDAO {
 
 	public List<Onboard> getByEtaOfCompletion(Date eta_of_completion) {
 		String sql = "select * from onboard where eta_of_completion=?";
-		List<Onboard> onboardList = jdbcTemplate.query(sql, new Object[] { eta_of_completion }, onboardMapper);
+		List<Onboard> onboardList = getJdbcTemplate().query(sql, new Object[] { eta_of_completion }, getOnboardMapper());
 		if(onboardList.size()==0) {
 			throw new RecordNotFoundException("No Records Found for Eta Of Completion: "+eta_of_completion);
 		}
@@ -75,8 +86,8 @@ public class OnboardDAO {
 
 	public List<Onboard> getByOnboardingStatus(String onboarding_status) {
 		String sql = "select * from onboard where lower(onboarding_status) = ? ";
-		List<Onboard> onboardList = jdbcTemplate.query(sql, new Object[] { onboarding_status.toLowerCase() },
-				onboardMapper);
+		List<Onboard> onboardList = getJdbcTemplate().query(sql, new Object[] { onboarding_status.toLowerCase() },
+				getOnboardMapper());
 		
 		if(onboardList.size()==0) {
 			throw new RecordNotFoundException("No Records Found for Onboarding Status: "+onboarding_status);
@@ -88,8 +99,8 @@ public class OnboardDAO {
 
 	public List<Onboard> getByOnboardingStatusWithWildcard(String onboarding_status) {
 		String sql = "select * from onboard where lower(onboarding_status) like ? ";
-		List<Onboard> onboardList = jdbcTemplate.query(sql, new Object[] { onboarding_status.toLowerCase() },
-				onboardMapper);
+		List<Onboard> onboardList = getJdbcTemplate().query(sql, new Object[] { onboarding_status.toLowerCase() },
+				getOnboardMapper());
 		if(onboardList.size()==0) {
 			throw new RecordNotFoundException("No Records Found for Onboarding Status like : "+onboarding_status.replace('%', '*'));
 		}
@@ -100,7 +111,7 @@ public class OnboardDAO {
 
 	public List<Onboard> getByBgcStatus(String bgc_status) {
 		String sql = "select * from onboard where lower(bgc_status) = ?";
-		List<Onboard> onboardList = jdbcTemplate.query(sql, new Object[] { bgc_status.toLowerCase() }, onboardMapper);
+		List<Onboard> onboardList = getJdbcTemplate().query(sql, new Object[] { bgc_status.toLowerCase() }, getOnboardMapper());
 		
 		
 		if(onboardList.size()==0) {
@@ -113,7 +124,7 @@ public class OnboardDAO {
 
 	public List<Onboard> getByBgcStatusWithWildcard(String bgc_status) {
 		String sql = "select * from onboard where lower(bgc_status) like ?";
-		List<Onboard> onboardList = jdbcTemplate.query(sql, new Object[] { bgc_status.toLowerCase() }, onboardMapper);
+		List<Onboard> onboardList = getJdbcTemplate().query(sql, new Object[] { bgc_status.toLowerCase() }, getOnboardMapper());
 		
 		if(onboardList.size()==0) {
 			throw new RecordNotFoundException("No Records Found for BGC Status like : "+bgc_status.replace('%', '*'));
@@ -125,7 +136,7 @@ public class OnboardDAO {
 
 	public int getNumberofOnboardForDemandId(long dem_id) {
 		String sql = "select count(*) from onboard where dem_id = ?";
-		List<Map<String, Object>> countMap = jdbcTemplate.queryForList(sql, new Object[] { dem_id });
+		List<Map<String, Object>> countMap = getJdbcTemplate().queryForList(sql, new Object[] { dem_id });
 		int count = (int) (long) countMap.get(0).get("count(*)");
 		return count;
 
@@ -138,7 +149,7 @@ public class OnboardDAO {
 		
 		Onboard onboard = null;
 		try {
-			onboard = jdbcTemplate.queryForObject(sql, new Object[] { onb_id }, onboardMapper);
+			onboard = getJdbcTemplate().queryForObject(sql, new Object[] { onb_id }, getOnboardMapper());
 		} 
 		catch (EmptyResultDataAccessException exception) {
 			throw new RecordNotFoundException("No Record found for Onboard Id: "+onb_id , exception);
@@ -156,7 +167,7 @@ public class OnboardDAO {
 		String sql = "select * from onboard where emp_id=? and dem_id =?";
 		Onboard onboard = null;
 		try {
-			onboard = jdbcTemplate.queryForObject(sql, new Object[] { emp_id, dem_id }, onboardMapper);
+			onboard = getJdbcTemplate().queryForObject(sql, new Object[] { emp_id, dem_id }, getOnboardMapper());
 		}
 		catch (EmptyResultDataAccessException exception) {
 			throw new RecordNotFoundException("No Record found for Employee Id: "+emp_id+" and Demand Id: "+dem_id , exception);
@@ -183,7 +194,7 @@ public class OnboardDAO {
 		
 		
 		try {
-			result = jdbcTemplate.update(sql, parameters);
+			result = getJdbcTemplate().update(sql, parameters);
 		}
 		catch(DuplicateKeyException exception){
 			throw new InvalidDataEntryException(" - Cannot Make this entry, EmployeeId: "+onboard.getEmp_id()+" and DemandId: "+onboard.getDem_id()+" entry is already present in the table - " , exception);
@@ -232,7 +243,7 @@ public class OnboardDAO {
 		int result = 0;
 		
 		try {
-			result = jdbcTemplate.update(sql, parameters);
+			result = getJdbcTemplate().update(sql, parameters);
 		}
 		catch(DuplicateKeyException exception){
 			throw new InvalidDataEntryException(" - Cannot Make this change, EmployeeId: "+onboard.getEmp_id()+" and DemandId: "+onboard.getDem_id()+" entry is already present in the table - " , exception);
@@ -274,7 +285,7 @@ public class OnboardDAO {
 		Onboard deletedOnboard = getById(onb_id);
 		
 		String sql = "delete from onboard where onb_id = ?";
-		int result = jdbcTemplate.update(sql, new Object[] { onb_id });
+		int result = getJdbcTemplate().update(sql, new Object[] { onb_id });
 
 		int databaseLoggingAttempts = 0;
 		if (result == 1) {

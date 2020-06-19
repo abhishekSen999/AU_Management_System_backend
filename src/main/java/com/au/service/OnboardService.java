@@ -340,7 +340,7 @@ public class OnboardService {
 	 *                fields are invalid previous / update not possible then
 	 *                previous fields are not changed)
 	 * @param userEmail identification of user who is doing this operation
-	 * @return 1 if update operation is successful else 0
+	 * @return the updated Onboard if update operation is successful else null
 	 * @throws InvalidDataEntryException if onboard object is null or if onb_id
 	 *                                   field of onboard is invalid
 	 */
@@ -411,7 +411,7 @@ public class OnboardService {
 	/**
 	 * @param onb_id Onboard Id which has to be deleted (cannot be 0)
 	 * @param userEmail identification of user who is doing this operation
-	 * @return 1 if Delete is successful
+	 * @return the deleted Onboard if delete is successful else null
 	 * @throws InvalidDataEntryException if onb_id is 0
 	 * 
 	 */
