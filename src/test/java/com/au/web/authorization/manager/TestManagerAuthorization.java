@@ -1,10 +1,7 @@
 package com.au.web.authorization.manager;
 
-import static org.hamcrest.CoreMatchers.any;
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
@@ -18,13 +15,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import static org.mockito.Mockito.*;
 import org.mockito.Spy;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.au.domain.Onboard;
 import com.au.domain.OnboardLog;
@@ -33,12 +26,9 @@ import com.au.service.DemandService;
 import com.au.service.OnboardLogService;
 import com.au.service.OnboardService;
 import com.au.web.authorization.AuthorizationLevel;
-import com.au.web.authorization.LoginAuthorization;
 import com.au.web.authorization.LoginAuthorizationInterface;
 import com.au.web.authorization.UserDataKey;
-import com.au.web.authorization.manager.ManagerAuthorization;
-import com.au.web.authorization.manager.ManagerAuthorizationInterface;
-import com.google.api.client.auth.openidconnect.IdToken;
+//import com.google.api.client.auth.openidconnect.IdToken;
 
 @SpringBootTest
 public class TestManagerAuthorization {
