@@ -210,11 +210,12 @@ public class OnboardDAO {
 
 			while (databaseLoggingAttempts < maxDatabaseLogginAttempts) {
 				try {
+					result = 0;
 					result = getOnboardLogService().setLog(Operation.add, onb_id , userEmail);
 					// if no exception is thrown then break out of while loop
 					break;
-				} catch (FailedDatabaseLoggingException exception) {
-					result = 0;
+				} catch (FailedDatabaseLoggingException  exception) {
+					
 					//if multiple logging attempts fail, then throw the original 
 					if (databaseLoggingAttempts >= maxDatabaseLogginAttempts)
 						throw exception;
@@ -224,7 +225,8 @@ public class OnboardDAO {
 				databaseLoggingAttempts++;
 			}
 			//after database access logging complete
-			addedOnboard = getByEmployeeIdAndDemandId(onboard.getEmp_id() , onboard.getDem_id());
+			if(result == 1)
+				addedOnboard = getByEmployeeIdAndDemandId(onboard.getEmp_id() , onboard.getDem_id());
 
 		}
 		return addedOnboard;
@@ -257,11 +259,12 @@ public class OnboardDAO {
 
 			while (databaseLoggingAttempts < maxDatabaseLogginAttempts) {
 				try {
+					result = 0;
 					result = getOnboardLogService().setLog(Operation.update, onboard.getOnb_id() , userEmail);
 					// if no exception is thrown then break out of while loop
 					break;
 				} catch (FailedDatabaseLoggingException exception) {
-					result = 0;
+					
 					//if multiple logging attempts fail, then throw the original 
 					if (databaseLoggingAttempts >= maxDatabaseLogginAttempts)
 						throw exception;
@@ -271,7 +274,8 @@ public class OnboardDAO {
 				databaseLoggingAttempts++;
 			}
 			//if update is successful the updated onboard will be same as the onboard received by this function
-			updatedOnboard = onboard;
+			if (result == 1)
+				updatedOnboard = onboard;
 
 		}
 
@@ -291,6 +295,7 @@ public class OnboardDAO {
 		if (result == 1) {
 			while (databaseLoggingAttempts < maxDatabaseLogginAttempts) {
 				try {
+					result = 0;
 					result = getOnboardLogService().setLog(Operation.delete, onb_id , userEmail);
 					// if no exception is thrown then break out of while loop
 					break;

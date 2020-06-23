@@ -295,10 +295,10 @@ public class OnboardService {
 			errorMessage = Optional.of(" - BGC Status cannot be null - ");
 		}
 		if (onboard.getDem_id() <= 0) {
-			errorMessage = Optional.of(errorMessage.orElse("").concat(" - Demand Id cannot be null - "));
+			errorMessage = Optional.of(errorMessage.orElse("").concat(" - Demand Id cannot be "+onboard.getDem_id()+" - "));
 		}
 		if (onboard.getEmp_id() <= 0) {
-			errorMessage = Optional.of(errorMessage.orElse("").concat(" - Employee Id cannot be null - "));
+			errorMessage = Optional.of(errorMessage.orElse("").concat(" - Employee Id cannot be "+onboard.getEmp_id()+" - "));
 		}
 		if (onboard.getEta_of_completion() == null) {
 			errorMessage = Optional.of(errorMessage.orElse("").concat(" - ETA of Completion cannot be null - "));

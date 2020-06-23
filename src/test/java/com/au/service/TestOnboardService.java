@@ -3,14 +3,17 @@ package com.au.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -33,20 +36,25 @@ public class TestOnboardService {
 	
 	
 	@Mock
-	EmployeeSkillset_SkillService employeeSkillset_SkillService;
+	EmployeeSkillset_SkillService employeeSkillset_SkillServiceMock;
 	
 	@Mock
-	DemandSkillset_SkillService demandSkillset_SkillService;
+	DemandSkillset_SkillService demandSkillset_SkillServiceMock;
 	
 	
 	@Mock
-	OnboardDAO onboardDao;
+	OnboardDAO onboardDaoMock;
+	
+	
 	
 	@Mock
-	OnboardLogService onboardLogService;
+	DemandService demandServiceMock;
 	
-	@Mock
-	DemandService demandService;
+	@BeforeEach
+	public void definingSpyBehviour() {
+		when(onboardServiceSpy.getOnboardDao()).thenReturn(onboardDaoMock);
+		
+	}
 	
 	
 	
@@ -81,10 +89,10 @@ public class TestOnboardService {
 		long dem_id = 2;
 		
 		//defining mock behaviour
-		doReturn(employeeSkillset_SkillService).when(onboardServiceSpy).getEmployeeSkillset_SkillService();
-		doReturn(demandSkillset_SkillService).when(onboardServiceSpy).getDemandSkillset_SkillService();
-		Mockito.when(employeeSkillset_SkillService.getAllSkillOfEmployeeWithId(emp_id)).thenReturn(employeeSkillList);
-		Mockito.when(demandSkillset_SkillService.getAllSkillForDemandWithId(dem_id)).thenReturn(demandSkillList);
+		doReturn(employeeSkillset_SkillServiceMock).when(onboardServiceSpy).getEmployeeSkillset_SkillService();
+		doReturn(demandSkillset_SkillServiceMock).when(onboardServiceSpy).getDemandSkillset_SkillService();
+		when(employeeSkillset_SkillServiceMock.getAllSkillOfEmployeeWithId(emp_id)).thenReturn(employeeSkillList);
+		when(demandSkillset_SkillServiceMock.getAllSkillForDemandWithId(dem_id)).thenReturn(demandSkillList);
 		
 		
 		assertTrue(onboardServiceSpy.areSkillsCompatible(emp_id, dem_id));
@@ -121,10 +129,10 @@ public class TestOnboardService {
 		long dem_id = 2;
 		
 		//defining mock behaviour
-		doReturn(employeeSkillset_SkillService).when(onboardServiceSpy).getEmployeeSkillset_SkillService();
-		doReturn(demandSkillset_SkillService).when(onboardServiceSpy).getDemandSkillset_SkillService();
-		Mockito.when(employeeSkillset_SkillService.getAllSkillOfEmployeeWithId(emp_id)).thenReturn(employeeSkillList);
-		Mockito.when(demandSkillset_SkillService.getAllSkillForDemandWithId(dem_id)).thenReturn(demandSkillList);
+		doReturn(employeeSkillset_SkillServiceMock).when(onboardServiceSpy).getEmployeeSkillset_SkillService();
+		doReturn(demandSkillset_SkillServiceMock).when(onboardServiceSpy).getDemandSkillset_SkillService();
+		Mockito.when(employeeSkillset_SkillServiceMock.getAllSkillOfEmployeeWithId(emp_id)).thenReturn(employeeSkillList);
+		Mockito.when(demandSkillset_SkillServiceMock.getAllSkillForDemandWithId(dem_id)).thenReturn(demandSkillList);
 		
 		
 		assertFalse(onboardServiceSpy.areSkillsCompatible(emp_id, dem_id));
@@ -176,8 +184,7 @@ public class TestOnboardService {
 	public void testGetAll()
 	{
 		List<Onboard> list =null;
-		Mockito.when(onboardDao.getAll()).thenReturn(list);
-		doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
+		when(onboardDaoMock.getAll()).thenReturn(list);
 		
 		assertEquals(list,onboardServiceSpy.getAll());
 		
@@ -189,8 +196,7 @@ public class TestOnboardService {
 	{
 		List<Onboard> list = new ArrayList<Onboard>();
 		Date start_date = Date.valueOf("2020-02-01");
-		doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-		Mockito.when(onboardServiceSpy.getByStartDate(start_date)).thenReturn(list);
+		when(onboardServiceSpy.getByStartDate(start_date)).thenReturn(list);
 		
 		
 		
@@ -207,8 +213,7 @@ public class TestOnboardService {
 		List<Onboard> list = new ArrayList<Onboard>();
 		String onboarding_status ="started";
 		
-		doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-		Mockito.when(onboardDao.getByOnboardingStatus(onboarding_status)).thenReturn(list);
+		when(onboardDaoMock.getByOnboardingStatus(onboarding_status)).thenReturn(list);
 		
 		
 		assertEquals(list,onboardServiceSpy.getByOnboardingStatus(onboarding_status));
@@ -222,8 +227,7 @@ public class TestOnboardService {
 		List<Onboard> list = new ArrayList<Onboard>();
 		String onboarding_status ="started*";
 		
-		doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-		Mockito.when(onboardDao.getByOnboardingStatusWithWildcard(onboarding_status)).thenReturn(list);
+		when(onboardDaoMock.getByOnboardingStatusWithWildcard(onboarding_status)).thenReturn(list);
 		
 		
 		assertEquals(list,onboardServiceSpy.getByOnboardingStatus(onboarding_status));
@@ -238,8 +242,7 @@ public class TestOnboardService {
 		List<Onboard> list = new ArrayList<Onboard>();
 		String bgc_status ="started";
 		
-		doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-		Mockito.when(onboardDao.getByBgcStatus(bgc_status)).thenReturn(list);
+		when(onboardDaoMock.getByBgcStatus(bgc_status)).thenReturn(list);
 		
 		
 		assertEquals(list,onboardServiceSpy.getByBgcStatus(bgc_status));
@@ -253,8 +256,7 @@ public class TestOnboardService {
 		List<Onboard> list = new ArrayList<Onboard>();
 		String bgc_status ="started*";
 		
-		doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-		Mockito.when(onboardDao.getByBgcStatusWithWildcard(bgc_status)).thenReturn(list);
+		when(onboardDaoMock.getByBgcStatusWithWildcard(bgc_status)).thenReturn(list);
 		
 		
 		assertEquals(list,onboardServiceSpy.getByBgcStatus(bgc_status));
@@ -265,28 +267,25 @@ public class TestOnboardService {
 	
 	
 	@Test
-	public void testAdd()
+	public void testAddSuccessful()
 	{
-		
+		String userEmail = "test_user";
 		
 		Onboard onboard = new Onboard();
 		onboard.setBgc_status("test")
 			.setDem_id(2l)
 			.setEmp_id(1l)
 			.setEta_of_completion(Date.valueOf("2020-02-01"))
-			.setOnb_id(0)
+			.setOnb_id(1l) // dummy onboard id - 
 			.setOnboarding_status("test")
 			.setStart_date(Date.valueOf("2020-02-02"));
 		
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
-			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
-			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
+			when(onboardDaoMock.add(onboard,userEmail)).thenReturn(onboard);
 			
-			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
-			
-			assertEquals(1,onboardServiceSpy.add(onboard));
+			assertEquals(onboard,onboardServiceSpy.add(onboard,userEmail));
 		
 		
 	}
@@ -296,7 +295,7 @@ public class TestOnboardService {
 	public void testAddFailedAddInDAO()
 	{
 		
-		
+		String userEmail = "test_operator";
 		Onboard onboard = new Onboard();
 		onboard.setBgc_status("test")
 			.setDem_id(2l)
@@ -308,14 +307,12 @@ public class TestOnboardService {
 		
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
-			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
 			
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
-			Mockito.when(onboardDao.add(onboard)).thenReturn(0);
+			when(onboardDaoMock.add(onboard,userEmail)).thenReturn(null);
 			
-			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
 			
-			assertEquals(0,onboardServiceSpy.add(onboard));
+			assertNull(onboardServiceSpy.add(onboard,userEmail));
 		
 		
 	}
@@ -326,7 +323,7 @@ public class TestOnboardService {
 	public void testAddNonCompatibleSkills()
 	{
 		
-		
+		String userEmail = "test_operator";
 		Onboard onboard = new Onboard();
 		onboard.setBgc_status("test")
 			.setDem_id(2l)
@@ -338,15 +335,10 @@ public class TestOnboardService {
 		
 			doReturn(false).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
-			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
 			
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
-			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
 			
-			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
-			
-//			assertTrue("Skills Not Compatible".contentEquals((String)onboardServiceSpy.add(onboard)));
-			Exception exception= assertThrows(InvalidDataEntryException.class, ()->onboardServiceSpy.add(onboard));
+			Exception exception= assertThrows(InvalidDataEntryException.class, ()->onboardServiceSpy.add(onboard,userEmail));
 		
 			assertEquals(" - Employee Id: " + onboard.getEmp_id()
 				+ " does not have the skills required for Demand Id: " + onboard.getDem_id() + " - " , exception.getMessage());
@@ -356,7 +348,7 @@ public class TestOnboardService {
 	public void testAddDemandAlreadyFulfilled()
 	{
 		
-		
+		String userEmail = "test_operator";
 		Onboard onboard = new Onboard();
 		onboard.setBgc_status("test")
 			.setDem_id(2l)
@@ -368,14 +360,12 @@ public class TestOnboardService {
 		
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(false).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
-			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
 			
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
-			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
+			when(onboardDaoMock.add(onboard,userEmail)).thenReturn(null);
 			
-			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
 			
-			Exception exception= assertThrows(InvalidDataEntryException.class, ()->onboardServiceSpy.add(onboard));
+			Exception exception= assertThrows(InvalidDataEntryException.class, ()->onboardServiceSpy.add(onboard,userEmail));
 			
 			assertEquals(" - Demand Id: " + onboard.getDem_id() + " has already been met - " , exception.getMessage());
 		
@@ -393,7 +383,7 @@ public class TestOnboardService {
 	public void testAddNoStartDate()
 	{
 		
-		
+		String userEmail = "test_operator";
 		Onboard onboard = new Onboard();
 		onboard.setBgc_status("test")
 			.setDem_id(2l)
@@ -405,15 +395,14 @@ public class TestOnboardService {
 		
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
-			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
 			
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
-			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
+			when(onboardDaoMock.add(onboard,userEmail)).thenReturn(null);
 			
-			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
+			Exception exception= assertThrows(InvalidDataEntryException.class, ()->onboardServiceSpy.add(onboard,userEmail));
 			
-			assertEquals(0,onboardServiceSpy.add(onboard));
-		
+			assertEquals( " - Start Date cannot be null - " , exception.getMessage());
+			
 		
 	}
 	
@@ -424,7 +413,7 @@ public class TestOnboardService {
 	public void testAddNoOnboardingStatus()
 	{
 		
-		
+		String userEmail = "test_operator";
 		Onboard onboard = new Onboard();
 		onboard.setBgc_status("test")
 			.setDem_id(2l)
@@ -436,24 +425,24 @@ public class TestOnboardService {
 		
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
-			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
 			
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
-			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
+			when(onboardDaoMock.add(onboard , userEmail)).thenReturn(null);
 			
-			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
 			
-			assertEquals(0,onboardServiceSpy.add(onboard));
-		
+			Exception exception= assertThrows(InvalidDataEntryException.class, ()->onboardServiceSpy.add(onboard,userEmail));
+			
+			assertEquals( " - Onboarding Status cannot be null - " , exception.getMessage());
+			
 		
 	}
 	
 	
 	@Test
-	public void testAddNoEtaOdCompletion()
+	public void testAddNoEtaOfCompletion()
 	{
 		
-		
+		String userEmail = "test_operator";
 		Onboard onboard = new Onboard();
 		onboard.setBgc_status("test")
 			.setDem_id(2l)
@@ -465,15 +454,15 @@ public class TestOnboardService {
 		
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
-			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
 			
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
-			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
+			when(onboardDaoMock.add(onboard,userEmail)).thenReturn(null);
 			
-			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
+			Exception exception= assertThrows(InvalidDataEntryException.class, ()->onboardServiceSpy.add(onboard,userEmail));
 			
-			assertEquals(0,onboardServiceSpy.add(onboard));
-		
+			assertEquals( " - ETA of Completion cannot be null - " , exception.getMessage());
+			
+			
 		
 	}
 	
@@ -483,7 +472,7 @@ public class TestOnboardService {
 	public void testAddZeroEmpId()
 	{
 		
-		
+		String userEmail = "test_operator";
 		Onboard onboard = new Onboard();
 		onboard.setBgc_status("test")
 			.setDem_id(2l)
@@ -495,15 +484,14 @@ public class TestOnboardService {
 		
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
-			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
 			
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
-			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
+			when(onboardDaoMock.add(onboard,userEmail)).thenReturn(null);
 			
-			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
+			Exception exception= assertThrows(InvalidDataEntryException.class, ()->onboardServiceSpy.add(onboard,userEmail));
 			
-			assertEquals(0,onboardServiceSpy.add(onboard));
-		
+			assertEquals( " - Employee Id cannot be "+onboard.getEmp_id()+" - " , exception.getMessage());
+			
 		
 	}
 	
@@ -514,7 +502,7 @@ public class TestOnboardService {
 	public void testAddZeroDemId()
 	{
 		
-		
+		String userEmail = "test_operator";
 		Onboard onboard = new Onboard();
 		onboard.setBgc_status("test")
 //			.setDem_id(2l)
@@ -526,15 +514,16 @@ public class TestOnboardService {
 		
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
-			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
 			
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
-			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
+			when(onboardDaoMock.add(onboard,userEmail)).thenReturn(null);
 			
-			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
+			Exception exception= assertThrows(InvalidDataEntryException.class, ()->onboardServiceSpy.add(onboard,userEmail));
 			
-			assertEquals(0,onboardServiceSpy.add(onboard));
-		
+			assertEquals( " - Demand Id cannot be "+onboard.getDem_id()+" - " , exception.getMessage());
+			
+			
+			
 		
 	}
 	
@@ -545,7 +534,7 @@ public class TestOnboardService {
 	public void testAddNullBgc()
 	{
 		
-		
+		String userEmail = "test_operator";
 		Onboard onboard = new Onboard();
 		onboard//.setBgc_status("test")
 			.setDem_id(2l)
@@ -557,15 +546,14 @@ public class TestOnboardService {
 		
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
-			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
 			
 			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
-			Mockito.when(onboardDao.add(onboard)).thenReturn(1);
+			when(onboardDaoMock.add(onboard,userEmail)).thenReturn(null);
 			
-			Mockito.when(onboardLogService.setLog(Operation.add,0l)).thenReturn(1);
+			Exception exception= assertThrows(InvalidDataEntryException.class, ()->onboardServiceSpy.add(onboard,userEmail));
 			
-			assertEquals(0,onboardServiceSpy.add(onboard));
-		
+			assertEquals( " - BGC Status cannot be null - " , exception.getMessage());
+			
 		
 	}
 	
@@ -578,7 +566,7 @@ public class TestOnboardService {
 	public void testUpdate()
 	{
 		
-		
+		String userEmail = "test_user";
 		Onboard onboard = new Onboard();
 		onboard.setBgc_status("test")
 			.setDem_id(2l)
@@ -590,15 +578,13 @@ public class TestOnboardService {
 		
 			doReturn(true).when(onboardServiceSpy).areSkillsCompatible(onboard.getEmp_id(),onboard.getDem_id());
 			doReturn(true).when(onboardServiceSpy).demandNotFullfilled(onboard.getDem_id());
-			doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
 			
-			doReturn(onboard).when(onboardDao).getById(onboard.getOnb_id());
+			doReturn(onboard).when(onboardDaoMock).getById(onboard.getOnb_id());
 //			doReturn(onboard).when(onboardServiceSpy).getByEmployeeIdAndDemandId(onboard.getEmp_id(), onboard.getDem_id());
-			Mockito.when(onboardDao.update(onboard)).thenReturn(1);
+			when(onboardDaoMock.update(onboard , userEmail)).thenReturn(onboard);
 			
-			Mockito.when(onboardLogService.setLog(Operation.update,0l)).thenReturn(1);
 			
-			assertEquals(1,onboardServiceSpy.update(onboard));
+			assertEquals(onboard,onboardServiceSpy.update(onboard, userEmail));
 		
 		
 	}
@@ -608,8 +594,7 @@ public class TestOnboardService {
 		Onboard onboard = new Onboard();
 		Long onb_id = 1l;
 		
-		doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-		Mockito.when(onboardDao.getById(onb_id)).thenReturn(onboard);
+		Mockito.when(onboardDaoMock.getById(onb_id)).thenReturn(onboard);
 		
 		
 		assertEquals(onboard,onboardServiceSpy.getById(onb_id));
@@ -622,8 +607,7 @@ public class TestOnboardService {
 	{
 		List<Onboard> list = new ArrayList<Onboard>();
 		Date eta_of_completion = Date.valueOf("2020-02-01");
-		doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-		Mockito.when(onboardServiceSpy.getByEtaOfCompletion(eta_of_completion)).thenReturn(list);
+		Mockito.when(onboardDaoMock.getByEtaOfCompletion(eta_of_completion)).thenReturn(list);
 		
 		
 		
@@ -640,8 +624,7 @@ public class TestOnboardService {
 		long emp_id = 1l;
 		long dem_id = 1l;
 		
-		doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-		Mockito.when(onboardDao.getByEmployeeIdAndDemandId(emp_id, dem_id)).thenReturn(onboard);
+		when(onboardDaoMock.getByEmployeeIdAndDemandId(emp_id, dem_id)).thenReturn(onboard);
 		
 		
 		assertEquals(onboard,onboardServiceSpy.getByEmployeeIdAndDemandId(emp_id, dem_id));
@@ -661,10 +644,9 @@ public class TestOnboardService {
 			.setNumber_people(1);
 		
 		
-		doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-		doReturn(demandService).when(onboardServiceSpy).getDemandService();
-		doReturn(demand).when(demandService).getDemandById(dem_id);
-		doReturn(1).when(onboardDao).getNumberofOnboardForDemandId(dem_id);
+		doReturn(demandServiceMock).when(onboardServiceSpy).getDemandService();
+		doReturn(demand).when(demandServiceMock).getDemandById(dem_id);
+		doReturn(1).when(onboardDaoMock).getNumberofOnboardForDemandId(dem_id);
 		
 		assertFalse(onboardServiceSpy.demandNotFullfilled(dem_id));
 		
@@ -674,24 +656,27 @@ public class TestOnboardService {
 	@Test
 	public void testDeleteSuccessful()
 	{
+		String userEmail = "test_operator";
+		
 		long onb_id = 1l;
-		doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-		doReturn(1).when(onboardDao).delete(onb_id);
+		Onboard onboard = new Onboard();
+		onboard.setOnb_id(onb_id); //other fields are not compared in equals
 		
-		doReturn(1).when(onboardLogService).setLog(Operation.delete, onb_id);
 		
-		assertEquals(1, onboardServiceSpy.delete(onb_id));
+		doReturn(onboard).when(onboardDaoMock).delete(onb_id,userEmail);
+		
+		
+		assertEquals(onboard, onboardServiceSpy.delete(onb_id, userEmail));
 		
 	}
 	@Test
 	public void testDeleteFailed()
 	{
+		String userEmail = "test_operator";
 		long onb_id = 1l;
-		doReturn(onboardDao).when(onboardServiceSpy).getOnboardDao();
-		doReturn(0).when(onboardDao).delete(onb_id);
+		doReturn(null).when(onboardDaoMock).delete(onb_id,userEmail );
 		
-		doReturn(1).when(onboardLogService).setLog(Operation.delete, onb_id);
-		assertEquals(0, onboardServiceSpy.delete(onb_id));
+		assertNull( onboardServiceSpy.delete(onb_id , userEmail));
 	}
 	
 	

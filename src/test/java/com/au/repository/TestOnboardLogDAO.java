@@ -111,7 +111,7 @@ public class TestOnboardLogDAO {
 	public void testGetAllLogBetweenTimestamp()
 	{
 		Date timestamp1 = Date.valueOf("1990-01-01");
-		Date timestamp2 = Date.valueOf("2020-01-01");
+		Date timestamp2 = Date.valueOf("2022-01-01");
 		List<OnboardLog> logList = onboardLogDAO.getAllLogBetweenTimestamp(timestamp1, timestamp2);
 		assertNotNull(logList);
 		

@@ -1,24 +1,19 @@
 package com.au.repository;
 
-import static org.hamcrest.CoreMatchers.any;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoSettings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.au.domain.Onboard;
@@ -85,6 +80,7 @@ public class TestOnboardDAO {
 	@Test
 	public void testUpdateOnboard()
 	{
+		String operator = "test_operator";
 		Onboard onboard = new Onboard();
 		onboard.setOnb_id(2);
 		onboard.setBgc_status("started");
@@ -93,9 +89,9 @@ public class TestOnboardDAO {
 		onboard.setEmp_id(5);
 		onboard.setStart_date(Date.valueOf("2020-09-08"));
 		onboard.setEta_of_completion(Date.valueOf("2020-09-07"));
+		when(onboardLogServiceMock.setLog(Operation.update, onboard.getOnb_id(), operator)).thenReturn(1);
 		
-//		assertThrows(DuplicateKeyException.class,()->{onboardDaoSpy.update(onboard);});
-		assertEquals(1,onboardDaoSpy.update(onboard,"test_operator"));
+		assertTrue(onboard.equals(onboardDaoSpy.update(onboard,operator)));;
 		
 		
 	}
@@ -108,8 +104,6 @@ public class TestOnboardDAO {
 		long onb_id = 100;
 		
 		Exception e = assertThrows(RecordNotFoundException.class,()->onboardDaoSpy.delete(onb_id,"test_operator")) ;
-		
-		
 		
 	}
 	

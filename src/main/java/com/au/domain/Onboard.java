@@ -16,6 +16,28 @@ public class Onboard {
 	private String bgc_status;
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (onb_id ^ (onb_id >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Onboard other = (Onboard) obj;
+		if (onb_id != other.onb_id)
+			return false;
+		return true;
+	}
+
+	@Override
 	public String toString() {
 		return "Onboard [onb_id=" + onb_id + ", emp_id=" + emp_id + ", dem_id=" + dem_id + ", start_date=" + start_date
 				+ ", eta_of_completion=" + eta_of_completion + ", onboarding_status=" + onboarding_status

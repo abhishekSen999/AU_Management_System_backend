@@ -1,18 +1,25 @@
 package com.au.web.authorization.manager;
 
+import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
 import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,58 +28,88 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.au.domain.Onboard;
 import com.au.domain.OnboardLog;
+import com.au.exception.customExceptions.UnauthorizedUserException;
 import com.au.service.DemandService;
 import com.au.service.OnboardLogService;
 import com.au.service.OnboardService;
 import com.au.web.authorization.AuthorizationLevel;
 import com.au.web.authorization.LoginAuthorization;
 import com.au.web.authorization.LoginAuthorizationInterface;
+import com.au.web.authorization.UserDataKey;
 import com.au.web.authorization.manager.ManagerAuthorization;
 import com.au.web.authorization.manager.ManagerAuthorizationInterface;
+import com.google.api.client.auth.openidconnect.IdToken;
 
 @SpringBootTest
 public class TestManagerAuthorization {
 	
-//	@Mock
-//	LoginAuthorizationInterface user;
-//	
-	@Mock
-	OnboardService onboardService;
-	
-	@Mock
-	OnboardLogService onboardLogService;
-	
-	@Mock
-	DemandService demandService;
-//	
-//	@Autowired
-//	ManagerAuthorization managerAuthorization;
-//	
 
-//	
-//	
+	@Mock
+	OnboardService onboardServiceMock;
+	
+	@Mock
+	OnboardLogService onboardLogServiceMock;
+	
+	@Mock
+	DemandService demandServiceMock;
 	
 	
 	@Mock
-	LoginAuthorizationInterface user;
+	LoginAuthorizationInterface userMock;
 	
-//	@Autowired
+
 	@Spy
-	ManagerAuthorization managerAuthorization;
+	ManagerAuthorization managerAuthorizationSpy;
+	
+	
+	// data required for testing
+	Map<UserDataKey , Object> userData ;
+	String idToken = "testIdToken";
+	List<Object> parameterList;
+	
+	Onboard onboard;
+	
+	
+	@BeforeEach
+	public void definingSpyBehaviour()
+	{
+		parameterList = new ArrayList<Object>();
+//		parameterList.add(new Object());
+//		parameterList.add(new Object());
+		
+		userData =  new EnumMap<UserDataKey, Object>(UserDataKey.class); 
+		onboard = new Onboard();
+		onboard.setOnb_id(10l);
+		userData.put(UserDataKey.Email, "test_user_Email");
+		userData.put(UserDataKey.AuthorizationLevel,AuthorizationLevel.manager);  
+		
+		when(managerAuthorizationSpy.getOnboardService()).thenReturn(onboardServiceMock);
+		when(managerAuthorizationSpy.getOnboardLogService()).thenReturn(onboardLogServiceMock);
+		when(managerAuthorizationSpy.getDemandService()).thenReturn(demandServiceMock);
+		when(managerAuthorizationSpy.getUser()).thenReturn(userMock);
+		when(userMock.getEmailAndAuthorizationLevel(idToken)).thenReturn(userData);
+	}
+	
+	@AfterEach
+	public void emptyingParameterList()
+	{
+		parameterList.clear();
+	}
+	
 	
 	@Test
 	public void testGetAuthorizationNonParametarized()
 	{
 		
+		
 		//defining mock behaviour
 //		Mockito.verify(user);
-		doReturn(user).when(managerAuthorization).getUser();
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
+		when(userMock.getEmailAndAuthorizationLevel(anyString())).thenReturn(userData);
 		
 		
 		
 		//check
-		assertEquals(AuthorizationLevel.manager, managerAuthorization.getAuthorization());
+		assertEquals(AuthorizationLevel.manager, managerAuthorizationSpy.getAuthorization(idToken));
 		
 		
 	}
@@ -82,15 +119,12 @@ public class TestManagerAuthorization {
 	public void testParameterizedGetAuthorizationLevelUnauthorisezUser()
 	{
 		
-		List<Object> parameterList = new ArrayList<Object>();
-		parameterList.add(new Onboard());
+		//replacing authorization level to unauthorized
+		userData.put(UserDataKey.AuthorizationLevel,AuthorizationLevel.unauthorizedUser);  
+				
+		when(onboardServiceMock.update(any(),eq((String)userData.get(UserDataKey.Email)))).thenReturn(onboard);
 		
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(onboardService).when(managerAuthorization).getOnboardService();
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.unauthorizedUser);
-		Mockito.when(onboardService.update((Onboard)parameterList.get(0))).thenReturn(0);
-		
-		assertTrue(managerAuthorization.getAuthorization("OnboardService", "update", parameterList) instanceof ModelAndView  );
+		Exception e = assertThrows(UnauthorizedUserException.class, ()->{managerAuthorizationSpy.getAuthorization(idToken, "OnboardService", "update", parameterList); });
 		
 	}	
 	
@@ -108,15 +142,11 @@ public class TestManagerAuthorization {
 	public void testParameterizedGetAuthorizationLevelOnboardUpdate()
 	{
 		
-		List<Object> parameterList = new ArrayList<Object>();
 		parameterList.add(new Onboard());
+		doReturn(onboardServiceMock).when(managerAuthorizationSpy).getOnboardService();
+		when(onboardServiceMock.update(any(),eq((String)userData.get(UserDataKey.Email)))).thenReturn(onboard);
 		
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(onboardService).when(managerAuthorization).getOnboardService();
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
-		Mockito.when(onboardService.update((Onboard)parameterList.get(0))).thenReturn(0);
-		
-		assertEquals(0,(int)managerAuthorization.getAuthorization("OnboardService", "update", parameterList));
+		assertEquals(onboard,(Onboard)managerAuthorizationSpy.getAuthorization(idToken,"OnboardService", "update", parameterList));
 		
 	}
 	
@@ -125,16 +155,12 @@ public class TestManagerAuthorization {
 	@Test
 	public void testParameterizedGetAuthorizationLevelOnboardDelete()
 	{
-		List<Object> parameterList = new ArrayList<Object>();
-		parameterList.add(0L);
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(onboardService).when(managerAuthorization).getOnboardService();
+		long onb_id = 1l;
+		parameterList.add(onb_id);
 		
+		when(onboardServiceMock.delete(anyLong(),eq((String)userData.get(UserDataKey.Email)))).thenReturn(onboard);
 		
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
-		Mockito.when(onboardService.delete((long)parameterList.get(0))).thenReturn(0);
-		
-		assertEquals(0,(int)managerAuthorization.getAuthorization("OnboardService", "delete", parameterList));
+		assertEquals(onboard,(Onboard)managerAuthorizationSpy.getAuthorization(idToken,"OnboardService", "delete", parameterList));
 		
 	}
 	
@@ -144,35 +170,26 @@ public class TestManagerAuthorization {
 	{
 		List<Onboard> list = new ArrayList<Onboard>() ;
 		
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(onboardService).when(managerAuthorization).getOnboardService();
+		doReturn(list).when(onboardServiceMock).getAll();
 		
-		
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
-		doReturn(list).when(onboardService).getAll();
-		
-		assertEquals(list,(List<Onboard>)managerAuthorization.getAuthorization("OnboardService", "getAll",null));
+		assertEquals(list,(List<Onboard>)managerAuthorizationSpy.getAuthorization(idToken,"OnboardService", "getAll",null));
 		
 	}
 	
 	@Test
 	public void testParameterizedGetAuthorizationLevelOnboardGetByStartDate()
 	{
-		List<Onboard> list =new ArrayList<Onboard>() ;
 		Date start_date = Date.valueOf("2020-02-02");
-		List<Object> parameterlist = new ArrayList<Object>();
-		parameterlist.add(start_date);
+		
+		parameterList.add(start_date);
+		List<Onboard> list =new ArrayList<Onboard>() ;
 		
 		
 		
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(onboardService).when(managerAuthorization).getOnboardService();
 		
+		doReturn(list).when(onboardServiceMock).getByStartDate(any());
 		
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
-		doReturn(list).when(onboardService).getByStartDate(start_date);
-		
-		assertEquals(list,(List<Onboard>)managerAuthorization.getAuthorization("OnboardService", "getByStartDate",parameterlist));
+		assertEquals(list,(List<Onboard>)managerAuthorizationSpy.getAuthorization(idToken, "OnboardService", "getByStartDate",parameterList));
 		
 	}
 	
@@ -180,20 +197,13 @@ public class TestManagerAuthorization {
 	public void testParameterizedGetAuthorizationLevelOnboardGetByEtaOfCompletion()
 	{
 		List<Onboard> list =new ArrayList<Onboard> ();
+		
 		Date eta_of_completion = Date.valueOf("2020-02-02");
-		List<Object> parameterlist = new ArrayList<Object>();
-		parameterlist.add(eta_of_completion);
+		parameterList.add(eta_of_completion);
 		
+		doReturn(list).when(onboardServiceMock).getByEtaOfCompletion(any());
 		
-		
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(onboardService).when(managerAuthorization).getOnboardService();
-		
-		
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
-		doReturn(list).when(onboardService).getByEtaOfCompletion(eta_of_completion);
-		
-		assertEquals(list,(List<Onboard>)managerAuthorization.getAuthorization("OnboardService", "getByEtaOfCompletion",parameterlist));
+		assertEquals(list,(List<Onboard>)managerAuthorizationSpy.getAuthorization(idToken,"OnboardService", "getByEtaOfCompletion",parameterList));
 		
 	}
 	
@@ -204,19 +214,13 @@ public class TestManagerAuthorization {
 	{
 		List<Onboard> list = new ArrayList<Onboard>() ;
 		String onboarding_status =" test"; 
-		List<Object> parameterlist = new ArrayList<Object>();
-		parameterlist.add(onboarding_status);
+		parameterList.add(onboarding_status);
 		
 		
 		
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(onboardService).when(managerAuthorization).getOnboardService();
+		doReturn(list).when(onboardServiceMock).getByOnboardingStatus(anyString());
 		
-		
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
-		doReturn(list).when(onboardService).getByOnboardingStatus(onboarding_status);
-		
-		assertEquals(list,(List<Onboard>)managerAuthorization.getAuthorization("OnboardService", "getByOnboardingStatus",parameterlist));
+		assertEquals(list,(List<Onboard>)managerAuthorizationSpy.getAuthorization(idToken,"OnboardService", "getByOnboardingStatus",parameterList));
 		
 	}
 	
@@ -226,19 +230,11 @@ public class TestManagerAuthorization {
 	{
 		List<Onboard> list = new ArrayList<Onboard> ();
 		String bgc_status =" test"; 
-		List<Object> parameterlist = new ArrayList<Object>();
-		parameterlist.add(bgc_status);
+		parameterList.add(bgc_status);
 		
+		doReturn(list).when(onboardServiceMock).getByBgcStatus(anyString());
 		
-		
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(onboardService).when(managerAuthorization).getOnboardService();
-		
-		
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
-		doReturn(list).when(onboardService).getByBgcStatus(bgc_status);
-		
-		assertEquals(list,(List<Onboard>)managerAuthorization.getAuthorization("OnboardService", "getByBgcStatus",parameterlist));
+		assertEquals(list,(List<Onboard>)managerAuthorizationSpy.getAuthorization(idToken,"OnboardService", "getByBgcStatus",parameterList));
 		
 	}
 	
@@ -249,19 +245,13 @@ public class TestManagerAuthorization {
 	{
 		Onboard onboard =  new Onboard();
 		long onb_id = 1l;
-		List<Object> parameterlist = new ArrayList<Object>();
-		parameterlist.add(onb_id);
+		parameterList.add(onb_id);
 		
 		
 		
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(onboardService).when(managerAuthorization).getOnboardService();
+		doReturn(onboard).when(onboardServiceMock).getById(anyLong());
 		
-		
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
-		doReturn(onboard).when(onboardService).getById(onb_id);
-		
-		assertEquals(onboard,(Onboard)managerAuthorization.getAuthorization("OnboardService", "getById",parameterlist));
+		assertEquals(onboard,(Onboard)managerAuthorizationSpy.getAuthorization(idToken,"OnboardService", "getById",parameterList));
 		
 	}
 	
@@ -273,19 +263,13 @@ public class TestManagerAuthorization {
 		Onboard onboard = new Onboard();
 		long emp_id = 1l;
 		long dem_id = 1l;
-		List<Object> parameterlist = new ArrayList<Object>();
-		parameterlist.add(emp_id);
-		parameterlist.add(dem_id);
+		parameterList.add(emp_id);
+		parameterList.add(dem_id);
 		
 		
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(onboardService).when(managerAuthorization).getOnboardService();
+		doReturn(onboard).when(onboardServiceMock).getByEmployeeIdAndDemandId(anyLong(), anyLong());
 		
-		
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
-		doReturn(onboard).when(onboardService).getByEmployeeIdAndDemandId(emp_id, dem_id);
-		
-		assertEquals(onboard,(Onboard)managerAuthorization.getAuthorization("OnboardService", "getByEmployeeIdAndDemandId",parameterlist));
+		assertEquals(onboard,(Onboard)managerAuthorizationSpy.getAuthorization(idToken,"OnboardService", "getByEmployeeIdAndDemandId",parameterList));
 		
 	}
 	
@@ -293,21 +277,11 @@ public class TestManagerAuthorization {
 	public void testParameterizedGetAuthorizationLevelOnboardAdd()
 	{
 		
-		Onboard onboard = new Onboard();
+		parameterList.add(onboard);
 		
-		List<Object> parameterlist = new ArrayList<Object>();
-		parameterlist.add(onboard);
-	
+		doReturn(onboard).when(onboardServiceMock).add(eq(onboard),anyString());
 		
-		
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(onboardService).when(managerAuthorization).getOnboardService();
-		
-		
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
-		doReturn(1).when(onboardService).add(onboard);
-		
-		assertEquals(1,(int)managerAuthorization.getAuthorization("OnboardService", "add",parameterlist));
+		assertEquals(onboard,(Onboard)managerAuthorizationSpy.getAuthorization(idToken,"OnboardService", "add",parameterList));
 		
 	}
 	
@@ -328,14 +302,9 @@ public class TestManagerAuthorization {
 	{
 		List<OnboardLog> list = new ArrayList<OnboardLog>();
 		
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(onboardLogService).when(managerAuthorization).getOnboardLogService();
+		doReturn(list).when(onboardLogServiceMock).getAllLog();
 		
-		
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
-		doReturn(list).when(onboardLogService).getAllLog();
-		
-		assertEquals(list,(List<OnboardLog>)managerAuthorization.getAuthorization("OnboardLogService", "getAllLog",null));
+		assertEquals(list,(List<OnboardLog>)managerAuthorizationSpy.getAuthorization(idToken,"OnboardLogService", "getAllLog",null));
 		
 	}
 	
@@ -344,19 +313,13 @@ public class TestManagerAuthorization {
 	public void testParameterizedGetAuthorizationLevelOnboardLogGetAllLogByEmployeeId()
 	{
 		List<OnboardLog> list =new ArrayList<OnboardLog>() ;
-		List<Object> parameterlist = new ArrayList<Object>();
 		long emp_id = 0l;
-		
-		parameterlist.add(emp_id);
-		
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(onboardLogService).when(managerAuthorization).getOnboardLogService();
+		parameterList.add(emp_id);
 		
 		
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
-		doReturn(list).when(onboardLogService).getAllLogByEmployeeId(emp_id);
+		doReturn(list).when(onboardLogServiceMock).getAllLogByEmployeeId(anyLong());
 		
-		assertEquals(list,(List<OnboardLog>)managerAuthorization.getAuthorization("OnboardLogService", "getAllLogByEmployeeId",parameterlist));
+		assertEquals(list,(List<OnboardLog>)managerAuthorizationSpy.getAuthorization(idToken,"OnboardLogService", "getAllLogByEmployeeId",parameterList));
 		
 	}
 	
@@ -364,19 +327,13 @@ public class TestManagerAuthorization {
 	public void testParameterizedGetAuthorizationLevelOnboardLogGetAllLogByDemandId()
 	{
 		List<OnboardLog> list =new ArrayList<OnboardLog>() ;
-		List<Object> parameterlist = new ArrayList<Object>();
 		long dem_id = 0l;
-		
-		parameterlist.add(dem_id);
-		
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(onboardLogService).when(managerAuthorization).getOnboardLogService();
+		parameterList.add(dem_id);
 		
 		
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
-		doReturn(list).when(onboardLogService).getAllLogByDemandId(dem_id);
+		doReturn(list).when(onboardLogServiceMock).getAllLogByDemandId(anyLong());
 		
-		assertEquals(list,(List<OnboardLog>)managerAuthorization.getAuthorization("OnboardLogService", "getAllLogByDemandId",parameterlist));
+		assertEquals(list,(List<OnboardLog>)managerAuthorizationSpy.getAuthorization(idToken,"OnboardLogService", "getAllLogByDemandId",parameterList));
 		
 	}
 	
@@ -385,20 +342,14 @@ public class TestManagerAuthorization {
 	public void testParameterizedGetAuthorizationLevelOnboardLogGetAllLogByEmployeeAndDemandId()
 	{
 		List<OnboardLog> list =new ArrayList<OnboardLog>() ;
-		List<Object> parameterlist = new ArrayList<Object>();
 		long emp_id = 0l;
 		long dem_id = 0l;
-		parameterlist.add(emp_id);
-		parameterlist.add(dem_id);
+		parameterList.add(emp_id);
+		parameterList.add(dem_id);
 		
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(onboardLogService).when(managerAuthorization).getOnboardLogService();
+		doReturn(list).when(onboardLogServiceMock).getAllLogByEmployeeIdAndDemandId(anyLong(), anyLong());
 		
-		
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
-		doReturn(list).when(onboardLogService).getAllLogByEmployeeIdAndDemandId(emp_id, dem_id);
-		
-		assertEquals(list,(List<OnboardLog>)managerAuthorization.getAuthorization("OnboardLogService", "getAllLogByEmployeeIdAndDemandId",parameterlist));
+		assertEquals(list,(List<OnboardLog>)managerAuthorizationSpy.getAuthorization(idToken,"OnboardLogService", "getAllLogByEmployeeIdAndDemandId",parameterList));
 		
 	}
 	
@@ -407,37 +358,28 @@ public class TestManagerAuthorization {
 	public void testParameterizedGetAuthorizationLevelOnboardLogGetAllLogByOperator()
 	{
 		List<OnboardLog> list =new ArrayList<OnboardLog>() ;
-		List<Object> parameterlist = new ArrayList<Object>();
 		String operator = "test_operator";
-		parameterlist.add(operator);
-		
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(onboardLogService).when(managerAuthorization).getOnboardLogService();
+		parameterList.add(operator);
 		
 		
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
-		doReturn(list).when(onboardLogService).getAllLogByOperator(operator);
+		doReturn(list).when(onboardLogServiceMock).getAllLogByOperator(anyString());
 		
-		assertEquals(list,(List<OnboardLog>)managerAuthorization.getAuthorization("OnboardLogService", "getAllLogByOperator",parameterlist));
+		assertEquals(list,(List<OnboardLog>)managerAuthorizationSpy.getAuthorization(idToken,"OnboardLogService", "getAllLogByOperator",parameterList));
 		
 	}
 	
 	@Test
 	public void testParameterizedGetAuthorizationLevelOnboardLogGetAllLogByOperation()
 	{
+		
 		List<OnboardLog> list =new ArrayList<OnboardLog>() ;
-		List<Object> parameterlist = new ArrayList<Object>();
 		String operation = "test_operation";
-		parameterlist.add(operation);
-		
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(onboardLogService).when(managerAuthorization).getOnboardLogService();
+		parameterList.add(operation);
 		
 		
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
-		doReturn(list).when(onboardLogService).getAllLogByOperation(operation);
+		doReturn(list).when(onboardLogServiceMock).getAllLogByOperation(anyString());
 		
-		assertEquals(list,(List<OnboardLog>)managerAuthorization.getAuthorization("OnboardLogService", "getAllLogByOperation",parameterlist));
+		assertEquals(list,(List<OnboardLog>)managerAuthorizationSpy.getAuthorization(idToken,"OnboardLogService", "getAllLogByOperation",parameterList));
 		
 	}
 	
@@ -447,19 +389,14 @@ public class TestManagerAuthorization {
 	public void testParameterizedGetAuthorizationLevelOnboardLogGetAllLogBetweenTimestamp()
 	{
 		List<OnboardLog> list =new ArrayList<OnboardLog>() ;
-		List<Object> parameterlist = new ArrayList<Object>();
 		Date timestamp1 = Date.valueOf("2020-02-02");
 		Date timestamp2 = Date.valueOf("2020-02-02");
-		parameterlist.add(timestamp1);
-		parameterlist.add(timestamp2);
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(onboardLogService).when(managerAuthorization).getOnboardLogService();
+		parameterList.add(timestamp1);
+		parameterList.add(timestamp2);
 		
+		doReturn(list).when(onboardLogServiceMock).getAllLogBetweenTimestamp(any(),any());
 		
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
-		doReturn(list).when(onboardLogService).getAllLogBetweenTimestamp(timestamp1, timestamp2);
-		
-		assertEquals(list,(List<OnboardLog>)managerAuthorization.getAuthorization("OnboardLogService", "getAllLogBetweenTimestamp",parameterlist));
+		assertEquals(list,(List<OnboardLog>)managerAuthorizationSpy.getAuthorization(idToken,"OnboardLogService", "getAllLogBetweenTimestamp",parameterList));
 		
 	}
 	
@@ -469,19 +406,13 @@ public class TestManagerAuthorization {
 	public void testParameterizedGetAuthorizationLevelOnboardLogGetAllLogByOnboardId()
 	{
 		List<OnboardLog> list =new ArrayList<OnboardLog>() ;
-		List<Object> parameterlist = new ArrayList<Object>();
 		long onb_id = 0l;
 		
-		parameterlist.add(onb_id);
+		parameterList.add(onb_id);
 		
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(onboardLogService).when(managerAuthorization).getOnboardLogService();
+		doReturn(list).when(onboardLogServiceMock).getAllLogByOnboardId(anyLong());
 		
-		
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
-		doReturn(list).when(onboardLogService).getAllLogByOnboardId(onb_id);
-		
-		assertEquals(list,(List<OnboardLog>)managerAuthorization.getAuthorization("OnboardLogService", "getAllLogByOnboardId",parameterlist));
+		assertEquals(list,(List<OnboardLog>)managerAuthorizationSpy.getAuthorization(idToken,"OnboardLogService", "getAllLogByOnboardId",parameterList));
 		
 	}
 	
@@ -504,46 +435,15 @@ public class TestManagerAuthorization {
 		List<Map<String,Object>> list =new ArrayList<Map<String,Object>>() ;
 		
 		
+		doReturn(list).when(demandServiceMock).getCountForAllLocation();
 		
-		
-		doReturn(user).when(managerAuthorization).getUser();
-		doReturn(demandService).when(managerAuthorization).getDemandService();
-		
-		
-		Mockito.when(user.getAuthorizationLevel()).thenReturn(AuthorizationLevel.manager);
-		doReturn(list).when(demandService).getCountForAllLocation();
-		
-		assertEquals(list,(List<Map<String,Object>>)managerAuthorization.getAuthorization("DemandService", "getCountForAllLocation",null));
+		assertEquals(list,(List<Map<String,Object>>)managerAuthorizationSpy.getAuthorization(idToken,"DemandService", "getCountForAllLocation",null));
 		
 	}
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
 	
 
 }
