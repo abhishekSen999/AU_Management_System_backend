@@ -31,8 +31,20 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-java -->
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>6.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-junit</artifactId>
+			<version>6.1.1</version>
+		</dependency>
 
-  		<!-- https://mvnrepository.com/artifact/com.google.api-client/google-api-client -->
+
+		<!-- https://mvnrepository.com/artifact/com.google.api-client/google-api-client -->
 <!--		<dependency>
 			<groupId>com.google.api-client</groupId>
 			<artifactId>google-api-client</artifactId>

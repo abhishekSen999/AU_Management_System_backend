@@ -172,7 +172,7 @@ public class ManagerOnboardController {
 	 
 	
 	@CrossOrigin
-	@PostMapping("/manager/onboard")
+	@PutMapping("/manager/onboard")
 	public Object addOnboard(@RequestHeader("Authorization") String idToken,@RequestBody Onboard onboard)
 	{
 		
@@ -190,7 +190,7 @@ public class ManagerOnboardController {
 	}
 	
 	@CrossOrigin
-	@PutMapping("/manager/onboard")
+	@PostMapping("/manager/onboard")
 	public Object updateOnboard(@RequestHeader("Authorization") String idToken,@RequestBody Onboard onboard)
 	{
 		
