@@ -1,38 +1,29 @@
-2020-06-23 20:22:08,886 INFO o.s.b.StartupInfoLogger [restartedMain] Starting AuManagementSystemApplication on DESKTOP-6IHGLO8 with PID 2312 (C:\Users\nsnee\abhishek\eclipse-workspace\AU_Management_System_backend\target\classes started by nsnee in C:\Users\nsnee\abhishek\eclipse-workspace\AU_Management_System_backend)
-2020-06-23 20:22:08,924 INFO o.s.b.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
-2020-06-23 20:22:09,138 INFO o.s.b.l.DeferredLog [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2020-06-23 20:22:09,138 INFO o.s.b.l.DeferredLog [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2020-06-23 20:22:13,287 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
-2020-06-23 20:22:13,338 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 44ms. Found 0 JDBC repository interfaces.
-2020-06-23 20:22:15,160 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
-2020-06-23 20:22:15,192 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
-2020-06-23 20:22:15,193 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting service [Tomcat]
-2020-06-23 20:22:15,193 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.35]
-2020-06-23 20:22:15,324 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
-2020-06-23 20:22:15,324 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 6185 ms
-2020-06-23 20:22:16,255 WARN o.s.d.r.w.h.HalBrowser [restartedMain] ---
-2020-06-23 20:22:16,271 WARN o.s.d.r.w.h.HalBrowser [restartedMain] Spring Data REST HAL Browser is deprecated! Prefer the HAL Explorer (artifactId: spring-data-rest-hal-explorer)!
-2020-06-23 20:22:16,271 WARN o.s.d.r.w.h.HalBrowser [restartedMain] ---
-2020-06-23 20:22:17,410 INFO o.s.s.c.ExecutorConfigurationSupport [restartedMain] Initializing ExecutorService 'applicationTaskExecutor'
-2020-06-23 20:22:17,773 WARN o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration [restartedMain] Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
-2020-06-23 20:22:18,414 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-1 - Starting...
-2020-06-23 20:22:19,542 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
-2020-06-23 20:22:19,934 INFO o.s.b.d.a.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
-2020-06-23 20:22:19,977 INFO o.s.b.a.e.w.EndpointLinksResolver [restartedMain] Exposing 2 endpoint(s) beneath base path '/actuator'
-2020-06-23 20:22:20,081 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
-2020-06-23 20:22:20,394 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
-2020-06-23 20:22:20,401 INFO o.s.b.StartupInfoLogger [restartedMain] Started AuManagementSystemApplication in 14.316 seconds (JVM running for 24.177)
-2020-06-23 20:22:20,455 INFO o.a.j.l.DirectJDKLog [RMI TCP Connection(1)-127.0.0.1] Initializing Spring DispatcherServlet 'dispatcherServlet'
-2020-06-23 20:22:20,455 INFO o.s.w.s.FrameworkServlet [RMI TCP Connection(1)-127.0.0.1] Initializing Servlet 'dispatcherServlet'
-2020-06-23 20:22:20,469 INFO o.s.w.s.FrameworkServlet [RMI TCP Connection(1)-127.0.0.1] Completed initialization in 13 ms
-2020-06-23 20:23:01,627 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-1] Resolved [org.springframework.web.bind.MissingRequestHeaderException: Missing request header 'Authorization' for method parameter of type String]
-2020-06-23 20:24:03,295 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-10] Resolved [org.springframework.web.bind.MissingRequestHeaderException: Missing request header 'Authorization' for method parameter of type String]
-2020-06-23 20:25:45,880 WARN c.a.e.c.PrimaryControllerAdvisor [http-nio-8080-exec-8] Unauthorized access attempt: IdToken id is not valid / has expired, re-login to continue 
-2020-06-23 20:25:45,911 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-8] Resolved [com.au.exception.customExceptions.UnauthorizedUserException: IdToken id is not valid / has expired, re-login to continue ]
-2020-06-23 20:26:12,809 WARN c.a.e.c.PrimaryControllerAdvisor [http-nio-8080-exec-2] Unauthorized access attempt: IdToken id is not valid / has expired, re-login to continue 
-2020-06-23 20:26:12,811 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-2] Resolved [com.au.exception.customExceptions.UnauthorizedUserException: IdToken id is not valid / has expired, re-login to continue ]
-2020-06-23 20:45:14,868 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-5] Resolved [org.springframework.web.bind.MissingRequestHeaderException: Missing request header 'Authorization' for method parameter of type String]
-2020-06-23 20:48:34,761 INFO o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin [RMI TCP Connection(4)-127.0.0.1] Application shutdown requested.
-2020-06-23 20:48:35,609 INFO o.s.s.c.ExecutorConfigurationSupport [RMI TCP Connection(4)-127.0.0.1] Shutting down ExecutorService 'applicationTaskExecutor'
-2020-06-23 20:48:35,613 INFO c.z.h.HikariDataSource [RMI TCP Connection(4)-127.0.0.1] HikariPool-1 - Shutdown initiated...
-2020-06-23 20:48:35,626 INFO c.z.h.HikariDataSource [RMI TCP Connection(4)-127.0.0.1] HikariPool-1 - Shutdown completed.
+2020-06-26 11:39:12,238 INFO o.s.b.StartupInfoLogger [restartedMain] Starting AuManagementSystemApplication on DESKTOP-6IHGLO8 with PID 10352 (C:\Users\nsnee\abhishek\eclipse-workspace\AU_Management_System_backend\target\classes started by nsnee in C:\Users\nsnee\abhishek\eclipse-workspace\AU_Management_System_backend)
+2020-06-26 11:39:12,312 INFO o.s.b.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2020-06-26 11:39:12,402 INFO o.s.b.l.DeferredLog [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-06-26 11:39:12,403 INFO o.s.b.l.DeferredLog [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-06-26 11:39:15,585 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2020-06-26 11:39:15,658 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 38ms. Found 0 JDBC repository interfaces.
+2020-06-26 11:39:23,963 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+2020-06-26 11:39:24,318 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+2020-06-26 11:39:24,319 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2020-06-26 11:39:24,319 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.35]
+2020-06-26 11:39:24,576 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2020-06-26 11:39:24,577 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 12173 ms
+2020-06-26 11:39:25,457 WARN o.s.d.r.w.h.HalBrowser [restartedMain] ---
+2020-06-26 11:39:25,458 WARN o.s.d.r.w.h.HalBrowser [restartedMain] Spring Data REST HAL Browser is deprecated! Prefer the HAL Explorer (artifactId: spring-data-rest-hal-explorer)!
+2020-06-26 11:39:25,458 WARN o.s.d.r.w.h.HalBrowser [restartedMain] ---
+2020-06-26 11:39:26,213 INFO o.s.s.c.ExecutorConfigurationSupport [restartedMain] Initializing ExecutorService 'applicationTaskExecutor'
+2020-06-26 11:39:26,536 WARN o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration [restartedMain] Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2020-06-26 11:39:26,961 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+2020-06-26 11:39:28,272 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+2020-06-26 11:39:28,705 INFO o.s.b.d.a.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2020-06-26 11:39:28,716 INFO o.s.b.a.e.w.EndpointLinksResolver [restartedMain] Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-06-26 11:39:28,803 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+2020-06-26 11:39:28,823 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+2020-06-26 11:39:28,841 INFO o.s.b.StartupInfoLogger [restartedMain] Started AuManagementSystemApplication in 17.783 seconds (JVM running for 21.618)
+2020-06-26 11:39:29,259 INFO o.a.j.l.DirectJDKLog [RMI TCP Connection(1)-192.168.0.14] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-06-26 11:39:29,260 INFO o.s.w.s.FrameworkServlet [RMI TCP Connection(1)-192.168.0.14] Initializing Servlet 'dispatcherServlet'
+2020-06-26 11:39:29,293 INFO o.s.w.s.FrameworkServlet [RMI TCP Connection(1)-192.168.0.14] Completed initialization in 33 ms
+2020-06-26 11:41:04,299 INFO c.a.e.c.PrimaryControllerAdvisor [http-nio-8080-exec-9] Data entry failed because of:  - Demand Id: 2 is already met - 
+2020-06-26 11:41:04,350 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-9] Resolved [com.au.exception.customExceptions.InvalidDataEntryException:  - Demand Id: 2 is already met - ]

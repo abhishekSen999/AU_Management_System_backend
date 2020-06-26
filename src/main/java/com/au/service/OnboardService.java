@@ -372,7 +372,21 @@ public class OnboardService {
 			currentOnboard.setEmp_id(onboard.getEmp_id());
 
 		if (onboard.getDem_id() > 0)
-			currentOnboard.setDem_id(onboard.getDem_id());
+		{	// if Demand Id changes then check that whether new demand is already fulfilled
+			if(currentOnboard.getDem_id() != onboard.getDem_id() )
+			{
+				if (demandNotFullfilled(onboard.getDem_id()))
+					currentOnboard.setDem_id(onboard.getDem_id());
+				else{
+					errorMessage = Optional.of(errorMessage.orElse("")
+							.concat(" - Demand Id: " + currentOnboard.getDem_id() + " is already met - "));
+				}
+
+			}
+
+		}
+
+
 
 		if (onboard.getStart_date() != null)
 			currentOnboard.setStart_date(onboard.getStart_date());
@@ -391,10 +405,7 @@ public class OnboardService {
 					+ " does not have the skills required for Demand Id: " + currentOnboard.getDem_id() + " - "));
 		}
 
-		if (!demandNotFullfilled(currentOnboard.getDem_id())) {
-			errorMessage = Optional.of(errorMessage.orElse("")
-					.concat(" - Demand Id: " + currentOnboard.getDem_id() + " is already met - "));
-		}
+
 		
 		errorMessage.ifPresent((message) -> {
 			throw new InvalidDataEntryException(message);
